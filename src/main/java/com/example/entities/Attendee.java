@@ -69,4 +69,10 @@ public class Attendee implements Serializable {
     @JsonIgnore
     private List<Email> emails;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "attendee")
+    @JsonIgnore
+    private List<Feedback> feedbacks;
+
+    
+
 }
