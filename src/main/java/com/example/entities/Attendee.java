@@ -3,6 +3,8 @@ package com.example.entities;
 import java.io.Serializable;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,9 +45,11 @@ public class Attendee implements Serializable {
     private int globalId;
 
     @NotBlank(message = "The initial level cannot be empty")
+    @Enumerated(EnumType.STRING)
     private Level initialLevel;
 
     @NotBlank(message = "The status cannot be empty")
+    @Enumerated(EnumType.STRING)
     private Status status;
     
 
