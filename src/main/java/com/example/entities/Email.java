@@ -34,7 +34,6 @@ public class Email implements Serializable{
 
     @NotBlank(message = "The email cannot be empty")
     private String email;
-    // TODO Checkear caracteres obligatorios (@blue.com)
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

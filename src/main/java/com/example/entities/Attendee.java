@@ -16,7 +16,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -64,7 +63,7 @@ public class Attendee implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Profile profile;
-    
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "attendee")
     @JsonIgnore
     private List<Email> emails;
@@ -72,7 +71,5 @@ public class Attendee implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "attendee")
     @JsonIgnore
     private List<Feedback> feedbacks;
-
-    
 
 }

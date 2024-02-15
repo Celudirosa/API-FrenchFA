@@ -39,5 +39,5 @@ public class Profile implements Serializable{
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "profile")
     @JsonIgnore
     private List<Attendee> attendees;
-    
+
 }

@@ -54,7 +54,4 @@ public class Feedback implements Serializable{
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Attendee attendee;
 
-
-
-
 }
