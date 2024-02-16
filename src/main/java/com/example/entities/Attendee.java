@@ -20,6 +20,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -54,11 +55,11 @@ public class Attendee implements Serializable {
     @Max(value = 99999999, message = "GlobalId must contain 8 numbers")
     private int globalId;
     
-    // @NotBlank(message = "The initial level cannot be empty")
+    @NotNull(message = "Initial level is required")
     @Enumerated(EnumType.STRING)
     private Level initialLevel;
 
-    // @NotBlank(message = "The status cannot be empty")
+    @NotNull(message = "Status is required")
     @Enumerated(EnumType.STRING)
     private Status status;
 
