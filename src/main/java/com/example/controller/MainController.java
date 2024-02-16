@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +28,7 @@ import com.example.services.AttendeeService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 
 @RestController
 @RequestMapping("/attendees")
@@ -101,4 +104,48 @@ public class MainController {
         return responseEntity;
     }
 
+    // Metodo que actualiza un attendee, con el id
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> updateAttendee(@Valid @RequestBody Attendee attendee, 
+        BindingResult validationResults, @PathVariable(name = "id" , required = true) Integer idAttendee) {
+
+            Map<String, Object> responseAsMap = new HashMap<>();
+            ResponseEntity<Map<String, Object>> responseEntity = null;
+
+            // Comprobar si el attendee tiene errores
+            if (validationResults.hasErrors()) {
+                List<String> errors = new ArrayList<>();
+                
+                List<ObjectError> objectErrors = validationResults.getAllErrors();
+
+                objectErrors.forEach(objectError -> errors.add(objectError.getDefaultMessage()));
+
+                responseAsMap.put("errors", errors);
+                responseAsMap.put("Attendee Error", attendee);
+
+                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+
+                return responseEntity;
+
+                
+            }
+
+            // Si no hay errores en el attendee, lo persistimos
+
+            try {
+                attendee.setId(idAttendee);
+                Attendee attendeeUpdate = attendeeService.save(attendee);
+                String succesMessage = "The attendee has been saved succesfully";
+                responseAsMap.put("Succes Message", succesMessage);
+                responseAsMap.put("Attendee update", attendeeUpdate);
+                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.OK);
+            } catch (DataAccessException e) {
+                String error = "Error updating the attendee" + e.getMostSpecificCause() ;
+                responseAsMap.put("error", error);
+                responseAsMap.put("The attende has attempted to update", attendee);
+                responseEntity = new ResponseEntity<Map<String,Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+    return responseEntity;
+}
 }
