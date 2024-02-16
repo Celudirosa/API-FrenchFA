@@ -41,7 +41,7 @@ public class MainController {
             @RequestParam(name = "size", required = false) Integer size) {
 
         ResponseEntity<List<Attendee>> responseEntity = null;
-        Sort sortByName = Sort.by("name");
+        Sort sortByName = Sort.by("firstName");
         List<Attendee> attendees = new ArrayList<>();
 
         // Comprobamos si llega page y size

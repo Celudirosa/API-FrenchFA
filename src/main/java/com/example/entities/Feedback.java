@@ -38,7 +38,7 @@ public class Feedback implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = "Level cannot be empty")
+    // @NotBlank(message = "Level cannot be empty")
     @Enumerated(EnumType.STRING)
     private Level Level;
 
@@ -46,7 +46,7 @@ public class Feedback implements Serializable{
     @Size(max = 1000, message = "Comments should not exceed 1000 characters")
     private String comments;
 
-    @NotBlank(message = "Date cannot be empty")
+    // @NotBlank(message = "Date cannot be empty")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate date;
 
