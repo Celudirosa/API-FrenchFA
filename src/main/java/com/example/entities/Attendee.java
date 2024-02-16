@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -28,7 +30,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "attendees")
+@Table(name = "attendees", uniqueConstraints = @UniqueConstraint(columnNames = "globalId"))
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -53,6 +55,7 @@ public class Attendee implements Serializable {
     
     @Min(value = 10000000, message = "GlobalId must contain 8 numbers")
     @Max(value = 99999999, message = "GlobalId must contain 8 numbers")
+    @Column(name = "globalId", unique = true)
     private int globalId;
     
     @NotNull(message = "Initial level is required")
