@@ -47,11 +47,11 @@ public class Attendee implements Serializable {
     @Size(max = 30, message = "The surname should not exceed 30 characters")
     private String surname;
 
-    @NotBlank(message = "The globalId cannot be empty")
-    @Min(value = 1, message = "GlobalId cannot less than 1")
+    
     @Size(min = 8, max = 8, message = "GlobalId must contain 8 numbers")
+    @Min(value = 1, message = "GlobalId cannot less than 1")
     private int globalId;
-
+    
     @NotBlank(message = "The initial level cannot be empty")
     @Enumerated(EnumType.STRING)
     private Level initialLevel;
