@@ -24,10 +24,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "attendees", uniqueConstraints = @UniqueConstraint(columnNames = "globalId"))
@@ -52,7 +54,7 @@ public class Attendee implements Serializable {
     private String surname;
 
     
-    
+    @Setter(value = AccessLevel.PRIVATE)
     @Min(value = 10000000, message = "GlobalId must contain 8 numbers")
     @Max(value = 99999999, message = "GlobalId must contain 8 numbers")
     @Column(name = "globalId", unique = true)

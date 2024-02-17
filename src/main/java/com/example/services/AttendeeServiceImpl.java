@@ -48,9 +48,4 @@ public class AttendeeServiceImpl implements AttendeeService {
         attendeeDao.delete(attendee);
     }
 
-    @Override
-    public Attendee findByGlobalId(int globalId) {
-        return attendeeDao.findByGlobalId(globalId);
-    }
-
 }

@@ -14,7 +14,6 @@ public interface AttendeeService {
     public List<Attendee> findAll(Sort sort);
     public List<Attendee> findAll();
     public Attendee findById(int id);
-    public Attendee findByGlobalId(int globalId);
     public Attendee save(Attendee attendee);
     public void delete(Attendee attendee);
 
