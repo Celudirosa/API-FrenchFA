@@ -39,19 +39,19 @@ public class Feedback implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull(message = "Level is required")
+    // @NotNull(message = "Level is required")
     @Enumerated(EnumType.STRING)
     private Level Level;
 
-    @NotBlank(message = "Comments cannot be empty")
+    // @NotBlank(message = "Comments cannot be empty")
     @Size(max = 1000, message = "Comments should not exceed 1000 characters")
     private String comments;
 
-    @NotNull(message = "Date is required")
+    // @NotNull(message = "Date is required")
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Attendee attendee;
 

@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.entities.Attendee;
-
 @Repository
 public interface AttendeeDao extends JpaRepository<Attendee, Integer> {
 
@@ -27,7 +26,7 @@ public interface AttendeeDao extends JpaRepository<Attendee, Integer> {
     @Query(value = "SELECT p from Attendee p left join fetch p.profile where p.id = :id")
     public Attendee findById(int id);
 
-   
+    
 
 
 

@@ -35,7 +35,7 @@ public class Email implements Serializable{
     @NotBlank(message = "The email cannot be empty")
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Attendee attendee;
 
