@@ -43,7 +43,7 @@ public class LoadSampleData {
             List<Feedback> feedbacksConstanza= new ArrayList<>();
 
 		Feedback feedback1Constanza = Feedback.builder()
-				.Level(Level.B2)
+				.Level(Level.B1)
                 .date(LocalDate.of(2024, 1, 23))
                 .comments("She have participed correctly")
 				.build();
@@ -111,6 +111,7 @@ public class LoadSampleData {
             );
 
         attendee4.setFeedbacks(feedbacksConstanza);
+        attendee4.setLastLevel(attendeeService.getLastLevelForAttendee(attendee4));
         };
     }
 }
