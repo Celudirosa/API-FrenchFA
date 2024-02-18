@@ -57,7 +57,6 @@ public class Attendee implements Serializable {
     @Setter(value = AccessLevel.PRIVATE)
     @Min(value = 10000000, message = "GlobalId must contain 8 numbers")
     @Max(value = 99999999, message = "GlobalId must contain 8 numbers")
-    @Column(name = "globalId", unique = true)
     private int globalId;
     
     @NotNull(message = "Initial level is required")
