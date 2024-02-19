@@ -17,8 +17,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,16 +49,17 @@ public class Attendee implements Serializable {
     @Size(max = 30, message = "The surname should not exceed 30 characters")
     private String surname;
 
-    @NotBlank(message = "The globalId cannot be empty")
-    @Min(value = 1, message = "GlobalId cannot less than 1")
-    @Size(min = 8, max = 8, message = "GlobalId must contain 8 numbers")
+    
+    
+    @Min(value = 10000000, message = "GlobalId must contain 8 numbers")
+    @Max(value = 99999999, message = "GlobalId must contain 8 numbers")
     private int globalId;
-
-    @NotBlank(message = "The initial level cannot be empty")
+    
+    @NotNull(message = "Initial level is required")
     @Enumerated(EnumType.STRING)
     private Level initialLevel;
 
-    @NotBlank(message = "The status cannot be empty")
+    @NotNull(message = "Status is required")
     @Enumerated(EnumType.STRING)
     private Status status;
 

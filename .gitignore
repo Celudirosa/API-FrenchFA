@@ -31,4 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
-*.properties
+### YA FUNCIONA???? ###
+!**/src/main/resources/application.properties
