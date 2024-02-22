@@ -22,4 +22,9 @@ public class EmailServiceImpl implements EmailService {
         return emailDao.findByAttendee(attendeeDao.findById(idAttendee));
     }
 
+    @Override
+    public void save(Email email) {
+        emailDao.save(email);
+    }
+
 }

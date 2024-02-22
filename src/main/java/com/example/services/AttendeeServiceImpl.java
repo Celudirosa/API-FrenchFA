@@ -52,12 +52,14 @@ public class AttendeeServiceImpl implements AttendeeService {
         attendeeDao.delete(attendee);
     }
 
+    // Método que recupera una lista de los feedbacks ordenados por fecha en order desc 
     @Override
     public Level getLastLevel(Attendee attendee) {
         List<Feedback> feedbacks = feedbackDao.findFeedbacksByAttendeeOrderByDateDesc(attendee);
         if(!feedbacks.isEmpty()) {
             return feedbacks.get(0).getLevel();
         } else {
+            // // Si no hay feedbacks, devolver el nivel inicial del Attendee
             return null;
         }
     }
