@@ -60,8 +60,8 @@ public class LoadSampleData {
             feedbacksConstanza.add(feedback1Constanza);
             feedbacksConstanza.add(feedback2Constanza);
 
-            Feedback lastLevelConstanza = Collections.max(feedbacksConstanza, Comparator.comparing(Feedback::getDate));
-            lastLevelConstanza = feedbacksConstanza.get(0);
+            // Feedback lastLevelConstanza = Collections.max(feedbacksConstanza, Comparator.comparing(Feedback::getDate));
+            // lastLevelConstanza = feedbacksConstanza.get(0);
 
             // Attendees
             Attendee attendee1 = attendeeService.save(Attendee.builder()
@@ -89,7 +89,7 @@ public class LoadSampleData {
                     .initialLevel(Level.B1)
                     .status(Status.ENABLE)
                     .profile(profileService.findById(1))
-                    .lastLevel(lastLevelConstanza.getLevel())
+                    .lastLevel(null)
                     .build());
 
             Attendee attendee4 = attendeeService.save(Attendee.builder()
@@ -99,10 +99,11 @@ public class LoadSampleData {
                     .initialLevel(Level.C1)
                     .status(Status.ENABLE)
                     .profile(profileService.findById(2))
+                    .lastLevel(null)
                     .build());
 
-            attendee4.setFeedbacks(feedbacksConstanza);
-            attendee4.setLastLevel(attendeeService.getLastLevel(attendee4));
+            attendee3.setFeedbacks(feedbacksConstanza);
+            attendee3.setLastLevel(attendeeService.getLastLevel(attendee3));
         };
     }
 }
