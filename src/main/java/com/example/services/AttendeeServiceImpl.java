@@ -8,7 +8,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.dao.AttendeeDao;
+import com.example.dao.FeedbackDao;
 import com.example.entities.Attendee;
+import com.example.entities.Feedback;
+import com.example.entities.Level;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class AttendeeServiceImpl implements AttendeeService {
     
     private final AttendeeDao attendeeDao;
+    private final FeedbackDao feedbackDao;
 
     @Override
     public Page<Attendee> findAll(Pageable pageable) {
@@ -46,6 +50,16 @@ public class AttendeeServiceImpl implements AttendeeService {
     @Override
     public void delete(Attendee attendee) {
         attendeeDao.delete(attendee);
+    }
+
+    @Override
+    public Level getLastLevel(Attendee attendee) {
+        List<Feedback> feedbacks = feedbackDao.findFeedbacksByAttendeeOrderByDateDesc(attendee);
+        if(!feedbacks.isEmpty()) {
+            return feedbacks.get(0).getLevel();
+        } else {
+            return null;
+        }
     }
 
 }
