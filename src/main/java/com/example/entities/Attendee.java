@@ -67,6 +67,10 @@ public class Attendee implements Serializable {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "last_level", columnDefinition = "varchar(255) default 'NO EVALUATION'")
+    private Level lastLevel;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Profile profile;
@@ -78,5 +82,8 @@ public class Attendee implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "attendee")
     @JsonIgnore
     private List<Feedback> feedbacks;
+
+
+
 
 }

@@ -11,4 +11,8 @@ public interface FeedbackDao extends JpaRepository<Feedback, Integer> {
 
     List<Feedback> findByAttendee(Attendee attendee);
 
+    // Recuperar el last level por globalId
+    List<Feedback> findFeedbacksByAttendeeOrderByDateDesc(Attendee attendee);
+
+
 }
