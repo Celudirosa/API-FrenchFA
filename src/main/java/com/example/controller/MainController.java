@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -158,5 +157,58 @@ public class MainController {
 
     return responseEntity;
 }
+
+
+// @GetMapping("/{globalId}")
+// public ResponseEntity<Attendee> getAttendeeById(@Valid @RequestBody Attendee attendee, 
+//  @PathVariable(name = "globalId") Integer globalIdAttendee) {
+
+//      int idAttendee = attendee.getId();
+//      Attendee thisAttendee = attendeeService.findById(idAttendee);
+//      thisAttendee= thisAttendee.builder()
+//      .firstName(thisAttendee.getFirstName())
+//      .surname(thisAttendee.getSurname())
+//      .emails(thisAttendee.getEmails())
+//   .profile(thisAttendee.getProfile())
+//   .feedbacks(thisAttendee.getFeedbacks())
+//   .initialLevel(thisAttendee.getInitialLevel())
+//   .globalId(thisAttendee.getGlobalId())
+//   .build();
+  
+      
+  
+//   return new ResponseEntity<>(thisAttendee, HttpStatus.OK);
+// }
+
+@GetMapping("/{globalId}")
+public ResponseEntity<Attendee> getAttendeeById(@PathVariable(name = "globalId") Integer globalIdAttendee) {
+    Attendee attendee = attendeeService.findById(globalIdAttendee);
+    
+    if (attendee == null) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    // Crear un objeto de respuesta con solo los campos necesarios
+    Attendee thisAttendee = new Attendee();
+    thisAttendee.setFirstName(attendee.getFirstName());
+    thisAttendee.setSurname(attendee.getSurname());
+    thisAttendee.setId(attendee.getId());
+    thisAttendee.setEmails(attendee.getEmails());
+
+    return new ResponseEntity<Attendee> (thisAttendee, HttpStatus.OK);
 }
 
+}
+
+
+// Map<String, Object> responseAsMap = new HashMap<>();
+// ResponseEntity<Map<String, Object>> responseEntity = null;
+
+// // Verificar que el attendee existe
+// int idAttendee = attendee.getId();
+// Attendee existingAttendee = attendeeService.findById(idAttendee);
+// if (existingAttendee == null) {
+//     String errorMessage = "Attendee with global Id " + attendee.getGlobalId() + " not found";
+//     responseAsMap.put("errorMessage", errorMessage);
+//     return (responseAsMap, HttpStatus.NOT_FOUND);
+// } else {
