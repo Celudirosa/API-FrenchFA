@@ -23,6 +23,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -53,7 +54,6 @@ public class Attendee implements Serializable {
     @Size(max = 30, message = "The surname should not exceed 30 characters")
     private String surname;
 
-    
     @Setter(value = AccessLevel.PRIVATE)
     @Min(value = 10000000, message = "GlobalId must contain 8 numbers")
     @Max(value = 99999999, message = "GlobalId must contain 8 numbers")
@@ -67,6 +67,12 @@ public class Attendee implements Serializable {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    // attendee.setLevel(lastLevel) (en el builder: no necesariamente)
+    // loadSampleData: le estoy dando un ejemplo, cómo hacer los request a los endpoint
+    @Enumerated(EnumType.STRING)
+    @Column(name = "last_level", columnDefinition = "varchar(255) default 'NO EVALUATION'")
+    private Level lastLevel;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Profile profile;
@@ -78,5 +84,8 @@ public class Attendee implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "attendee")
     @JsonIgnore
     private List<Feedback> feedbacks;
+
+
+
 
 }
