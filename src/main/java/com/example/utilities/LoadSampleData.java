@@ -73,6 +73,10 @@ public class LoadSampleData {
                     .profile(profileService.findById(1))
                     .build());
 
+                attendee1.setFeedbacks(feedbacksConstanza);
+               // attendee1.setLastLevel(attendeeService.getLastLevel(attendee1));
+        
+
             Attendee attendee2 = attendeeService.save(Attendee.builder()
                     .firstName("Andrea")
                     .surname("Serge")
