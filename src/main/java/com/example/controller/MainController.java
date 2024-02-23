@@ -45,11 +45,12 @@ public class MainController {
         ResponseEntity<List<Attendee>> responseEntity = null;
         Sort sortByName = Sort.by("firstName");
         List<Attendee> attendees = new ArrayList<>();
-
+    
         // Comprobamos si llega page y size
         if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
             Pageable pageable = PageRequest.of(page, size, sortByName);
             Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
+            
             attendees = pageAttendees.getContent();
             responseEntity = new ResponseEntity<List<Attendee>>(attendees, HttpStatus.OK);
         } else { // solo ordenados alfabeticamente

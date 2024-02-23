@@ -57,11 +57,15 @@ public class AttendeeServiceImpl implements AttendeeService {
     public Level getLastLevel(Attendee attendee) {
         List<Feedback> feedbacks = feedbackDao.findFeedbacksByAttendeeOrderByDateDesc(attendee);
         if(!feedbacks.isEmpty()) {
-            return feedbacks.get(0).getLevel();
+            Level lastLevel = feedbacks.get(0).getLevel();
+            attendee.setLastLevel(lastLevel); // Actualizar el campo lastLevel del Attendee
+            attendeeDao.save(attendee); // Guardar el Attendee actualizado en la base de datos
+            return lastLevel;
         } else {
             // // Si no hay feedbacks, devolver el nivel inicial del Attendee
             return null;
         }
     }
 
+        
 }

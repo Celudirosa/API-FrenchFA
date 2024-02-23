@@ -148,9 +148,11 @@ public class LoadSampleData {
             attendee1.setFeedbacks(feedbacksAttendee1);
             attendee5.setFeedbacks(feedbacksAttendee5);
             attendee5.setLastLevel(attendeeService.getLastLevel(attendee5));
-            Feedback lastFeedback1 = Collections.max(feedbacksAttendee1, Comparator.comparing(Feedback::getDate));
-         Level lastLevelattendee1 = lastFeedback1.getLevel();
-            attendee1.setLastLevel(lastLevelattendee1);
+            attendee1.setLastLevel(attendeeService.getLastLevel(attendee1));
+
+        //     Feedback lastFeedback1 = Collections.max(feedbacksAttendee1, Comparator.comparing(Feedback::getDate));
+        //  Level lastLevelattendee1 = lastFeedback1.getLevel();
+        //     attendee1.setLastLevel(lastLevelattendee1);
 
 
             // Add correos
