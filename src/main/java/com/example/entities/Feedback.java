@@ -23,11 +23,14 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "feedbacks")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -47,9 +50,11 @@ public class Feedback implements Serializable{
     @Size(max = 1000, message = "Comments should not exceed 1000 characters")
     private String comments;
 
+    // TODO Resolver como cambiar el formato de la fecha
+    // @DateTimeFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "Date is required")
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate date;
+
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

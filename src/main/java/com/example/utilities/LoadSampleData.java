@@ -2,8 +2,6 @@ package com.example.utilities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
@@ -48,7 +46,7 @@ public class LoadSampleData {
                     .globalId(12345678)
                     .initialLevel(Level.A2)
                     .status(Status.ENABLE)
-                    .lastLevel(null)
+                    .lastLevel(Level.NO_EVALUATION)
                     .profile(profileService.findById(1))
                     .build());
 
@@ -58,6 +56,7 @@ public class LoadSampleData {
                     .globalId(12345679)
                     .initialLevel(Level.B2)
                     .status(Status.DISABLE)
+                    .lastLevel(Level.NO_EVALUATION)
                     .profile(profileService.findById(1))
                     .build());
 
@@ -68,7 +67,7 @@ public class LoadSampleData {
                     .initialLevel(Level.B1)
                     .status(Status.ENABLE)
                     .profile(profileService.findById(1))
-                    .lastLevel(null)
+                    .lastLevel(Level.NO_EVALUATION)
                     .build());
 
             Attendee attendee4 = attendeeService.save(Attendee.builder()
@@ -87,7 +86,7 @@ public class LoadSampleData {
                     .globalId(12345688)
                     .initialLevel(Level.A0)
                     .status(Status.ENABLE)
-                    .lastLevel(null)
+                    .lastLevel(Level.NO_EVALUATION)
                     .profile(profileService.findById(2))
                     .build());
 
@@ -149,6 +148,7 @@ public class LoadSampleData {
             attendee5.setFeedbacks(feedbacksAttendee5);
             attendee5.setLastLevel(attendeeService.getLastLevel(attendee5));
             attendee1.setLastLevel(attendeeService.getLastLevel(attendee1));
+            attendee2.setLastLevel(attendeeService.getLastLevel(attendee2));
 
         //     Feedback lastFeedback1 = Collections.max(feedbacksAttendee1, Comparator.comparing(Feedback::getDate));
         //  Level lastLevelattendee1 = lastFeedback1.getLevel();

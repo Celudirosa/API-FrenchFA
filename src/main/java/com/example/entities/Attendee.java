@@ -29,12 +29,14 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "attendees", uniqueConstraints = @UniqueConstraint(columnNames = "globalId"))
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -69,8 +71,9 @@ public class Attendee implements Serializable {
 
     // attendee.setLevel(lastLevel) (en el builder: no necesariamente)
     // loadSampleData: le estoy dando un ejemplo, cómo hacer los request a los endpoint
+    
     @Enumerated(EnumType.STRING)
-    @Column(name = "last_level", columnDefinition = "varchar(255) default 'NO EVALUATION'")
+    @Column(name = "last_level" )
     private Level lastLevel;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
@@ -86,7 +89,7 @@ public class Attendee implements Serializable {
     private List<Feedback> feedbacks;
 
 
-
+   
 
 
 }

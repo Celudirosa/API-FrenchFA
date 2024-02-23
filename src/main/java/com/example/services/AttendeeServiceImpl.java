@@ -56,14 +56,20 @@ public class AttendeeServiceImpl implements AttendeeService {
     @Override
     public Level getLastLevel(Attendee attendee) {
         List<Feedback> feedbacks = feedbackDao.findFeedbacksByAttendeeOrderByDateDesc(attendee);
+        Level lastLevel = null;
         if(!feedbacks.isEmpty()) {
-            Level lastLevel = feedbacks.get(0).getLevel();
+            lastLevel = feedbacks.get(0).getLevel();
             attendee.setLastLevel(lastLevel); // Actualizar el campo lastLevel del Attendee
             attendeeDao.save(attendee); // Guardar el Attendee actualizado en la base de datos
             return lastLevel;
-        } else {
-            // // Si no hay feedbacks, devolver el nivel inicial del Attendee
-            return null;
+        } 
+        else {
+            //  Si no hay feedbacks, devolver null 
+            // TODO devolver "no evaluation"
+            // attendee.setLastLevel(Level.NO_EVALUATION); // Actualizar el campo lastLevel del Attendee
+            lastLevel = Level.NO_EVALUATION;
+            attendee.setLastLevel(lastLevel);
+            return lastLevel;
         }
     }
 
