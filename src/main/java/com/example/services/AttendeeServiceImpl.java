@@ -50,10 +50,10 @@ public class AttendeeServiceImpl implements AttendeeService {
         return attendeeDao.save(attendee);
     }
 
-    @Override
-    public void delete(Attendee attendee) {
-        attendeeDao.delete(attendee);
-    }
+    // @Override
+    // public void delete(Attendee attendee) {
+    //     attendeeDao.delete(attendee);
+    // }
     // Metodo para obtener el lastLevel del attendee
     @Override
     public Level getLastLevelForAttendee(Attendee attendee) {

@@ -17,7 +17,7 @@ public interface AttendeeService {
     public List<Attendee> findAll();
     public Attendee findById(int id);
     public Attendee save(Attendee attendee);
-    public void delete(Attendee attendee);
+    // public void delete(Attendee attendee);
     public Level getLastLevelForAttendee(Attendee attendee);
-    public void updateLastLevelForAttendee(Attendee attendee, Level level);
+    // public void updateLastLevelForAttendee(Attendee attendee, Level level);
 }
