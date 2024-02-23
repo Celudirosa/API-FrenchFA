@@ -8,4 +8,6 @@ public interface EmailService {
 
     public List<Email> findById(int idAttendee);
 
+    public void save(Email email);
+
 }

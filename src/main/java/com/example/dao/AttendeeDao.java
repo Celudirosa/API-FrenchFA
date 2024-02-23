@@ -27,8 +27,5 @@ public interface AttendeeDao extends JpaRepository<Attendee, Integer> {
     @Query(value = "SELECT p from Attendee p left join fetch p.profile where p.id = :id")
     public Attendee findById(int id);
 
-   
-
-
-
+  
 }
