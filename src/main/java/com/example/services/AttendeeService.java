@@ -7,14 +7,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import com.example.entities.Attendee;
-import com.example.entities.Level;
+import com.example.entities.Status;
 
 
 public interface AttendeeService {
 
-    public Page<Attendee> findAll(Pageable pageable);
+    //public Page<Attendee> findAll(Pageable pageable);
     public List<Attendee> findAll(Sort sort);
     public List<Attendee> findAll();
+    public List<Attendee> findByStatus(Status status, Pageable pageable);
+    public List<Attendee> findByStatus(Status status, Sort sort);
     public Attendee findById(int id);
     public Attendee save(Attendee attendee);
     public void delete(Attendee attendee);

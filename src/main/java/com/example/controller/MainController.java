@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entities.Attendee;
+import com.example.entities.Status;
 import com.example.services.AttendeeService;
 
 import jakarta.validation.Valid;
@@ -38,9 +39,10 @@ public class MainController {
 
     // Metodo que devuelve los attendees
     @GetMapping
-    public ResponseEntity<List<Attendee>> findAll(
+    public ResponseEntity<List<Attendee>> findByStatus(
             @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "size", required = false) Integer size) {
+            @RequestParam(name = "size", required = false) Integer size,
+            @RequestParam(name = "status", required = true) Status status) {
 
         ResponseEntity<List<Attendee>> responseEntity = null;
         Sort sortByName = Sort.by("firstName");

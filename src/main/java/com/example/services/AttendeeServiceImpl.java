@@ -12,6 +12,7 @@ import com.example.dao.FeedbackDao;
 import com.example.entities.Attendee;
 import com.example.entities.Feedback;
 import com.example.entities.Level;
+import com.example.entities.Status;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +23,10 @@ public class AttendeeServiceImpl implements AttendeeService {
     private final AttendeeDao attendeeDao;
     private final FeedbackDao feedbackDao;
 
-    @Override
-    public Page<Attendee> findAll(Pageable pageable) {
-        return attendeeDao.findAll(pageable);
-    }
+    // @Override
+    // public Page<Attendee> findAll(Pageable pageable) {
+    //     return attendeeDao.findAll(pageable);
+    // }
 
     @Override
     public List<Attendee> findAll(Sort sort) {
@@ -70,6 +71,17 @@ public class AttendeeServiceImpl implements AttendeeService {
             }
 
             // // Si no hay feedbacks, devolver el nivel inicial del Attendee
+    }
+
+    // Método que devuelve una lista de attendes por su status
+    @Override
+    public List<Attendee> findByStatus(Status status, Pageable pageable) {
+        return attendeeDao.findByStatus(status, pageable);
+    }
+
+    @Override
+    public List<Attendee> findByStatus(Status status, Sort sort) {
+        return attendeeDao.findByStatus(status, sort);
     }
 
         
