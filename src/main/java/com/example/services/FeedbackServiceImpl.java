@@ -22,4 +22,9 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackDao.findByAttendee(attendeeDao.findById(idAttendee));
     }
 
+    @Override
+    public void save(Feedback feedback) {
+        feedbackDao.save(feedback);
+    }
+
 }

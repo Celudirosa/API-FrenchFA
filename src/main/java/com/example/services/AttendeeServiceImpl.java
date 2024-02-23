@@ -8,7 +8,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.dao.AttendeeDao;
+import com.example.dao.FeedbackDao;
 import com.example.entities.Attendee;
+import com.example.entities.Feedback;
+import com.example.entities.Level;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class AttendeeServiceImpl implements AttendeeService {
     
     private final AttendeeDao attendeeDao;
+    private final FeedbackDao feedbackDao;
 
     @Override
     public Page<Attendee> findAll(Pageable pageable) {
@@ -48,4 +52,25 @@ public class AttendeeServiceImpl implements AttendeeService {
         attendeeDao.delete(attendee);
     }
 
+    // Método que recupera una lista de los feedbacks ordenados por fecha en order desc 
+    @Override
+    public String getLastLevel(Attendee attendee) {
+        List<Feedback> feedbacks = feedbackDao.findFeedbacksByAttendeeOrderByDateDesc(attendee);
+            String lastLevel = feedbacks.get(0).getLevel().toString();
+            attendee.setLastLevel(lastLevel); // Actualizar el campo lastLevel del Attendee
+            attendeeDao.save(attendee); // Guardar el Attendee actualizado en la base de datos
+
+            if (lastLevel == "NO_EVALUATION") {
+                attendee.setLastLevel("No evaluation");
+                attendeeDao.save(attendee);
+                return "No evaluation";
+            } else {
+
+                return lastLevel;
+            }
+
+            // // Si no hay feedbacks, devolver el nivel inicial del Attendee
+    }
+
+        
 }

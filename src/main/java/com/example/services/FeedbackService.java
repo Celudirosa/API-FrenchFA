@@ -7,5 +7,7 @@ import com.example.entities.Feedback;
 public interface FeedbackService {
 
     public List<Feedback> findById(int idAttendee);
+
+    public void save(Feedback feedback);
     
 }

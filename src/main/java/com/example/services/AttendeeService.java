@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import com.example.entities.Attendee;
+import com.example.entities.Level;
+
 
 public interface AttendeeService {
 
@@ -16,5 +18,6 @@ public interface AttendeeService {
     public Attendee findById(int id);
     public Attendee save(Attendee attendee);
     public void delete(Attendee attendee);
+    public String getLastLevel(Attendee attendee);
 
 }
