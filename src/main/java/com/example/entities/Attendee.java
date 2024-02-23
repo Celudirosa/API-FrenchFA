@@ -69,9 +69,11 @@ public class Attendee implements Serializable {
 
     // attendee.setLevel(lastLevel) (en el builder: no necesariamente)
     // loadSampleData: le estoy dando un ejemplo, cómo hacer los request a los endpoint
-    @Enumerated(EnumType.STRING)
+    // @Enumerated(EnumType.STRING)
+    // TODO: STRING O ENUM???????
+    @Builder.Default
     @Column(name = "last_level", columnDefinition = "varchar(255) default 'NO EVALUATION'")
-    private Level lastLevel;
+    private String lastLevel = "NO_EVALUATION";
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

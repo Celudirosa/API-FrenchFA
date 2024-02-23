@@ -18,6 +18,6 @@ public interface AttendeeService {
     public Attendee findById(int id);
     public Attendee save(Attendee attendee);
     public void delete(Attendee attendee);
-    public Level getLastLevel(Attendee attendee);
+    public String getLastLevel(Attendee attendee);
 
 }

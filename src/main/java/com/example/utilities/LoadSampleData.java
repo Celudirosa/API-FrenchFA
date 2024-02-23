@@ -48,7 +48,6 @@ public class LoadSampleData {
                     .globalId(12345678)
                     .initialLevel(Level.A2)
                     .status(Status.ENABLE)
-                    .lastLevel(null)
                     .profile(profileService.findById(1))
                     .build());
 
@@ -68,7 +67,6 @@ public class LoadSampleData {
                     .initialLevel(Level.B1)
                     .status(Status.ENABLE)
                     .profile(profileService.findById(1))
-                    .lastLevel(null)
                     .build());
 
             Attendee attendee4 = attendeeService.save(Attendee.builder()
@@ -78,7 +76,6 @@ public class LoadSampleData {
                     .initialLevel(Level.C1)
                     .status(Status.ENABLE)
                     .profile(profileService.findById(1))
-                    .lastLevel(null)
                     .build());
 
             Attendee attendee5 = attendeeService.save(Attendee.builder()
@@ -87,7 +84,6 @@ public class LoadSampleData {
                     .globalId(12345688)
                     .initialLevel(Level.A0)
                     .status(Status.ENABLE)
-                    .lastLevel(null)
                     .profile(profileService.findById(2))
                     .build());
 
