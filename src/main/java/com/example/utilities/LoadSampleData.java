@@ -156,15 +156,15 @@ public class LoadSampleData {
 
 
             // Add correos
-            List<Email> emailsBootcamper1 = new ArrayList<>();
+            List<Email> emailsAttendee5 = new ArrayList<>();
 
-            Email email1Bootcamper1 = Email.builder()
+            Email email1Attendee5 = Email.builder()
                     .email("andrea@serge.com")
                     .attendee(attendee5)
                     .build();
 
-            emailService.save(email1Bootcamper1);
-            emailsBootcamper1.add(email1Bootcamper1);
+            emailService.save(email1Attendee5);
+            emailsAttendee5.add(email1Attendee5);
 
         };
     }
