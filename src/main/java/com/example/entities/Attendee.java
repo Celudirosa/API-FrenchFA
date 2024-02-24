@@ -72,8 +72,8 @@ public class Attendee implements Serializable {
     // @Enumerated(EnumType.STRING)
     // TODO: STRING O ENUM???????
     @Builder.Default
-    @Column(name = "last_level", columnDefinition = "varchar(255) default 'NO EVALUATION'")
-    private String lastLevel = "NO_EVALUATION";
+    @Column(name = "last_level")
+    private String lastLevel = "No evaluation";
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

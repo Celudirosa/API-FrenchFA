@@ -59,13 +59,6 @@ public class AttendeeServiceImpl implements AttendeeService {
             String lastLevel = feedbacks.get(0).getLevel().toString();
             attendee.setLastLevel(lastLevel); // Actualizar el campo lastLevel del Attendee
             attendeeDao.save(attendee); // Guardar el Attendee actualizado en la base de datos
-
-            if (lastLevel == "NO_EVALUATION") {
-                attendee.setLastLevel("No evaluation");
-                attendeeDao.save(attendee);
-                return "No evaluation";
-            } else {
-
                 return lastLevel;
             }
 
@@ -73,4 +66,3 @@ public class AttendeeServiceImpl implements AttendeeService {
     }
 
         
-}
