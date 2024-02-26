@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import com.example.entities.Attendee;
-import com.example.entities.Level;
 
 
 public interface AttendeeService {
