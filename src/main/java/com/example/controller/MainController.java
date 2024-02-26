@@ -41,7 +41,7 @@ public class MainController {
 
     // Metodo que devuelve los attendees ENABLE
     @GetMapping("/enable")
-    public ResponseEntity<List<Attendee>> findByStatus(
+    public ResponseEntity<List<Attendee>> findByStatusEnable(
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size) {
 
@@ -62,6 +62,33 @@ public class MainController {
             attendeesEnable = attendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
 
             responseEntity = new ResponseEntity<List<Attendee>>(attendeesEnable, HttpStatus.OK);
+        }
+
+        return responseEntity;
+    }
+
+    @GetMapping("/disable")
+    public ResponseEntity<List<Attendee>> findByStatusDisable(
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "size", required = false) Integer size) {
+
+        ResponseEntity<List<Attendee>> responseEntity = null;
+        Sort sortByName = Sort.by("firstName");
+        List<Attendee> attendeesDisable = new ArrayList<>();
+    
+        // Comprobamos si llega page y size
+        if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
+            Pageable pageable = PageRequest.of(page, size, sortByName);
+            Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
+            
+            attendeesDisable = pageAttendees.stream().filter(a -> a.getStatus() == Status.DISABLE).collect(Collectors.toList());
+
+            responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable, HttpStatus.OK);
+        } else { // solo ordenados alfabeticamente
+            List<Attendee> attendees = attendeeService.findAll(sortByName);
+            attendeesDisable = attendees.stream().filter(a -> a.getStatus() == Status.DISABLE).collect(Collectors.toList());
+
+            responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable, HttpStatus.OK);
         }
 
         return responseEntity;
