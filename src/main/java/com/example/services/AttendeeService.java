@@ -18,5 +18,5 @@ public interface AttendeeService {
     public Attendee save(Attendee attendee);
     public void delete(Attendee attendee);
     public String getLastLevel(Attendee attendee);
-
+    public Attendee findByGlobalId(int globalId);
 }

@@ -48,18 +48,20 @@ public class MainController {
         ResponseEntity<List<Attendee>> responseEntity = null;
         Sort sortByName = Sort.by("firstName");
         List<Attendee> attendeesEnable = new ArrayList<>();
-    
+
         // Comprobamos si llega page y size
         if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
             Pageable pageable = PageRequest.of(page, size, sortByName);
             Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
-            
-            attendeesEnable = pageAttendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
+
+            attendeesEnable = pageAttendees.stream().filter(a -> a.getStatus() == Status.ENABLE)
+                    .collect(Collectors.toList());
 
             responseEntity = new ResponseEntity<List<Attendee>>(attendeesEnable, HttpStatus.OK);
         } else { // solo ordenados alfabeticamente
             List<Attendee> attendees = attendeeService.findAll(sortByName);
-            attendeesEnable = attendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
+            attendeesEnable = attendees.stream().filter(a -> a.getStatus() == Status.ENABLE)
+                    .collect(Collectors.toList());
 
             responseEntity = new ResponseEntity<List<Attendee>>(attendeesEnable, HttpStatus.OK);
         }
@@ -75,24 +77,50 @@ public class MainController {
         ResponseEntity<List<Attendee>> responseEntity = null;
         Sort sortByName = Sort.by("firstName");
         List<Attendee> attendeesDisable = new ArrayList<>();
-    
+
         // Comprobamos si llega page y size
         if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
             Pageable pageable = PageRequest.of(page, size, sortByName);
             Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
-            
-            attendeesDisable = pageAttendees.stream().filter(a -> a.getStatus() == Status.DISABLE).collect(Collectors.toList());
+
+            attendeesDisable = pageAttendees.stream().filter(a -> a.getStatus() == Status.DISABLE)
+                    .collect(Collectors.toList());
 
             responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable, HttpStatus.OK);
         } else { // solo ordenados alfabeticamente
             List<Attendee> attendees = attendeeService.findAll(sortByName);
-            attendeesDisable = attendees.stream().filter(a -> a.getStatus() == Status.DISABLE).collect(Collectors.toList());
+            attendeesDisable = attendees.stream().filter(a -> a.getStatus() == Status.DISABLE)
+                    .collect(Collectors.toList());
 
             responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable, HttpStatus.OK);
         }
 
         return responseEntity;
     }
+
+    // Metodo para llamar a un attendee por el globalId
+
+    @GetMapping("/{globalId}")
+    public ResponseEntity<Attendee> getAttendeeById(@PathVariable(name = "globalId") Integer globalIdAttendee) {
+        Attendee attendee = attendeeService.findByGlobalId(globalIdAttendee);
+
+
+        if (attendee == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Crear un objeto de respuesta con solo los campos necesarios
+        Attendee thisAttendee = new Attendee();
+        thisAttendee.setFirstName(attendee.getFirstName());
+        thisAttendee.setSurname(attendee.getSurname());
+        thisAttendee.setId(attendee.getId());
+        
+
+        return new ResponseEntity<Attendee>(thisAttendee, HttpStatus.OK);
+    }
+
+
+
 
     // Metodo que persiste un attendee, y valida que esten bien formados los campos
     @PostMapping
