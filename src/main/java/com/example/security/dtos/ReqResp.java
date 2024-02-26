@@ -2,7 +2,7 @@ package com.example.security.dtos;
 
 import java.util.List;
 
-import com.example.entities.Producto;
+import com.example.entities.Attendee;
 import com.example.security.entities.OurUser;
 import com.example.security.entities.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,6 +27,6 @@ public class ReqResp {
     private String email;
     private Role role;
     private String password;
-    private List<Producto> products;
+    private List<Attendee> attendees;
     private OurUser ourUser;
 }
