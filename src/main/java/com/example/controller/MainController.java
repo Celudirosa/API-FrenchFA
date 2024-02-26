@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entities.Attendee;
+import com.example.entities.Status;
 import com.example.services.AttendeeService;
 
 import jakarta.validation.Valid;
@@ -36,26 +39,29 @@ public class MainController {
 
     private final AttendeeService attendeeService;
 
-    // Metodo que devuelve los attendees
-    @GetMapping
-    public ResponseEntity<List<Attendee>> findAll(
+    // Metodo que devuelve los attendees ENABLE
+    @GetMapping("/enable")
+    public ResponseEntity<List<Attendee>> findByStatus(
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size) {
 
         ResponseEntity<List<Attendee>> responseEntity = null;
         Sort sortByName = Sort.by("firstName");
-        List<Attendee> attendees = new ArrayList<>();
+        List<Attendee> attendeesEnable = new ArrayList<>();
     
         // Comprobamos si llega page y size
         if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
             Pageable pageable = PageRequest.of(page, size, sortByName);
             Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
             
-            attendees = pageAttendees.getContent();
-            responseEntity = new ResponseEntity<List<Attendee>>(attendees, HttpStatus.OK);
+            attendeesEnable = pageAttendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
+
+            responseEntity = new ResponseEntity<List<Attendee>>(attendeesEnable, HttpStatus.OK);
         } else { // solo ordenados alfabeticamente
-            attendees = attendeeService.findAll(sortByName);
-            responseEntity = new ResponseEntity<List<Attendee>>(attendees, HttpStatus.OK);
+            List<Attendee> attendees = attendeeService.findAll(sortByName);
+            attendeesEnable = attendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
+
+            responseEntity = new ResponseEntity<List<Attendee>>(attendeesEnable, HttpStatus.OK);
         }
 
         return responseEntity;
