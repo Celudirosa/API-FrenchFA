@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +68,7 @@ public class MainController {
         return responseEntity;
     }
 
+        // Metodo que devuelve los attendees DISABLE
     @GetMapping("/disable")
     public ResponseEntity<List<Attendee>> findByStatusDisable(
             @RequestParam(name = "page", required = false) Integer page,
@@ -89,6 +91,34 @@ public class MainController {
             attendeesDisable = attendees.stream().filter(a -> a.getStatus() == Status.DISABLE).collect(Collectors.toList());
 
             responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable, HttpStatus.OK);
+        }
+
+        return responseEntity;
+    }
+
+    @GetMapping("/{globalId}")
+    public ResponseEntity<Map<String, Object>> findAttendeeByGlobalId(@PathVariable(name = "globalId", required = true) Integer globalIdAttendee) throws IOException {
+
+        Map<String, Object> responseMap = new HashMap<>();
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+
+        try {
+            Attendee attendee = attendeeService.findByGlobalId(globalIdAttendee);
+
+            // Verifica si el Attendee fue encontrado
+            if (attendee != null) {
+                responseMap.put("attendee", attendee);
+                responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
+            } else {
+                // Si no se encuentra el Attendee, devuelve un error 404 Not Found
+                responseMap.put("error", "No se encontró el Attendee con globalId: " + globalIdAttendee);
+                responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
+            }
+            
+        } catch (DataAccessException e) {
+            String error = "Error al buscar el producto con id " + globalIdAttendee + " y la causa mas probable es: " + e.getMostSpecificCause();
+            responseMap.put("error", error);
+            responseEntity = new ResponseEntity<Map<String,Object>>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return responseEntity;
