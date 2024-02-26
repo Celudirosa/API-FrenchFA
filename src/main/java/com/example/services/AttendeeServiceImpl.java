@@ -62,6 +62,4 @@ public class AttendeeServiceImpl implements AttendeeService {
             }
 
             // // Si no hay feedbacks, devolver el nivel inicial del Attendee
-    }
-
-        
+        }

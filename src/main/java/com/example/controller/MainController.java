@@ -200,6 +200,7 @@ public ResponseEntity<Attendee> getAttendeeById(@PathVariable(name = "globalId")
     return new ResponseEntity<Attendee> (thisAttendee, HttpStatus.OK);
 }
 
+    
 }
 
 
