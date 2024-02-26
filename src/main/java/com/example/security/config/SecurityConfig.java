@@ -32,12 +32,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(request -> request.requestMatchers("/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/fuf/**").hasAuthority("ADMINISTRATOR")
-                        .requestMatchers(HttpMethod.PUT, "/fuf/**").hasAuthority("ADMINISTRATOR")
-                        .requestMatchers(HttpMethod.DELETE,"/fuf/***").hasAuthority("ADMINISTRATOR")
-                        .requestMatchers(HttpMethod.GET, "/fuf/**").hasAnyAuthority("TRAINER")
-                        .requestMatchers(HttpMethod.GET, "/fuf/**").hasAnyAuthority("TRAINER", "ADMINISTRATOR")
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/fuf/**").hasAuthority("ADMINISTRATOR") // Save Attendee
+                        .requestMatchers(HttpMethod.GET,"/fuf/**").hasAuthority("ADMINISTRATOR") // List Disable
+                        .requestMatchers(HttpMethod.PUT, "/fuf/**").hasAuthority("ADMINISTRATOR") // Update Attendee
+                        .requestMatchers(HttpMethod.POST, "/fuf/**").hasAnyAuthority("TRAINER") // Add feedback
+                        .requestMatchers(HttpMethod.DELETE,"/fuf/***").hasAuthority("TRAINER") // Delete feedback
+                        .requestMatchers(HttpMethod.GET, "/fuf/**").hasAnyAuthority("TRAINER", "ADMINISTRATOR") // List Enable
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
