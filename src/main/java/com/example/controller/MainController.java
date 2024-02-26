@@ -122,9 +122,8 @@ public class MainController {
 
         // Verificar que el globalId del cuerpo coincida con el globalId del attendee
         // existente
-        Integer attendeGlobalId = attendee.getGlobalId();
         Integer existingAttendeGlobalId = existingAttendee.getGlobalId();
-        if (!attendeGlobalId.equals(existingAttendeGlobalId)) {
+        if (!globalIdAttendee.equals(existingAttendeGlobalId)) {
             String errorMessage = "Modification of globalId is not allowed";
             responseAsMap.put("errorMessage", errorMessage);
             return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
