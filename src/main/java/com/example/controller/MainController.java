@@ -30,14 +30,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/FUF") // FollowUpFrench
+@RequestMapping("/fuf") // FollowUpFrench
 @RequiredArgsConstructor
 public class MainController {
 
     private final AttendeeService attendeeService;
 
     // Metodo que devuelve los attendees
-    @GetMapping
+    @GetMapping("/attendees/{id}")
     public ResponseEntity<List<Attendee>> findAll(
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size) {
@@ -62,7 +62,7 @@ public class MainController {
     }
 
     // Metodo que persiste un attendee, y valida que esten bien formados los campos
-    @PostMapping
+    @PostMapping("/attendees")
     public ResponseEntity<Map<String, Object>> saveAttendee(@Valid @RequestBody Attendee attendee,
             BindingResult validationResult) {
 
