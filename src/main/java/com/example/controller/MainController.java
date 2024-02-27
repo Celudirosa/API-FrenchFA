@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataAccessException;
@@ -41,7 +40,7 @@ public class MainController {
     private final AttendeeService attendeeService;
 
     // Metodo que devuelve los attendees ENABLE
-    @GetMapping("/enable")
+    @GetMapping
     public ResponseEntity<List<Attendee>> findByStatusEnable(
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size) {
@@ -175,8 +174,7 @@ public class MainController {
         ResponseEntity<Map<String, Object>> responseEntity = null;
 
         // Verificar que el attendee existe
-        int idAttendee = attendee.getId();
-        Attendee existingAttendee = attendeeService.findById(idAttendee);
+        Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
         if (existingAttendee == null) {
             String errorMessage = "Attendee with global Id " + attendee.getGlobalId() + " not found";
             responseAsMap.put("errorMessage", errorMessage);
