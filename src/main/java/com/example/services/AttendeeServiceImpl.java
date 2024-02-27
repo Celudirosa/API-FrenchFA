@@ -66,8 +66,7 @@ public class AttendeeServiceImpl implements AttendeeService {
         return attendeeDao.findByGlobalId(globalId);
     }
 
-            // // Si no hay feedbacks, devolver el nivel inicial del Attendee
-
+    // Si no hay feedbacks, devolver el nivel inicial del Attendee
 
     }
 

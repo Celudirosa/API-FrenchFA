@@ -2,8 +2,6 @@ package com.example.utilities;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
@@ -32,77 +30,75 @@ public class LoadSampleData {
 
             // Profiles
             profileService.save(Profile.builder()
-                    .profile("Bootcamp")
-                    .build());
+                .profile("Bootcamp")
+                .build());
 
             profileService.save(Profile.builder()
-                    .profile("Internal")
-                    .build());
-
-          
+                .profile("Internal")
+                .build());
 
             // Attendees
             Attendee attendee1 = attendeeService.save(Attendee.builder()
-                    .firstName("Isabel")
-                    .surname("Alvarez")
-                    .globalId(12345678)
-                    .initialLevel(Level.A2)
-                    .status(Status.ENABLE)
-                    .profile(profileService.findById(1))
-                    .build());
+                .firstName("Isabel")
+                .surname("Alvarez")
+                .globalId(12345678)
+                .initialLevel(Level.A2)
+                .status(Status.ENABLE)
+                .profile(profileService.findById(1))
+                .build());
 
             Attendee attendee2 = attendeeService.save(Attendee.builder()
-                    .firstName("Andrea")
-                    .surname("Serge")
-                    .globalId(12345679)
-                    .initialLevel(Level.B2)
-                    .status(Status.DISABLE)
-                    .profile(profileService.findById(1))
-                    .build());
+                .firstName("Andrea")
+                .surname("Serge")
+                .globalId(12345679)
+                .initialLevel(Level.B2)
+                .status(Status.DISABLE)
+                .profile(profileService.findById(1))
+                .build());
 
             Attendee attendee3 = attendeeService.save(Attendee.builder()
-                    .firstName("Constanza")
-                    .surname("Arnau")
-                    .globalId(12345670)
-                    .initialLevel(Level.B1)
-                    .status(Status.ENABLE)
-                    .profile(profileService.findById(1))
-                    .build());
+                .firstName("Constanza")
+                .surname("Arnau")
+                .globalId(12345670)
+                .initialLevel(Level.B1)
+                .status(Status.ENABLE)
+                .profile(profileService.findById(1))
+                .build());
 
             Attendee attendee4 = attendeeService.save(Attendee.builder()
-                    .firstName("Celia")
-                    .surname("Luque")
-                    .globalId(12345671)
-                    .initialLevel(Level.C1)
-                    .status(Status.ENABLE)
-                    .profile(profileService.findById(1))
-                    .build());
+                .firstName("Celia")
+                .surname("Luque")
+                .globalId(12345671)
+                .initialLevel(Level.C1)
+                .status(Status.ENABLE)
+                .profile(profileService.findById(1))
+                .build());
 
             Attendee attendee5 = attendeeService.save(Attendee.builder()
-                    .firstName("Ana")
-                    .surname("Ana")
-                    .globalId(12345688)
-                    .initialLevel(Level.A0)
-                    .status(Status.ENABLE)
-                    .profile(profileService.findById(2))
-                    .build());
+                .firstName("Ana")
+                .surname("Ana")
+                .globalId(12345688)
+                .initialLevel(Level.A0)
+                .status(Status.ENABLE)
+                .profile(profileService.findById(2))
+                .build());
 
-                      // Feedbacks 
+            // Feedbacks 
             List<Feedback> feedbacksAttendee1 = new ArrayList<>();
 
             Feedback feedback1Attendee1 = Feedback.builder()
-                    .Level(Level.C1)
-                    .attendee(attendee1)
-                    .date(LocalDate.of(2024, 1, 01))
-                    .comments("She speaks very well")
-                    .build();
+                .Level(Level.C1)
+                .attendee(attendee1)
+                .date(LocalDate.of(2024, 1, 01))
+                .comments("She speaks very well")
+                .build();
 
             Feedback feedback2Attendee1 = Feedback.builder()
-                    .Level(Level.C2)
-                    .attendee(attendee1)
-                    .date(LocalDate.of(2024, 2, 01))
-                    .comments("She has improved")
-                    .build();
+                .Level(Level.C2)
+                .attendee(attendee1)
+                .date(LocalDate.of(2024, 2, 01))
+                .comments("She has improved")
+                .build();
 
             feedbackService.save(feedback1Attendee1);
             feedbackService.save(feedback2Attendee1);
@@ -114,25 +110,25 @@ public class LoadSampleData {
             List<Feedback> feedbacksAttendee5 = new ArrayList<>();
 
             Feedback feedback1Attendee5 = Feedback.builder()
-                    .Level(Level.A2)
-                    .attendee(attendee5)
-                    .date(LocalDate.of(2024, 1, 01))
-                    .comments("She shows an initial level")
-                    .build();
+                .Level(Level.A2)
+                .attendee(attendee5)
+                .date(LocalDate.of(2024, 1, 01))
+                .comments("She shows an initial level")
+                .build();
 
             Feedback feedback2Attendee5 = Feedback.builder()
-                    .Level(Level.A2)
-                    .attendee(attendee5)
-                    .date(LocalDate.of(2024, 2, 01))
-                    .comments("She does not shows an improvement")
-                    .build();
+                .Level(Level.A2)
+                .attendee(attendee5)
+                .date(LocalDate.of(2024, 2, 01))
+                .comments("She does not shows an improvement")
+                .build();
 
             Feedback feedback3Attendee5 = Feedback.builder()
-                    .Level(Level.B1)
-                    .attendee(attendee5)
-                    .date(LocalDate.of(2024, 3, 01))
-                    .comments("She has improved")
-                    .build();
+                .Level(Level.B1)
+                .attendee(attendee5)
+                .date(LocalDate.of(2024, 3, 01))
+                .comments("She has improved")
+                .build();
 
             feedbackService.save(feedback1Attendee5);
             feedbackService.save(feedback2Attendee5);
@@ -155,14 +151,15 @@ public class LoadSampleData {
             List<Email> emailsAttendee5 = new ArrayList<>();
 
             Email email1Attendee5 = Email.builder()
-                    .email("andrea@serge.com")
-                    .attendee(attendee5)
-                    .build();
+                .email("andrea@serge.com")
+                .attendee(attendee5)
+                .build();
 
             emailService.save(email1Attendee5);
             emailsAttendee5.add(email1Attendee5);
 
         };
+
     }
 
 }

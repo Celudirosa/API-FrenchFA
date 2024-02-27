@@ -67,7 +67,7 @@ public class MainController {
         return responseEntity;
     }
 
-        // Metodo que devuelve los attendees DISABLE
+    // Metodo que devuelve los attendees DISABLE
     @GetMapping("/disable")
     public ResponseEntity<List<Attendee>> findByStatusDisable(
             @RequestParam(name = "page", required = false) Integer page,
@@ -95,6 +95,7 @@ public class MainController {
         return responseEntity;
     }
 
+    // Metodo que devuelve los attendees por su globalId
     @GetMapping("/{globalId}")
     public ResponseEntity<Map<String, Object>> findAttendeeByGlobalId(@PathVariable(name = "globalId", required = true) Integer globalIdAttendee) throws IOException {
 
@@ -144,7 +145,6 @@ public class MainController {
             responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
 
             return responseEntity;
-
         }
 
         // Si no hay errores en el attendee, lo persistimos
