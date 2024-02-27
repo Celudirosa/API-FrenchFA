@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entities.Attendee;
+import com.example.entities.Status;
 import com.example.services.AttendeeService;
 
 import jakarta.validation.Valid;
@@ -55,8 +57,66 @@ public class MainController {
             attendees = pageAttendees.getContent();
             responseEntity = new ResponseEntity<List<Attendee>>(attendees, HttpStatus.OK);
         } else { // solo ordenados alfabeticamente
-            attendees = attendeeService.findAll(sortByName);
-            responseEntity = new ResponseEntity<List<Attendee>>(attendees, HttpStatus.OK);
+            List<Attendee> attendees = attendeeService.findAll(sortByName);
+            attendeesEnable = attendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
+
+            responseEntity = new ResponseEntity<List<Attendee>>(attendeesEnable, HttpStatus.OK);
+        }
+
+        return responseEntity;
+    }
+
+        // Metodo que devuelve los attendees DISABLE
+    @GetMapping("/disable")
+    public ResponseEntity<List<Attendee>> findByStatusDisable(
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "size", required = false) Integer size) {
+
+        ResponseEntity<List<Attendee>> responseEntity = null;
+        Sort sortByName = Sort.by("firstName");
+        List<Attendee> attendeesDisable = new ArrayList<>();
+    
+        // Comprobamos si llega page y size
+        if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
+            Pageable pageable = PageRequest.of(page, size, sortByName);
+            Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
+            
+            attendeesDisable = pageAttendees.stream().filter(a -> a.getStatus() == Status.DISABLE).collect(Collectors.toList());
+
+            responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable, HttpStatus.OK);
+        } else { // solo ordenados alfabeticamente
+            List<Attendee> attendees = attendeeService.findAll(sortByName);
+            attendeesDisable = attendees.stream().filter(a -> a.getStatus() == Status.DISABLE).collect(Collectors.toList());
+
+            responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable, HttpStatus.OK);
+        }
+
+        return responseEntity;
+    }
+
+    @GetMapping("/{globalId}")
+    public ResponseEntity<Map<String, Object>> findAttendeeByGlobalId(@PathVariable(name = "globalId", required = true) Integer globalIdAttendee) throws IOException {
+
+        Map<String, Object> responseMap = new HashMap<>();
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+
+        try {
+            Attendee attendee = attendeeService.findByGlobalId(globalIdAttendee);
+
+            // Verifica si el Attendee fue encontrado
+            if (attendee != null) {
+                responseMap.put("attendee", attendee);
+                responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
+            } else {
+                // Si no se encuentra el Attendee, devuelve un error 404 Not Found
+                responseMap.put("error", "No se encontró el Attendee con globalId: " + globalIdAttendee);
+                responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
+            }
+            
+        } catch (DataAccessException e) {
+            String error = "Error al buscar el producto con id " + globalIdAttendee + " y la causa mas probable es: " + e.getMostSpecificCause();
+            responseMap.put("error", error);
+            responseEntity = new ResponseEntity<Map<String,Object>>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return responseEntity;

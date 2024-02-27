@@ -61,5 +61,14 @@ public class AttendeeServiceImpl implements AttendeeService {
                 return lastLevel;
             }
 
+    @Override
+    public Attendee findByGlobalId(int globalId) {
+        return attendeeDao.findByGlobalId(globalId);
+    }
+
             // // Si no hay feedbacks, devolver el nivel inicial del Attendee
-        }
+
+
+    }
+
+
