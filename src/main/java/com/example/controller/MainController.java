@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.AttendeeListDTO;
 import com.example.entities.Attendee;
 import com.example.entities.Status;
 import com.example.services.AttendeeService;
@@ -39,61 +41,72 @@ public class MainController {
 
     private final AttendeeService attendeeService;
 
-    // Metodo que devuelve los attendees ENABLE
     @GetMapping
-    public ResponseEntity<List<Attendee>> findByStatusEnable(
-            @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "size", required = false) Integer size) {
-
-        ResponseEntity<List<Attendee>> responseEntity = null;
-        Sort sortByName = Sort.by("firstName");
-        List<Attendee> attendeesEnable = new ArrayList<>();
-    
-        // Comprobamos si llega page y size
-        if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
-            Pageable pageable = PageRequest.of(page, size, sortByName);
-            Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
-            
-            attendeesEnable = pageAttendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
-
-            responseEntity = new ResponseEntity<List<Attendee>>(attendeesEnable, HttpStatus.OK);
-        } else { // solo ordenados alfabeticamente
-            List<Attendee> attendees = attendeeService.findAll(sortByName);
-            attendeesEnable = attendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
-
-            responseEntity = new ResponseEntity<List<Attendee>>(attendeesEnable, HttpStatus.OK);
-        }
-
-        return responseEntity;
+    public ResponseEntity<List<AttendeeListDTO>> findByStatusEnable() {
+        
+        List<AttendeeListDTO> att = attendeeService.findAll();
+        return new ResponseEntity<>(att, HttpStatus.OK);
+         
     }
+
+
+    // Metodo que devuelve los attendees ENABLE
+    // @GetMapping
+    // public ResponseEntity<List<AttendeeListDTO>> findByStatusEnable(
+    //         @RequestParam(name = "page", required = false) Integer page,
+    //         @RequestParam(name = "size", required = false) Integer size) {
+
+    //     ResponseEntity<List<AttendeeListDTO>> responseEntity = null;
+    //     Sort sortByName = Sort.by("firstName");
+    //     List<Attendee> attendeesEnable = new ArrayList<>();
+    //     List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
+    //     // Comprobamos si llega page y size
+    //     if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
+    //         Pageable pageable = PageRequest.of(page, size, sortByName);
+    //         Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
+            
+    //         attendeesEnable = pageAttendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
+
+            
+
+    //         responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
+    //     } else { // solo ordenados alfabeticamente
+    //         List<Attendee> attendees = attendeeService.findAll(sortByName);
+    //         attendeesEnable = attendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
+
+    //         // responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeesEnable, HttpStatus.OK);
+    //     }
+
+    //     return responseEntity;
+    // }
 
     // Metodo que devuelve los attendees DISABLE
-    @GetMapping("/disable")
-    public ResponseEntity<List<Attendee>> findByStatusDisable(
-            @RequestParam(name = "page", required = false) Integer page,
-            @RequestParam(name = "size", required = false) Integer size) {
+    // @GetMapping("/disable")
+    // public ResponseEntity<List<Attendee>> findByStatusDisable(
+    //         @RequestParam(name = "page", required = false) Integer page,
+    //         @RequestParam(name = "size", required = false) Integer size) {
 
-        ResponseEntity<List<Attendee>> responseEntity = null;
-        Sort sortByName = Sort.by("firstName");
-        List<Attendee> attendeesDisable = new ArrayList<>();
+    //     ResponseEntity<List<Attendee>> responseEntity = null;
+    //     Sort sortByName = Sort.by("firstName");
+    //     List<Attendee> attendeesDisable = new ArrayList<>();
     
-        // Comprobamos si llega page y size
-        if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
-            Pageable pageable = PageRequest.of(page, size, sortByName);
-            Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
+    //     // Comprobamos si llega page y size
+    //     if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
+    //         Pageable pageable = PageRequest.of(page, size, sortByName);
+    //         Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
             
-            attendeesDisable = pageAttendees.stream().filter(a -> a.getStatus() == Status.DISABLE).collect(Collectors.toList());
+    //         attendeesDisable = pageAttendees.stream().filter(a -> a.getStatus() == Status.DISABLE).collect(Collectors.toList());
 
-            responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable, HttpStatus.OK);
-        } else { // solo ordenados alfabeticamente
-            List<Attendee> attendees = attendeeService.findAll(sortByName);
-            attendeesDisable = attendees.stream().filter(a -> a.getStatus() == Status.DISABLE).collect(Collectors.toList());
+    //         responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable, HttpStatus.OK);
+    //     } else { // solo ordenados alfabeticamente
+    //         List<Attendee> attendees = attendeeService.findAll(sortByName);
+    //         attendeesDisable = attendees.stream().filter(a -> a.getStatus() == Status.DISABLE).collect(Collectors.toList());
 
-            responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable, HttpStatus.OK);
-        }
+    //         responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable, HttpStatus.OK);
+    //     }
 
-        return responseEntity;
-    }
+    //     return responseEntity;
+    // }
 
     // Metodo que devuelve los attendees por su globalId
     @GetMapping("/{globalId}")

@@ -46,6 +46,7 @@ public class Attendee implements Serializable {
     private int id;
 
     @NotBlank(message = "The name cannot be empty")
+    @Column(name = "first_name")
     @Size(max = 20, message = "The name should not exceed 20 characters")
     private String firstName;
 
@@ -55,10 +56,12 @@ public class Attendee implements Serializable {
 
     @Setter(value = AccessLevel.PRIVATE)
     @Min(value = 10000000, message = "GlobalId must contain 8 numbers")
+    @Column(name = "global_id")
     @Max(value = 99999999, message = "GlobalId must contain 8 numbers")
     private int globalId;
     
     @NotNull(message = "Initial level is required")
+    @Column(name = "initial_level")
     @Enumerated(EnumType.STRING)
     private Level initialLevel;
 
