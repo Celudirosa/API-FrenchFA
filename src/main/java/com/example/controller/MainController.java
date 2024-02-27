@@ -175,8 +175,7 @@ public class MainController {
         ResponseEntity<Map<String, Object>> responseEntity = null;
 
         // Verificar que el attendee existe
-        int idAttendee = attendee.getId();
-        Attendee existingAttendee = attendeeService.findById(idAttendee);
+        Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
         if (existingAttendee == null) {
             String errorMessage = "Attendee with global Id " + attendee.getGlobalId() + " not found";
             responseAsMap.put("errorMessage", errorMessage);
