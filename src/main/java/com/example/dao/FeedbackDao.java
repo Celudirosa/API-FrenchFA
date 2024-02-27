@@ -10,5 +10,6 @@ import com.example.entities.Feedback;
 public interface FeedbackDao extends JpaRepository<Feedback, Integer> {
 
     List<Feedback> findByAttendee(Attendee attendee);
+    
 
 }

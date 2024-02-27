@@ -182,7 +182,7 @@ public class MainController {
 
 @GetMapping("/{globalId}")
 public ResponseEntity<Attendee> getAttendeeById(@PathVariable(name = "globalId") Integer globalIdAttendee) {
-    Attendee attendee = attendeeService.findById(globalIdAttendee);
+    Attendee attendee = attendeeService.findByGlobalId(globalIdAttendee);
     
     if (attendee == null) {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -200,15 +200,3 @@ public ResponseEntity<Attendee> getAttendeeById(@PathVariable(name = "globalId")
 
 }
 
-
-// Map<String, Object> responseAsMap = new HashMap<>();
-// ResponseEntity<Map<String, Object>> responseEntity = null;
-
-// // Verificar que el attendee existe
-// int idAttendee = attendee.getId();
-// Attendee existingAttendee = attendeeService.findById(idAttendee);
-// if (existingAttendee == null) {
-//     String errorMessage = "Attendee with global Id " + attendee.getGlobalId() + " not found";
-//     responseAsMap.put("errorMessage", errorMessage);
-//     return (responseAsMap, HttpStatus.NOT_FOUND);
-// } else {
