@@ -112,6 +112,7 @@ public class UserRepositoryTests {
         assertThat(userUpdated.getRole()).isEqualTo(Role.TRAINER);
     }
 
+    // testDelete
     @DisplayName("Test para eliminar un user")
     @Test
     public void testDeleteUser() {
