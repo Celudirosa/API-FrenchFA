@@ -107,9 +107,9 @@ public class UserRepositoryTests {
         OurUser userUpdated = ourUserRepository.save(userGuardado);
 
         // then
-        assertThat(userUpdated.getEmail()).isEqualTo("perico@juan.com");
-        assertThat(userUpdated.getPassword()).isEqualTo("0000");
-        assertThat(userUpdated.getRole()).isEqualTo(Role.ADMINISTRATOR);
+        assertThat(userUpdated.getEmail()).isEqualTo("user2@test.com");
+        assertThat(userUpdated.getPassword()).isEqualTo("Ccccccc1!");
+        assertThat(userUpdated.getRole()).isEqualTo(Role.TRAINER);
     }
 
     @DisplayName("Test para eliminar un user")
