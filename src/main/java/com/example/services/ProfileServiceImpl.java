@@ -17,7 +17,7 @@ public class ProfileServiceImpl implements ProfileService {
     
     @Override
     public List<Profile> findAll() {
-       return profileDao.findAll();
+        return profileDao.findAll();
     }
 
     @Override

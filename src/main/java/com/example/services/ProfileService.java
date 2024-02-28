@@ -10,5 +10,5 @@ public interface ProfileService {
     public Profile findById(int id);
     public void save(Profile profile);
     public void delete(Profile profile);
-    
+
 }

@@ -15,6 +15,4 @@ public interface FeedbackDao extends JpaRepository<Feedback, Integer> {
     // @Query(value = "SELECT f FROM Feedback f left join fetch a.attendee ORDER BY f.date DESC")
     List<Feedback> findFeedbacksByAttendeeOrderByDateDesc(Attendee attendee);
 
-
-
 }
