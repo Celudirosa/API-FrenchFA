@@ -100,9 +100,9 @@ public class UserRepositoryTests {
         // when
         OurUser userGuardado = ourUserRepository.findByEmail(ourUser0.getEmail()).get();
 
-        userGuardado.setEmail("perico@juan.com");
-        userGuardado.setPassword("0000");
-        userGuardado.setRole(Role.ADMINISTRATOR);
+        userGuardado.setEmail("user2@test.com");
+        userGuardado.setPassword("Ccccccc1!");
+        userGuardado.setRole(Role.TRAINER);
 
         OurUser userUpdated = ourUserRepository.save(userGuardado);
 
