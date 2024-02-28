@@ -19,13 +19,13 @@ import com.example.security.repository.OurUserRepository;
 import lombok.var;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE) // Es porque tenemos una base de datos relacional MySql
+@AutoConfigureTestDatabase(replace = Replace.NONE) // Porque tenemos una base de datos relacional MySql
 public class UserRepositoryTests {
 
     @Autowired
     private OurUserRepository ourUserRepository;
 
-    // Usuario 0, me va a valer para tener dos usuarios
+    // Usuario 0
     private OurUser ourUser0;
 
     @BeforeEach // Que se ejecute antes de cualquier test
@@ -60,7 +60,7 @@ public class UserRepositoryTests {
         // given
         OurUser ourUser1 = OurUser.builder()
                 .email("user1@test.com")
-                .password("Bbbbb1!")
+                .password("Bbbbbb1!")
                 .role(Role.ADMINISTRATOR)
                 .build();
 
