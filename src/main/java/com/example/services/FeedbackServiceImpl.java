@@ -45,4 +45,14 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackDao.findAll();
     }
 
+    @Override
+    public Page<Feedback> findFeedbacksByGlobalId(Integer globalId, Pageable pageable) {
+        return feedbackDao.findFeedbacksByGlobalId(globalId, pageable);
+    }
+
+    @Override
+    public List<Feedback> findFeedbacksByGlobalId(Integer globalId, Sort sort) {
+        return feedbackDao.findFeedbacksByGlobalId(globalId, sort);
+    }
+
 }

@@ -2,6 +2,9 @@ package com.example.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.entities.Attendee;
@@ -15,4 +18,6 @@ public interface FeedbackDao extends JpaRepository<Feedback, Integer> {
     // @Query(value = "SELECT f FROM Feedback f left join fetch a.attendee ORDER BY f.date DESC")
     List<Feedback> findFeedbacksByAttendeeOrderByDateDesc(Attendee attendee);
 
+    Page<Feedback> findFeedbacksByGlobalId(Integer globalId, Pageable pageable);
+    List<Feedback> findFeedbacksByGlobalId(Integer globalId, Sort sort);
 }
