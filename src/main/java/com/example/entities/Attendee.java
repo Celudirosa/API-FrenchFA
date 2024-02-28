@@ -68,7 +68,7 @@ public class Attendee implements Serializable {
 
     // attendee.setLevel(lastLevel) (en el builder: no necesariamente)
     // loadSampleData: le estoy dando un ejemplo, cómo hacer los request a los endpoint
-   
+
     @Builder.Default
     @Column(name = "last_level")
     private String lastLevel = "No evaluation";
@@ -84,9 +84,5 @@ public class Attendee implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "attendee")
     @JsonIgnore
     private List<Feedback> feedbacks;
-
-
-
-
 
 }

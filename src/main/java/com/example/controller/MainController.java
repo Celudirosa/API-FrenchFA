@@ -1,10 +1,10 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataAccessException;
@@ -40,7 +40,7 @@ public class MainController {
     private final AttendeeService attendeeService;
 
     // Metodo que devuelve los attendees ENABLE
-    @GetMapping("/enable")
+    @GetMapping
     public ResponseEntity<List<Attendee>> findByStatusEnable(
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size) {
@@ -67,6 +67,7 @@ public class MainController {
         return responseEntity;
     }
 
+    // Metodo que devuelve los attendees DISABLE
     @GetMapping("/disable")
     public ResponseEntity<List<Attendee>> findByStatusDisable(
             @RequestParam(name = "page", required = false) Integer page,
@@ -94,6 +95,35 @@ public class MainController {
         return responseEntity;
     }
 
+    // Metodo que devuelve los attendees por su globalId
+    @GetMapping("/{globalId}")
+    public ResponseEntity<Map<String, Object>> findAttendeeByGlobalId(@PathVariable(name = "globalId", required = true) Integer globalIdAttendee) throws IOException {
+
+        Map<String, Object> responseMap = new HashMap<>();
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+
+        try {
+            Attendee attendee = attendeeService.findByGlobalId(globalIdAttendee);
+
+            // Verifica si el Attendee fue encontrado
+            if (attendee != null) {
+                responseMap.put("attendee", attendee);
+                responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
+            } else {
+                // Si no se encuentra el Attendee, devuelve un error 404 Not Found
+                responseMap.put("error", "No se encontró el Attendee con globalId: " + globalIdAttendee);
+                responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
+            }
+            
+        } catch (DataAccessException e) {
+            String error = "Error al buscar el producto con id " + globalIdAttendee + " y la causa mas probable es: " + e.getMostSpecificCause();
+            responseMap.put("error", error);
+            responseEntity = new ResponseEntity<Map<String,Object>>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return responseEntity;
+    }
+
     // Metodo que persiste un attendee, y valida que esten bien formados los campos
     @PostMapping
     public ResponseEntity<Map<String, Object>> saveAttendee(@Valid @RequestBody Attendee attendee,
@@ -115,7 +145,6 @@ public class MainController {
             responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
 
             return responseEntity;
-
         }
 
         // Si no hay errores en el attendee, lo persistimos
@@ -145,8 +174,7 @@ public class MainController {
         ResponseEntity<Map<String, Object>> responseEntity = null;
 
         // Verificar que el attendee existe
-        int idAttendee = attendee.getId();
-        Attendee existingAttendee = attendeeService.findById(idAttendee);
+        Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
         if (existingAttendee == null) {
             String errorMessage = "Attendee with global Id " + attendee.getGlobalId() + " not found";
             responseAsMap.put("errorMessage", errorMessage);
