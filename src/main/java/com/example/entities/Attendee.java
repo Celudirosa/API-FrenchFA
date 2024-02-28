@@ -80,12 +80,12 @@ public class Attendee implements Serializable {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Profile profile;
 
+    // @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "attendee")
-    @JsonIgnore
     private List<Email> emails;
 
+    // @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "attendee")
-    @JsonIgnore
     private List<Feedback> feedbacks;
 
 }
