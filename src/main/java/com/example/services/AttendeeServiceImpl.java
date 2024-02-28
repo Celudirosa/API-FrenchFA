@@ -25,17 +25,16 @@ public class AttendeeServiceImpl implements AttendeeService {
     private final FeedbackDao feedbackDao;
 
     @Override
-    public List<AttendeeListDTO> findAll() {
+    public List<Attendee> findAll() {
 
-        List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
-        // Comprobamos si llega page y size
-        List<Attendee> listAttendees = attendeeDao.findAll();
-
-        for(Attendee a : listAttendees) {
-            attendeeListDTOs.add(new AttendeeListDTO(a.getFirstName(), a.getSurname(), a.getGlobalId(), a.getEmails(), a.getInitialLevel(), a.getLastLevel(), a.getProfile()));
-        }
+        // List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
+        // // Comprobamos si llega page y size
+        // List<Attendee> listAttendees = attendeeDao.findAll();
+        // for(Attendee a : listAttendees) {
+        //     attendeeListDTOs.add(new AttendeeListDTO(a.getFirstName(), a.getSurname(), a.getGlobalId(), a.getEmails(), a.getInitialLevel(), a.getLastLevel(), a.getProfile()));
+        // }
         
-        return attendeeListDTOs;
+        return attendeeDao.findAll();
     }
 
      //attendeesEnable = pageAttendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
@@ -76,9 +75,8 @@ public class AttendeeServiceImpl implements AttendeeService {
     }
 
     @Override
-    public Page<AttendeeListDTO> findAll(Pageable pageable) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    public Page<Attendee> findAll(Pageable pageable) {
+     return attendeeDao.findAll(pageable);
     }
 
     // Si no hay feedbacks, devolver el nivel inicial del Attendee

@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.AttendeeListDTO;
 import com.example.entities.Attendee;
+import com.example.entities.Email;
 import com.example.entities.Status;
 import com.example.services.AttendeeService;
 
@@ -41,44 +42,73 @@ public class MainController {
 
     private final AttendeeService attendeeService;
 
-    @GetMapping
-    public ResponseEntity<List<AttendeeListDTO>> findByStatusEnable() {
-        
-        List<AttendeeListDTO> att = attendeeService.findAll();
-        return new ResponseEntity<>(att, HttpStatus.OK);
-         
-    }
-
-
-    // Metodo que devuelve los attendees ENABLE
     // @GetMapping
-    // public ResponseEntity<List<AttendeeListDTO>> findByStatusEnable(
-    //         @RequestParam(name = "page", required = false) Integer page,
-    //         @RequestParam(name = "size", required = false) Integer size) {
-
-    //     ResponseEntity<List<AttendeeListDTO>> responseEntity = null;
-    //     Sort sortByName = Sort.by("firstName");
-    //     List<Attendee> attendeesEnable = new ArrayList<>();
-    //     List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
-    //     // Comprobamos si llega page y size
-    //     if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
-    //         Pageable pageable = PageRequest.of(page, size, sortByName);
-    //         Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
-            
-    //         attendeesEnable = pageAttendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
-
-            
-
-    //         responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
-    //     } else { // solo ordenados alfabeticamente
-    //         List<Attendee> attendees = attendeeService.findAll(sortByName);
-    //         attendeesEnable = attendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
-
-    //         // responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeesEnable, HttpStatus.OK);
-    //     }
-
-    //     return responseEntity;
+    // public ResponseEntity<List<AttendeeListDTO>> findByStatusEnable() {
+        
+    //     List<AttendeeListDTO> att = attendeeService.findAll();
+    //     return new ResponseEntity<>(att, HttpStatus.OK);
+         
     // }
+
+
+    //Metodo que devuelve los attendees ENABLE
+    @GetMapping
+public ResponseEntity<List<AttendeeListDTO>> findAllEnable(
+        @RequestParam(name = "page", required = false) Integer page,
+        @RequestParam(name = "size", required = false) Integer size) {
+
+    ResponseEntity<List<AttendeeListDTO>> responseEntity = null;
+    Sort sortByName = Sort.by("firstName");
+    List<Attendee> attendeesEnable = new ArrayList<>();
+    List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
+    // Comprobamos si llega page y size
+    if (page != null && size != null) { // si se mete aqui te devuelve los productos paginados
+        Pageable pageable = PageRequest.of(page, size, sortByName);
+        Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
+        attendeesEnable = pageAttendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
+            for (Attendee a : attendeesEnable) {
+                String emailsAsString = a.getEmails().stream()
+                        .map(Email::getEmail)
+                        .collect(Collectors.joining("; "));
+            
+                AttendeeListDTO attendeeListDTO = new AttendeeListDTO(
+                        a.getFirstName(),
+                        a.getSurname(),
+                        a.getGlobalId(),
+                        emailsAsString, // Pasar el String de correos electrónicos aquí
+                        a.getInitialLevel(),
+                        a.getLastLevel(),
+                        a.getProfile().getProfile()
+                );
+            
+                attendeeListDTOs.add(attendeeListDTO);
+            }
+        responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
+    } else { // solo ordenados alfabeticamente
+        List<Attendee> attendees = attendeeService.findAll(sortByName);
+        attendeesEnable = attendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
+        for (Attendee a : attendeesEnable) {
+            String emailsAsString = a.getEmails().stream()
+                    .map(Email::getEmail)
+                    .collect(Collectors.joining("; "));
+        
+            AttendeeListDTO attendeeListDTO = new AttendeeListDTO(
+                    a.getFirstName(),
+                    a.getSurname(),
+                    a.getGlobalId(),
+                    emailsAsString, // Pasar el String de correos electrónicos aquí
+                    a.getInitialLevel(),
+                    a.getLastLevel(),
+                    a.getProfile().getProfile()
+            );
+        
+            attendeeListDTOs.add(attendeeListDTO);
+        }
+        responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
+    }
+    return responseEntity;
+}
+
 
     // Metodo que devuelve los attendees DISABLE
     // @GetMapping("/disable")

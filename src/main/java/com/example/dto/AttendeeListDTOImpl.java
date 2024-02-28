@@ -30,7 +30,7 @@ public class AttendeeListDTOImpl implements AttendeeListDTOService{
             auxDTO.setFirstName(attendee.getFirstName());
             auxDTO.setSurname(attendee.getSurname());
             auxDTO.setGlobalId(attendee.getGlobalId());
-            auxDTO.setProfile(attendee.getProfile());
+            auxDTO.setProfile(attendee.getProfile().getProfile());
             auxDTO.setInitialLevel(attendee.getInitialLevel());
             auxDTO.setLastLevel(attendee.getLastLevel());
 

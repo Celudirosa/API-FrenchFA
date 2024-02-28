@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.entities.Email;
 import com.example.entities.Level;
 import com.example.entities.Profile;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +23,9 @@ public class AttendeeListDTO {
     private String firstName;
     private String surname;
     private int globalId;
-    private List<Email> email;
+    private String email;
     private Level initialLevel;
     private String lastLevel;
-    private Profile profile;
+    private String profile;
 
 }

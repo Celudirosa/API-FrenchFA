@@ -9,16 +9,16 @@ import org.springframework.data.domain.Sort;
 import com.example.dto.AttendeeListDTO;
 import com.example.entities.Attendee;
 
-
 public interface AttendeeService {
 
-    public Page<AttendeeListDTO> findAll(Pageable pageable);
+    public Page<Attendee> findAll(Pageable pageable);
     public List<Attendee> findAll(Sort sort);
-    public List<AttendeeListDTO> findAll();
+    public List<Attendee> findAll();
+    public String getLastLevel(Attendee attendee);
     public Attendee findById(int id);
+    Attendee findByGlobalId(int globalId);
     public Attendee save(Attendee attendee);
     public void delete(Attendee attendee);
-    public String getLastLevel(Attendee attendee);
-    public Attendee findByGlobalId(int globalId);
 
 }
+
