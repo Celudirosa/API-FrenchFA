@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.entities.Attendee;
 import com.example.entities.Feedback;
 import com.example.exception.ResourceNotFoundException;
 import com.example.services.AttendeeService;
@@ -63,9 +65,10 @@ public class FeedbackController {
     public ResponseEntity<List<Feedback>> findFeedbacksByGlobalId(
         @RequestParam(name = "page", required = false) Integer page,
         @RequestParam(name = "size", required = false) Integer size,
-        @PathVariable(value = "globalId") Integer globalId) {
+        @PathVariable(value = "globalId") Integer globalId) throws IOException {
 
-            if (!attendeeService.existsById(globalId)) {
+            Attendee attendee = attendeeService.findByGlobalId(globalId);
+            if (attendee == null) {
                 throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
             }
 
