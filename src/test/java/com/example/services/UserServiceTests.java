@@ -40,7 +40,7 @@ public class UserServiceTests {
     void setUp() {
         ourUser = OurUser.builder()
                 .id(1)
-                .email("user0@test.com")
+                .email("user0@thefutureyouwant.com")
                 .password("Aaaaaaa1!")
                 .role(Role.ADMINISTRATOR)
                 .build();

@@ -32,7 +32,7 @@ public class UserRepositoryTests {
     void setUp() {
         ourUser0 = OurUser.builder()
                 .password("Aaaaaa1!")
-                .email("user0@test.com")
+                .email("user0@thefutureyouwant.com")
                 .role(Role.ADMINISTRATOR)
                 .build();
     }
@@ -59,7 +59,7 @@ public class UserRepositoryTests {
     public void testFindAllUsers() {
         // given
         OurUser ourUser1 = OurUser.builder()
-                .email("user1@test.com")
+                .email("user1@thefutureyouwant.com")
                 .password("Bbbbbb1!")
                 .role(Role.ADMINISTRATOR)
                 .build();
@@ -100,14 +100,14 @@ public class UserRepositoryTests {
         // when
         OurUser userGuardado = ourUserRepository.findByEmail(ourUser0.getEmail()).get();
 
-        userGuardado.setEmail("user2@test.com");
+        userGuardado.setEmail("user2@thefutureyouwant.com");
         userGuardado.setPassword("Ccccccc1!");
         userGuardado.setRole(Role.TRAINER);
 
         OurUser userUpdated = ourUserRepository.save(userGuardado);
 
         // then
-        assertThat(userUpdated.getEmail()).isEqualTo("user2@test.com");
+        assertThat(userUpdated.getEmail()).isEqualTo("user2@thefutureyouwant.com");
         assertThat(userUpdated.getPassword()).isEqualTo("Ccccccc1!");
         assertThat(userUpdated.getRole()).isEqualTo(Role.TRAINER);
     }
