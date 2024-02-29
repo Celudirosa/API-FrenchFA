@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.AttendeeListDTO;
+import com.example.dto.AttendeeProfileDTO;
 import com.example.entities.Attendee;
 import com.example.entities.Email;
 import com.example.entities.Status;
@@ -57,38 +59,6 @@ public class MainController {
         return new ResponseEntity<>(attendees, HttpStatus.OK);
     }
 
-    // Metodo que devuelve los attendees DISABLE
-    // @GetMapping("/disable")
-    // public ResponseEntity<List<Attendee>> findByStatusDisable(
-    // @RequestParam(name = "page", required = false) Integer page,
-    // @RequestParam(name = "size", required = false) Integer size) {
-
-    // ResponseEntity<List<Attendee>> responseEntity = null;
-    // Sort sortByName = Sort.by("firstName");
-    // List<Attendee> attendeesDisable = new ArrayList<>();
-
-    // // Comprobamos si llega page y size
-    // if (page != null && size != null) { // si se mete aqui te devuelve los
-    // productos paginados
-    // Pageable pageable = PageRequest.of(page, size, sortByName);
-    // Page<Attendee> pageAttendees = attendeeService.findAll(pageable);
-
-    // attendeesDisable = pageAttendees.stream().filter(a -> a.getStatus() ==
-    // Status.DISABLE).collect(Collectors.toList());
-
-    // responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable,
-    // HttpStatus.OK);
-    // } else { // solo ordenados alfabeticamente
-    // List<Attendee> attendees = attendeeService.findAll(sortByName);
-    // attendeesDisable = attendees.stream().filter(a -> a.getStatus() ==
-    // Status.DISABLE).collect(Collectors.toList());
-
-    // responseEntity = new ResponseEntity<List<Attendee>>(attendeesDisable,
-    // HttpStatus.OK);
-    // }
-
-    // return responseEntity;
-    // }
 
     // Metodo que devuelve los attendees por su globalId
     @GetMapping("/{globalId}")
@@ -99,11 +69,11 @@ public class MainController {
         ResponseEntity<Map<String, Object>> responseEntity = null;
 
         try {
-            Attendee attendee = attendeeService.findByGlobalId(globalIdAttendee);
+            AttendeeProfileDTO attendeeDTO = attendeeService.findByGlobalId(globalIdAttendee);
 
             // Verifica si el Attendee fue encontrado
-            if (attendee != null) {
-                responseMap.put("attendee", attendee);
+            if (attendeeDTO != null) {
+                responseMap.put("attendee", attendeeDTO);
                 responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
             } else {
                 // Si no se encuentra el Attendee, devuelve un error 404 Not Found
@@ -171,7 +141,7 @@ public class MainController {
         ResponseEntity<Map<String, Object>> responseEntity = null;
 
         // Verificar que el attendee existe
-        Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
+        AttendeeProfileDTO existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
         if (existingAttendee == null) {
             String errorMessage = "Attendee with global Id " + attendee.getGlobalId() + " not found";
             responseAsMap.put("errorMessage", errorMessage);
@@ -217,4 +187,7 @@ public class MainController {
 
         return responseEntity;
     }
+
+
+    
 }

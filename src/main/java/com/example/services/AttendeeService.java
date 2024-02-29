@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import com.example.dto.AttendeeListDTO;
+import com.example.dto.AttendeeProfileDTO;
 import com.example.entities.Attendee;
 
 public interface AttendeeService {
@@ -18,7 +19,7 @@ public interface AttendeeService {
     // public List<Attendee> findAll();
     public String getLastLevel(Attendee attendee);
     public Attendee findById(int id);
-    Attendee findByGlobalId(int globalId);
+    AttendeeProfileDTO findByGlobalId(int globalId);
     public Attendee save(Attendee attendee);
     public void delete(Attendee attendee);
 
