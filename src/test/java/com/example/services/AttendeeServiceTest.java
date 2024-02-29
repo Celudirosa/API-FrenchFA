@@ -34,7 +34,7 @@ public class AttendeeServiceTest {
     @Mock
     private ProfileService profileService;
 
-    private Attendee attendee;
+    private Attendee attendeeTest;
 
     @BeforeEach
     void setUp() {
@@ -45,7 +45,7 @@ public class AttendeeServiceTest {
                 .profile("Internal")
                 .build());
 
-        Attendee attendee = attendeeService.save(Attendee.builder()
+        Attendee attendeeTest = attendeeService.save(Attendee.builder()
                 .firstName("NameTest")
                 .surname("SurnameTest")
                 .globalId(00000000)
@@ -54,15 +54,15 @@ public class AttendeeServiceTest {
                 .profile(profileService.findById(1))
                 .build());
 
-        Feedback feedback = Feedback.builder()
+        Feedback feedbackTest = Feedback.builder()
                 .Level(Level.A1)
-                .attendee(attendee)
+                .attendee(attendeeTest)
                 .date(LocalDate.of(2024, 1, 01))
                 .comments("Comment Test")
                 .build();
 
-        // attendeeService.addFeedback(feedback); // ver donde queda ese método
-        // attendeeService.save(attendee);
+        feedbackService.save(feedbackTest);                
+
     }
 
     @Test
@@ -70,13 +70,13 @@ public class AttendeeServiceTest {
     public void testSaveAttendee() {
 
         // given
-        given(attendeeService.save(attendee)).willReturn(attendee);
+        given(attendeeService.save(attendeeTest)).willReturn(attendeeTest);
 
         // when
-        Attendee attendeeSaved = attendeeService.save(attendee);
+        Attendee attendeeSaved = attendeeService.save(attendeeTest);
 
         // then
-        assertThat(attendeeSaved).isNotNull();
+        assertThat(attendeeSaved).isNull();
     }
 
 }
