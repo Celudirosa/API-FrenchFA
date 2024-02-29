@@ -148,28 +148,63 @@ public class FeedbackController {
             return responseEntity;
     }
 
-
-
-
-    
-
-
-
-
     // Metodo para modificar feedbacks
-    // @PutMapping("/{globalId}/{id}")
-    // public ResponseEntity<Feedback> updateFeedback(
-    //     @PathVariable("id") int id,
-    //     @RequestBody Feedback feedbackRequest) {
+    @PutMapping("/attendees/{globalId}/feedback/{id}")
+    public ResponseEntity<Map<String, Object>> updateFeedback(
+        @PathVariable(name = "id") Integer id,
+        @Valid
+        @RequestBody Feedback feedbackRequest,
+        BindingResult validationResult) {
  
-    //         Feedback feedback = feedbackService.findById(id).orElseThrow(
-    //             () -> new ResourceNotFoundException("PresentacionId " + id + " not found"));
+            Map<String, Object> responseAsMap = new HashMap<>();
+            ResponseEntity<Map<String, Object>> responseEntity = null;
+
+            Feedback existFeedback = feedbackService.findByFeedBackId(id);
+            if (existFeedback == null) {
+
+                throw new ResourceNotFoundException("Not found Feedback with Id = " + id);
+            }
+
+            Integer existFeedbackId = existFeedback.getId();
+            if (id != existFeedbackId) {
+                String errorMessage = "The feedback id doesn't match";
+                responseAsMap.put("errorMessage", errorMessage);
+                
+                return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+                
+            }
+
+            // Comprobar si feedback tiene errores
+            if (validationResult.hasErrors()) {
+                List<String> errors = new ArrayList<>();
+                List<ObjectError> objectErrors = validationResult.getAllErrors();
+
+                objectErrors.forEach(objectError -> errors.add(objectError.getDefaultMessage()));
+
+                responseAsMap.put("errors", errors);
+                responseAsMap.put("Error feedback", existFeedback);
+                
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+
+                return responseEntity;
+            }
+
+            try {
+                Feedback feedbackUpdate = feedbackService.save(existFeedback);
+                String succesMessage = "The feedback has been updated succesfully";
+                responseAsMap.put("succesMessage", succesMessage);
+                responseAsMap.put("Feedback update", feedbackUpdate);
+                responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.OK);
+            } catch (DataAccessException e) {
+                String error = "Error updating the feedback: " + e.getMostSpecificCause();
+                responseAsMap.put("Error", error);
+                responseAsMap.put("The feedback has attemped to uptade", existFeedback);
+                responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
  
-    //         presentacion.setName(presentacionRequest.getName());
+            return responseEntity;
  
-    //         return new ResponseEntity<>(feedbackService.save(presentacion), HttpStatus.OK);
- 
-    // }
+    }
 
 
 }
