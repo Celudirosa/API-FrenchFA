@@ -48,7 +48,7 @@ public class Feedback implements Serializable{
     private String comments;
 
     @NotNull(message = "Date is required")
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    //@DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
