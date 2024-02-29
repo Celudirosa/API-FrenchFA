@@ -2,8 +2,14 @@ package com.example.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.naming.Binding;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +17,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +34,7 @@ import com.example.exception.ResourceNotFoundException;
 import com.example.services.AttendeeService;
 import com.example.services.FeedbackService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -92,23 +101,57 @@ public class FeedbackController {
             return responseEntity;
     }
 
-    @PostMapping("/attendees/{globalId}/feedbacks")
-    public ResponseEntity<Feedback> addFeedbackByGlobalId(
+    @PostMapping("/attendees/{globalId}/feedback")
+    public ResponseEntity<Map<String, Object>> addFeedbackByGlobalId(
         @PathVariable(value = "globalId") Integer globalId,
-        @RequestBody Feedback feedbackRequest) {
+        @Valid
+        @RequestBody Feedback feedbackRequest,
+        BindingResult validationResult) {
+        
+            Map<String, Object> responseAsMap = new HashMap<>();
+            ResponseEntity<Map<String, Object>> responseEntity = null;
 
             Attendee attendee = attendeeService.findByGlobalId(globalId);
             if (attendee == null) {
                 throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
             }
 
+            if (validationResult.hasErrors()) {
+                List<String> errors = new ArrayList<>();
+                List<ObjectError> objectErrors = validationResult.getAllErrors();
+
+                objectErrors.forEach(objectError -> errors.add(objectError.getDefaultMessage()));
+
+                responseAsMap.put("errors", errors);
+                responseAsMap.put("Error feedback", attendee);
+                
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.BAD_REQUEST);
+
+                return responseEntity;
+            }
+
             feedbackRequest.setAttendee(attendee);
 
-            Feedback saveFeedback = feedbackService.saveFeedback(feedbackRequest);
+            try {        
+                Feedback savedFeedback = feedbackService.save(feedbackRequest);
+                String succesMessage = "The feedback has been saved succesfully";
+                responseAsMap.put("succesMessage", succesMessage);      
+                responseAsMap.put("The feedback has been saved", savedFeedback);  
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.CREATED);     
+            } catch (DataAccessException e) {              
+                String errorMessage = "Error saving feedback: " + e.getMostSpecificCause();   
+                responseAsMap.put("errors", errorMessage);
+                responseAsMap.put("Error feedback", attendee);     
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);     
+                }
 
-            return new ResponseEntity<>(saveFeedback, HttpStatus.CREATED);
-        }
+            return responseEntity;
+    }
 
+
+
+
+    
 
 
 

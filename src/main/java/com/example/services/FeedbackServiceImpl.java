@@ -25,10 +25,10 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackDao.findByAttendee(attendeeDao.findById(idAttendee));
     }
 
-    @Override
-    public void save(Feedback feedback) {
-        feedbackDao.save(feedback);
-    }
+    // @Override
+    // public void save(Feedback feedback) {
+    //     feedbackDao.save(feedback);
+    // }
 
     @Override
     public Page<Feedback> findAll(Pageable pageable) {
@@ -56,7 +56,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public Feedback saveFeedback(Feedback feedback) {
+    public Feedback save(Feedback feedback) {
         return feedbackDao.save(feedback);
     }
 

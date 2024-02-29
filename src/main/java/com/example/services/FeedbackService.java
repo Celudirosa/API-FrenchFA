@@ -12,8 +12,8 @@ public interface FeedbackService {
 
     public List<Feedback> findById(int idAttendee);
 
-    public void save(Feedback feedback);
-    public Feedback saveFeedback(Feedback feedback);
+   // public void save(Feedback feedback);
+    public Feedback save(Feedback feedback);
 
     public Page<Feedback> findAll(Pageable pageable);
     public List<Feedback> findAll(Sort sort);
