@@ -63,14 +63,53 @@ public class MainController {
         return new ResponseEntity<>(attendees, HttpStatus.OK);
     }
 
-    // Metodo que devuelve los attendees por su globalId
+    // Metodo que devuelve los attendees por su globalId (solo enables)
     @GetMapping("/{globalId}")
+    public ResponseEntity<Map<String, Object>> findAttendeeByGlobalIdEnables(
+            @PathVariable(name = "globalId", required = true) Integer globalIdAttendee) throws IOException {
+
+        Map<String, Object> responseMap = new HashMap<>();
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+        Attendee attendeeEnable = attendeeService.findByGlobalId(globalIdAttendee);
+        if (attendeeEnable.getStatus() == Status.ENABLE) {
+            try {
+                AttendeeProfileDTO attendee = attendeeService.findByGlobalIdDTO(globalIdAttendee);
+
+                // Verifica si el Attendee fue encontrado
+                if (attendee != null) {
+                    responseMap.put("attendee", attendee);
+                    responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
+                } else {
+                    // Si no se encuentra el Attendee, devuelve un error 404 Not Found
+                    responseMap.put("error", "No se encontró el Attendee con globalId: " + globalIdAttendee);
+                    responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
+                }
+
+            } catch (DataAccessException e) {
+                String error = "Error al buscar el producto con id " + globalIdAttendee
+                        + " y la causa mas probable es: "
+                        + e.getMostSpecificCause();
+                responseMap.put("error", error);
+                responseEntity = new ResponseEntity<Map<String, Object>>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            // Si no es ENABLE, devuelve un error
+            responseMap.put("error", "No puede acceder al Attendee con globalId: " + globalIdAttendee
+                    + " por que el attendee no se encuentra activo");
+            responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
+
+        }
+
+        return responseEntity;
+    }
+
+    // Metodo que devuelve los attendees por su globalId (Enables y desables)
+    @GetMapping("/admin/{globalId}")
     public ResponseEntity<Map<String, Object>> findAttendeeByGlobalId(
             @PathVariable(name = "globalId", required = true) Integer globalIdAttendee) throws IOException {
 
         Map<String, Object> responseMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
-
         try {
             AttendeeProfileDTO attendee = attendeeService.findByGlobalIdDTO(globalIdAttendee);
 
@@ -196,13 +235,11 @@ public class MainController {
         return responseEntity;
     }
 
-    
     @PatchMapping("status/{globalId}")
     public ResponseEntity<Map<String, Object>> changeStatus(@RequestBody Attendee attendee,
             @PathVariable(name = "globalId") Integer globalIdAttendee) {
 
         Map<String, Object> responseAsMap = new HashMap<>();
-        ResponseEntity<Map<String, Object>> responseEntity = null;
 
         // llamar al attendee y ver si existe
         Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
@@ -223,12 +260,5 @@ public class MainController {
         }
     }
 
-    // // Verificar si está permitido cambiar el estado
-    // if (existingAttendee.getStatus() == status)) {
-    // String errorMessage = "Changing status from " + existingAttendee.getStatus()
-    // + " to " + status + " not allowed";
-    // responseAsMap.put("errorMessage", errorMessage);
-    // return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
-    // }
 
 }
