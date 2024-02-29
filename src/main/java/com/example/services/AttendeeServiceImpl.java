@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.example.dao.AttendeeDao;
 import com.example.dao.FeedbackDao;
 import com.example.dto.AttendeeListDTO;
+import com.example.dto.AttendeeProfileDTO;
+import com.example.dto.FeedbackDTO;
 import com.example.entities.Attendee;
 import com.example.entities.Email;
 import com.example.entities.Feedback;
@@ -27,6 +29,7 @@ public class AttendeeServiceImpl implements AttendeeService {
     
     private final AttendeeDao attendeeDao;
     private final FeedbackDao feedbackDao;
+    // private final AttendeeProfileDTO attendeeProfileDTO;
 
     // @Override
     // public List<Attendee> findAll() {
@@ -74,8 +77,29 @@ public class AttendeeServiceImpl implements AttendeeService {
             }
 
     @Override
-    public Attendee findByGlobalId(int globalId) {
-        return attendeeDao.findByGlobalId(globalId);
+    public AttendeeProfileDTO findByGlobalId(int globalId) {
+       Attendee attendee = attendeeDao.findByGlobalId(globalId);
+       AttendeeProfileDTO attendeeProfileDTO = null;
+       
+        String emailsAsString = attendee.getEmails().stream()
+                .map(Email::getEmail)
+                .collect(Collectors.joining("; "));
+
+        List<FeedbackDTO> feedbackDTOs = attendee.getFeedbacks().stream()
+    .map(feedback -> new FeedbackDTO(feedback.getLevel(), feedback.getDate(), feedback.getComments()))
+    .collect(Collectors.toList());
+
+            attendeeProfileDTO = new AttendeeProfileDTO(
+            attendee.getFirstName(),
+            attendee.getSurname(),
+            attendee.getGlobalId(),
+            emailsAsString, // Pasar el String de correos electrónicos aquí
+            attendee.getInitialLevel(),
+            attendee.getProfile().getProfile(),
+            feedbackDTOs
+
+        );
+   return attendeeProfileDTO;
     }
 
     // @Override

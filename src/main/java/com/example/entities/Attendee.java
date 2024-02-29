@@ -76,8 +76,9 @@ public class Attendee implements Serializable {
     @Column(name = "last_level")
     private String lastLevel = "No evaluation";
 
+    // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnore
     private Profile profile;
 
     // @JsonIgnore
