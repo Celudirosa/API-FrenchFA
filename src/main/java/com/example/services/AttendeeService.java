@@ -19,9 +19,12 @@ public interface AttendeeService {
     // public List<Attendee> findAll();
     public String getLastLevel(Attendee attendee);
     public Attendee findById(int id);
-    AttendeeProfileDTO findByGlobalId(int globalId);
+    AttendeeProfileDTO findByGlobalIdDTO(int globalId);
+    Attendee findByGlobalId(int globalId);
     public Attendee save(Attendee attendee);
     public void delete(Attendee attendee);
+    // public String[] getNullPropertyNames(Object source);
+    
 
 }
 

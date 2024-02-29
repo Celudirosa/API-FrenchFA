@@ -3,11 +3,15 @@ package com.example.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -59,7 +63,6 @@ public class MainController {
         return new ResponseEntity<>(attendees, HttpStatus.OK);
     }
 
-
     // Metodo que devuelve los attendees por su globalId
     @GetMapping("/{globalId}")
     public ResponseEntity<Map<String, Object>> findAttendeeByGlobalId(
@@ -69,11 +72,11 @@ public class MainController {
         ResponseEntity<Map<String, Object>> responseEntity = null;
 
         try {
-            AttendeeProfileDTO attendeeDTO = attendeeService.findByGlobalId(globalIdAttendee);
+            AttendeeProfileDTO attendee = attendeeService.findByGlobalIdDTO(globalIdAttendee);
 
             // Verifica si el Attendee fue encontrado
-            if (attendeeDTO != null) {
-                responseMap.put("attendee", attendeeDTO);
+            if (attendee != null) {
+                responseMap.put("attendee", attendee);
                 responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
             } else {
                 // Si no se encuentra el Attendee, devuelve un error 404 Not Found
@@ -132,62 +135,100 @@ public class MainController {
         return responseEntity;
     }
 
-    // Metodo para modificar Attendee por globalId
     @PutMapping("/{globalId}")
-    public ResponseEntity<Map<String, Object>> updateAttendee(@Valid @RequestBody Attendee attendee,
-            BindingResult validationResults, @PathVariable(name = "globalId") Integer globalIdAttendee) {
+    public ResponseEntity<Map<String, Object>> updateAttendee(@RequestBody Attendee attendee,
+            @PathVariable(name = "globalId") Integer globalIdAttendee) {
 
         Map<String, Object> responseAsMap = new HashMap<>();
-        ResponseEntity<Map<String, Object>> responseEntity = null;
+        ResponseEntity<Map<String, Object>> responseEntity;
 
         // Verificar que el attendee existe
-        AttendeeProfileDTO existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
+        Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
         if (existingAttendee == null) {
-            String errorMessage = "Attendee with global Id " + attendee.getGlobalId() + " not found";
+            String errorMessage = "Attendee with global Id " + globalIdAttendee + " not found";
             responseAsMap.put("errorMessage", errorMessage);
             return new ResponseEntity<>(responseAsMap, HttpStatus.NOT_FOUND);
         }
 
         // Verificar que el globalId del cuerpo coincida con el globalId del attendee
         // existente
-        Integer existingAttendeGlobalId = existingAttendee.getGlobalId();
-        if (!globalIdAttendee.equals(existingAttendeGlobalId)) {
+        Integer existingAttendeeGlobalId = existingAttendee.getGlobalId();
+        if (!globalIdAttendee.equals(existingAttendeeGlobalId)) {
             String errorMessage = "Modification of globalId is not allowed";
             responseAsMap.put("errorMessage", errorMessage);
             return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
         }
 
-        // Comprobar si el attendee tiene errores
-        if (validationResults.hasErrors()) {
-            List<String> errors = new ArrayList<>();
-
-            List<ObjectError> objectErrors = validationResults.getAllErrors();
-
-            objectErrors.forEach(objectError -> errors.add(objectError.getDefaultMessage()));
-
-            responseAsMap.put("errors", errors);
-            responseAsMap.put("Attendee Error", attendee);
-
-            return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
-        }
-
         // Actualizar el Attendee
         try {
-            Attendee attendeeUpdate = attendeeService.save(attendee);
-            String succesMessage = "The attendee has been saved succesfully";
-            responseAsMap.put("Succes Message", succesMessage);
+            // Actualizar solo los campos no nulos del objeto Attendee
+            if (attendee.getFirstName() != null) {
+                existingAttendee.setFirstName(attendee.getFirstName());
+            }
+            if (attendee.getSurname() != null) {
+                existingAttendee.setSurname(attendee.getSurname());
+            }
+            if (attendee.getEmails() != null) {
+                existingAttendee.setEmails(attendee.getEmails());
+            }
+            if (attendee.getProfile() != null) {
+                existingAttendee.setProfile(attendee.getProfile());
+            }
+            if (attendee.getInitialLevel() != null) {
+                existingAttendee.setInitialLevel(attendee.getInitialLevel());
+            }
+            if (attendee.getStatus() != null) {
+                existingAttendee.setStatus(attendee.getStatus());
+            }
+
+            Attendee attendeeUpdate = attendeeService.save(existingAttendee);
+            String successMessage = "The attendee has been saved successfully";
+            responseAsMap.put("successMessage", successMessage);
             responseAsMap.put("Attendee update", attendeeUpdate);
             responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.OK);
         } catch (DataAccessException e) {
             String error = "Error updating the attendee: " + e.getMostSpecificCause();
             responseAsMap.put("error", error);
-            responseAsMap.put("The attende has attempted to update", attendee);
+            responseAsMap.put("The attendee has attempted to update", attendee);
             responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return responseEntity;
     }
 
-
     
+    @PatchMapping("status/{globalId}")
+    public ResponseEntity<Map<String, Object>> changeStatus(@RequestBody Attendee attendee,
+            @PathVariable(name = "globalId") Integer globalIdAttendee) {
+
+        Map<String, Object> responseAsMap = new HashMap<>();
+        ResponseEntity<Map<String, Object>> responseEntity = null;
+
+        // llamar al attendee y ver si existe
+        Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
+        if (existingAttendee == null) {
+            String errorMessage = "Attendee with global Id " + globalIdAttendee + " not found";
+            responseAsMap.put("errorMessage", errorMessage);
+            return new ResponseEntity<>(responseAsMap, HttpStatus.NOT_FOUND);
+        } else {
+
+            // Actualizar status
+            existingAttendee.setStatus(attendee.getStatus());
+            Attendee updatedAttendee = attendeeService.save(existingAttendee);
+
+            String successMessage = "Attendee status updated successfully";
+            responseAsMap.put("successMessage", successMessage);
+            responseAsMap.put("updatedAttendee", updatedAttendee);
+            return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
+        }
+    }
+
+    // // Verificar si está permitido cambiar el estado
+    // if (existingAttendee.getStatus() == status)) {
+    // String errorMessage = "Changing status from " + existingAttendee.getStatus()
+    // + " to " + status + " not allowed";
+    // responseAsMap.put("errorMessage", errorMessage);
+    // return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+    // }
+
 }

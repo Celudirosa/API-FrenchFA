@@ -1,10 +1,15 @@
 package com.example.services;
 
+import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -76,8 +81,11 @@ public class AttendeeServiceImpl implements AttendeeService {
                 return lastLevel;
             }
 
+
+
+
     @Override
-    public AttendeeProfileDTO findByGlobalId(int globalId) {
+    public AttendeeProfileDTO findByGlobalIdDTO(int globalId) {
        Attendee attendee = attendeeDao.findByGlobalId(globalId);
        AttendeeProfileDTO attendeeProfileDTO = null;
        
@@ -170,7 +178,16 @@ public class AttendeeServiceImpl implements AttendeeService {
         return attendeeDtoSorted;
     }
 
+    @Override
+    public Attendee findByGlobalId(int globalId) {
+       return attendeeDao.findByGlobalId(globalId);
     }
+  
+    }
+    
+    
+   
+
 
 
 
