@@ -20,4 +20,6 @@ public interface AttendeeService {
     public String getLastLevel(Attendee attendee);
     public Attendee findByGlobalId(int globalId);
 
+    public boolean existsById(Integer globalId);
+
 }

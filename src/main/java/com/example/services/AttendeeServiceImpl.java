@@ -66,6 +66,11 @@ public class AttendeeServiceImpl implements AttendeeService {
         return attendeeDao.findByGlobalId(globalId);
     }
 
+    @Override
+    public boolean existsById(Integer globalId) {
+        return attendeeDao.existsById(globalId);
+    }
+
     // Si no hay feedbacks, devolver el nivel inicial del Attendee
 
     }
