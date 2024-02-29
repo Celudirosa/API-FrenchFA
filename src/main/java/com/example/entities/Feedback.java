@@ -53,7 +53,8 @@ public class Feedback implements Serializable{
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    @JsonIgnore
+   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+   @JsonIgnore
     private Attendee attendee;
 
 }

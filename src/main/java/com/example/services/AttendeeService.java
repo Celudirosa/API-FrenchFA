@@ -26,5 +26,7 @@ public interface AttendeeService {
     // public String[] getNullPropertyNames(Object source);
     
 
+    public boolean existsById(Integer globalId);
+
 }
 

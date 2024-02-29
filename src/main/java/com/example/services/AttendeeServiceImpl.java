@@ -171,11 +171,14 @@ public class AttendeeServiceImpl implements AttendeeService {
             
                 attendeeListDTOs.add(attendeeDTO);
                 attendeeDtoSorted = attendeeListDTOs.stream().sorted().collect(Collectors.toList());
-          
 
             }
     
         return attendeeDtoSorted;
+    }
+  
+    public boolean existsById(Integer globalId) {
+        return attendeeDao.existsById(globalId);
     }
 
     @Override
