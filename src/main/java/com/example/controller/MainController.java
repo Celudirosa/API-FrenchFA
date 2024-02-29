@@ -223,12 +223,6 @@ public class MainController {
         }
     }
 
-    // // Verificar si está permitido cambiar el estado
-    // if (existingAttendee.getStatus() == status)) {
-    // String errorMessage = "Changing status from " + existingAttendee.getStatus()
-    // + " to " + status + " not allowed";
-    // responseAsMap.put("errorMessage", errorMessage);
-    // return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
-    // }
+    
 
 }
