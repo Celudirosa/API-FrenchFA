@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,6 +92,22 @@ public class FeedbackController {
             return responseEntity;
     }
 
+    @PostMapping("/attendees/{globalId}/feedbacks")
+    public ResponseEntity<Feedback> addFeedbackByGlobalId(
+        @PathVariable(value = "globalId") Integer globalId,
+        @RequestBody Feedback feedbackRequest) {
+
+            Attendee attendee = attendeeService.findByGlobalId(globalId);
+            if (attendee == null) {
+                throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
+            }
+
+            feedbackRequest.setAttendee(attendee);
+
+            Feedback saveFeedback = feedbackService.saveFeedback(feedbackRequest);
+
+            return new ResponseEntity<>(saveFeedback, HttpStatus.CREATED);
+        }
 
 
 

@@ -55,4 +55,9 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackDao.findFeedbacksByAttendeeGlobalId(globalId, sort);
     }
 
+    @Override
+    public Feedback saveFeedback(Feedback feedback) {
+        return feedbackDao.save(feedback);
+    }
+
 }
