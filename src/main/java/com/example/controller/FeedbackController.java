@@ -26,7 +26,7 @@ import com.example.services.FeedbackService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 @RequiredArgsConstructor
 public class FeedbackController {
 
@@ -34,7 +34,7 @@ public class FeedbackController {
     private final AttendeeService attendeeService;
 
     // Metodo para sacar todos los feedbacks
-    @GetMapping
+    @GetMapping("/all-feedbacks")
     public ResponseEntity<List<Feedback>> findAllFeedbacks(
         @RequestParam(name = "page", required = false) Integer page,
         @RequestParam(name = "size", required = false) Integer size) {
@@ -49,7 +49,7 @@ public class FeedbackController {
                 Page<Feedback> pageFeedbacks = feedbackService.findAll(pageable);
                 feedbacks = pageFeedbacks.getContent();
                 responseEntity = new ResponseEntity<List<Feedback>>(feedbacks, HttpStatus.OK);
-                 
+
             } else {
                 feedbacks = feedbackService.findAll(sortByDate);
                 responseEntity = new ResponseEntity<List<Feedback>>(feedbacks, HttpStatus.OK);
@@ -79,7 +79,7 @@ public class FeedbackController {
                 Page<Feedback> pageFeedbacks = feedbackService.findFeedbacksByGlobalId(globalId, pageable);
                 feedbacks = pageFeedbacks.getContent();
                 responseEntity = new ResponseEntity<List<Feedback>>(feedbacks, HttpStatus.OK);
-                 
+
             } else {
                 feedbacks = feedbackService.findFeedbacksByGlobalId(globalId, sortByDate);
                 responseEntity = new ResponseEntity<List<Feedback>>(feedbacks, HttpStatus.OK);
