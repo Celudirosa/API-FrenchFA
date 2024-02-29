@@ -76,7 +76,7 @@ public class AttendeeServiceTest {
         Attendee attendeeSaved = attendeeService.save(attendeeTest);
 
         // then
-        assertThat(attendeeSaved).isNull();
+        assertThat(attendeeSaved).isNull(); // Tengo dudas aqui, tiene que ser notNull?
     }
 
 }

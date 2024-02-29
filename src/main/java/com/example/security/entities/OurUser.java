@@ -33,9 +33,10 @@ public class OurUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@“futureyouwant\\.com$", message = "The email should contain the domain @futureyouwant.com")
     private String email;
 
-    @Size(min = 8, max = 8, message = "The password must contain between eight and 10 characters")
+    @Size(min = 8, max = 10, message = "The password must contain between eight and 10 characters")
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()])(?!.*\\s).*$",
             message = "The password must contain at least one uppercase letter, exactly one number, and one special character")
     private String password;

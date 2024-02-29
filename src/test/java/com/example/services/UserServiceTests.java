@@ -47,8 +47,7 @@ public class UserServiceTests {
     }
 
     // Test para guardar un user y que se genere una exception
-    // Verifica que nunca se sea posible agregar un empleado cuyo
-    // email ya exista
+    // Verifica que nunca se sea posible agregar un user: admin/trainer cuyo email ya exista
     @Test
     @DisplayName("Test para guardar un user y genere una exception")
     public void testSaveUserWithThrowException() {
