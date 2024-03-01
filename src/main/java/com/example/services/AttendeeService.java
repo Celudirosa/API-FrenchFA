@@ -16,6 +16,7 @@ public interface AttendeeService {
     // public Page<Attendee> findAll(Pageable pageable);
     public List<AttendeeListDTO> findAllEnable();
     public Page<AttendeeListDTO> findAllEnable(Pageable pageable); 
+    public Page<AttendeeListDTO> findAllDisable(Pageable pageable);
     public List<AttendeeListDTO> findAllDisable();
     public List<Attendee> findAll(Sort sort);
     // public List<Attendee> findAll();

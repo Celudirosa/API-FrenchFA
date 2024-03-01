@@ -3,20 +3,14 @@ package com.example.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -34,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.dto.AttendeeListDTO;
 import com.example.dto.AttendeeProfileDTO;
 import com.example.entities.Attendee;
-import com.example.entities.Email;
 import com.example.entities.Status;
 import com.example.services.AttendeeService;
 
@@ -48,41 +41,46 @@ public class MainController {
 
     private final AttendeeService attendeeService;
 
-    // // Metodo que devuelve los attendees enable
-    // @GetMapping
-    // public ResponseEntity<Page<AttendeeListDTO>> findAllEnable() {
-
-    //     List<AttendeeListDTO> attendees = attendeeService.findAllEnable();
-    //     return new ResponseEntity<>(attendees, HttpStatus.OK);
-    // }
     // Metodo que devuelve todos los atendees paginados u ordenados
     @GetMapping
     public ResponseEntity<List<AttendeeListDTO>> findAllEnable(
             @RequestParam(name = "page", required = false) Integer page,
             @RequestParam(name = "size", required = false) Integer size) {
-    
+
         ResponseEntity<List<AttendeeListDTO>> responseEntity = null;
         List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
         // Comprobamos si llega page y size
-        if (page != null && size != null) { 
+        if (page != null && size != null) {
             Pageable pageable = PageRequest.of(page, size);
             Page<AttendeeListDTO> pageAttendees = attendeeService.findAllEnable(pageable);
             attendeeListDTOs = pageAttendees.getContent();
             responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
-        }
-         else { // solo ordenados alfabeticamente
-           attendeeListDTOs = attendeeService.findAllEnable();
+        } else { // solo ordenados alfabeticamente
+            attendeeListDTOs = attendeeService.findAllEnable();
             responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
         }
         return responseEntity;
     }
 
+    // Metodo que devuelve todos los atendees paginados u ordenados
+    @GetMapping("/admin/disable")
+    public ResponseEntity<List<AttendeeListDTO>> findAllDisable(
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "size", required = false) Integer size) {
 
-    @GetMapping("/admin")
-    public ResponseEntity<List<AttendeeListDTO>> findAllDisable() {
-
-        List<AttendeeListDTO> attendees = attendeeService.findAllDisable();
-        return new ResponseEntity<>(attendees, HttpStatus.OK);
+        ResponseEntity<List<AttendeeListDTO>> responseEntity = null;
+        List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
+        // Comprobamos si llega page y size
+        if (page != null && size != null) {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<AttendeeListDTO> pageAttendees = attendeeService.findAllDisable(pageable);
+            attendeeListDTOs = pageAttendees.getContent();
+            responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
+        } else { // solo ordenados alfabeticamente
+            attendeeListDTOs = attendeeService.findAllDisable();
+            responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
+        }
+        return responseEntity;
     }
 
     // Metodo que devuelve los attendees por su globalId (solo enables)
@@ -196,6 +194,7 @@ public class MainController {
         return responseEntity;
     }
 
+    // Metodo para modificar attendee
     @PutMapping("/{globalId}")
     public ResponseEntity<Map<String, Object>> updateAttendee(@RequestBody Attendee attendee,
             @PathVariable(name = "globalId") Integer globalIdAttendee) {
@@ -257,6 +256,7 @@ public class MainController {
         return responseEntity;
     }
 
+    // Metodo delete logico de attendee
     @PatchMapping("status/{globalId}")
     public ResponseEntity<Map<String, Object>> changeStatus(@RequestBody Attendee attendee,
             @PathVariable(name = "globalId") Integer globalIdAttendee) {
@@ -281,6 +281,5 @@ public class MainController {
             return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
         }
     }
-
 
 }
