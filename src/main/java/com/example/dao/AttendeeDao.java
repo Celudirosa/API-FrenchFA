@@ -30,4 +30,7 @@ public interface AttendeeDao extends JpaRepository<Attendee, Integer> {
     @Query(value = "SELECT a from Attendee a left join fetch a.profile where a.globalId = :globalId")
     public Attendee findByGlobalId(int globalId);
 
+    public List<Attendee> findAllByOrderByFirstName();
+
+
 }

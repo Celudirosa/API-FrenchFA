@@ -2,6 +2,7 @@ package com.example.services;
 
 import java.util.List;
 
+import org.modelmapper.internal.bytebuddy.build.HashCodeAndEqualsPlugin.Sorted;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,6 +15,7 @@ public interface AttendeeService {
 
     // public Page<Attendee> findAll(Pageable pageable);
     public List<AttendeeListDTO> findAllEnable();
+    public Page<AttendeeListDTO> findAllEnable(Pageable pageable); 
     public List<AttendeeListDTO> findAllDisable();
     public List<Attendee> findAll(Sort sort);
     // public List<Attendee> findAll();

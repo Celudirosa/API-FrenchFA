@@ -48,15 +48,37 @@ public class MainController {
 
     private final AttendeeService attendeeService;
 
-    // Metodo que devuelve los attendees enable
-    @GetMapping
-    public ResponseEntity<List<AttendeeListDTO>> findAllEnable() {
+    // // Metodo que devuelve los attendees enable
+    // @GetMapping
+    // public ResponseEntity<Page<AttendeeListDTO>> findAllEnable() {
 
-        List<AttendeeListDTO> attendees = attendeeService.findAllEnable();
-        return new ResponseEntity<>(attendees, HttpStatus.OK);
+    //     List<AttendeeListDTO> attendees = attendeeService.findAllEnable();
+    //     return new ResponseEntity<>(attendees, HttpStatus.OK);
+    // }
+    // Metodo que devuelve todos los atendees paginados u ordenados
+    @GetMapping
+    public ResponseEntity<List<AttendeeListDTO>> findAllEnable(
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "size", required = false) Integer size) {
+    
+        ResponseEntity<List<AttendeeListDTO>> responseEntity = null;
+        List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
+        // Comprobamos si llega page y size
+        if (page != null && size != null) { 
+            Pageable pageable = PageRequest.of(page, size);
+            Page<AttendeeListDTO> pageAttendees = attendeeService.findAllEnable(pageable);
+            attendeeListDTOs = pageAttendees.getContent();
+            responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
+        }
+         else { // solo ordenados alfabeticamente
+           attendeeListDTOs = attendeeService.findAllEnable();
+            responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
+        }
+        return responseEntity;
     }
 
-    @GetMapping("/disable")
+
+    @GetMapping("/admin")
     public ResponseEntity<List<AttendeeListDTO>> findAllDisable() {
 
         List<AttendeeListDTO> attendees = attendeeService.findAllDisable();

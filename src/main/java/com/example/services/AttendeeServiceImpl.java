@@ -2,15 +2,18 @@ package com.example.services;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.modelmapper.internal.bytebuddy.build.HashCodeAndEqualsPlugin.Sorted;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -120,9 +123,9 @@ public class AttendeeServiceImpl implements AttendeeService {
     public List<AttendeeListDTO> findAllEnable() {
         
         List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
-        List<Attendee> attendees = attendeeDao.findAll();
+        List<Attendee> attendees = attendeeDao.findAllByOrderByFirstName();
         List<Attendee> attendeesEnable = attendees.stream().filter(a -> a.getStatus() == Status.ENABLE).collect(Collectors.toList());
-        List<AttendeeListDTO> attendeeDtoSorted = new ArrayList<>();
+        
             for (Attendee a : attendeesEnable) {
                 String emailsAsString = a.getEmails().stream()
                         .map(Email::getEmail)
@@ -139,13 +142,56 @@ public class AttendeeServiceImpl implements AttendeeService {
                 );
             
                 attendeeListDTOs.add(attendeeDTO);
-                attendeeDtoSorted = attendeeListDTOs.stream().sorted().collect(Collectors.toList());
+               
           
 
             }
     
-        return attendeeDtoSorted;
+        return attendeeListDTOs;
     }
+
+
+public Page<AttendeeListDTO> findAllEnable(Pageable pageable) {
+    List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
+    List<Attendee> attendees = attendeeDao.findAllByOrderByFirstName();
+    List<Attendee> attendeesEnable = attendees.stream()
+            .filter(a -> a.getStatus() == Status.ENABLE)
+            .collect(Collectors.toList());
+
+    for (Attendee a : attendeesEnable) {
+        String emailsAsString = a.getEmails().stream()
+                .map(Email::getEmail)
+                .collect(Collectors.joining("; "));
+
+        AttendeeListDTO attendeeDTO = new AttendeeListDTO(
+                a.getFirstName(),
+                a.getSurname(),
+                a.getGlobalId(),
+                emailsAsString, // Pasar el String de correos electrónicos aquí
+                a.getInitialLevel(),
+                a.getLastLevel(),
+                a.getProfile().getProfile()
+        );
+
+        attendeeListDTOs.add(attendeeDTO);
+    }
+
+    // Aplicar paginación
+    int pageSize = pageable.getPageSize();
+    int currentPage = pageable.getPageNumber();
+    int startItem = currentPage * pageSize;
+    List<AttendeeListDTO> pagedAttendeeList;
+
+    if (attendeeListDTOs.size() < startItem) {
+        pagedAttendeeList = Collections.emptyList();
+    } else {
+        int toIndex = Math.min(startItem + pageSize, attendeeListDTOs.size());
+        pagedAttendeeList = attendeeListDTOs.subList(startItem, toIndex);
+    }
+
+    return new PageImpl<>(pagedAttendeeList, PageRequest.of(currentPage, pageSize), attendeeListDTOs.size());
+}
+
 
     @Override
     public List<AttendeeListDTO> findAllDisable() {
