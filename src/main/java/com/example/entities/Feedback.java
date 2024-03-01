@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -32,7 +31,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Feedback implements Serializable{
+public class Feedback implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -53,8 +52,8 @@ public class Feedback implements Serializable{
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-   // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-   @JsonIgnore
+    // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnore
     private Attendee attendee;
 
 }

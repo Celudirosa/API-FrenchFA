@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
-    
+
     private final ProfileDao profileDao;
-    
+
     @Override
     public List<Profile> findAll() {
         return profileDao.findAll();

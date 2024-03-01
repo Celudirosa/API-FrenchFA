@@ -1,17 +1,10 @@
 package com.example.services;
 
-import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.modelmapper.internal.bytebuddy.build.HashCodeAndEqualsPlugin.Sorted;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -37,25 +30,6 @@ public class AttendeeServiceImpl implements AttendeeService {
 
     private final AttendeeDao attendeeDao;
     private final FeedbackDao feedbackDao;
-    // private final AttendeeProfileDTO attendeeProfileDTO;
-
-    // @Override
-    // public List<Attendee> findAll() {
-
-    // // List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
-    // // // Comprobamos si llega page y size
-    // // List<Attendee> listAttendees = attendeeDao.findAll();
-    // // for(Attendee a : listAttendees) {
-    // // attendeeListDTOs.add(new AttendeeListDTO(a.getFirstName(), a.getSurname(),
-    // a.getGlobalId(), a.getEmails(), a.getInitialLevel(), a.getLastLevel(),
-    // a.getProfile()));
-    // // }
-
-    // return attendeeDao.findAll();
-    // }
-
-    // attendeesEnable = pageAttendees.stream().filter(a -> a.getStatus() ==
-    // Status.ENABLE).collect(Collectors.toList());
 
     @Override
     public List<Attendee> findAll(Sort sort) {
@@ -87,6 +61,7 @@ public class AttendeeServiceImpl implements AttendeeService {
         attendeeDao.save(attendee); // Guardar el Attendee actualizado en la base de datos
         return lastLevel;
     }
+
     // Metodo para recuperar un Attendee por globalId
     @Override
     public AttendeeProfileDTO findByGlobalIdDTO(int globalId) {
@@ -122,7 +97,6 @@ public class AttendeeServiceImpl implements AttendeeService {
     // List<Attendee> attendeesEnable = attendees.stream().filter(a -> a.getStatus()
     // == Status.ENABLE).collect(Collectors.toList());
 
-
     // Metodo para encontrar todos los AttendeeDto enable ordenados por firstName
     @Override
     public List<AttendeeListDTO> findAllEnable() {
@@ -153,7 +127,8 @@ public class AttendeeServiceImpl implements AttendeeService {
         return attendeeListDTOs;
     }
 
-    // Metodo para encontrar todos los AttendeeDto enable ordenados por firstName y paginados
+    // Metodo para encontrar todos los AttendeeDto enable ordenados por firstName y
+    // paginados
     public Page<AttendeeListDTO> findAllEnable(Pageable pageable) {
         List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
         List<Attendee> attendees = attendeeDao.findAllByOrderByFirstName();
@@ -194,7 +169,6 @@ public class AttendeeServiceImpl implements AttendeeService {
         return new PageImpl<>(pagedAttendeeList, PageRequest.of(currentPage, pageSize), attendeeListDTOs.size());
     }
 
-
     // Metodo para encontrar todos los AttendeeDto enable ordenados por firstName
     @Override
     public List<AttendeeListDTO> findAllDisable() {
@@ -225,8 +199,8 @@ public class AttendeeServiceImpl implements AttendeeService {
         return attendeeListDTOs;
     }
 
-
-    // Metodo para encontrar todos los AttendeeDto disable ordenados por firstName y paginados
+    // Metodo para encontrar todos los AttendeeDto disable ordenados por firstName y
+    // paginados
     public Page<AttendeeListDTO> findAllDisable(Pageable pageable) {
         List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
         List<Attendee> attendees = attendeeDao.findAllByOrderByFirstName();
@@ -275,7 +249,5 @@ public class AttendeeServiceImpl implements AttendeeService {
     public Attendee findByGlobalId(int globalId) {
         return attendeeDao.findByGlobalId(globalId);
     }
-
-    
 
 }

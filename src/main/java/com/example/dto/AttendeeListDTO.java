@@ -18,7 +18,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AttendeeListDTO implements Comparable<AttendeeListDTO>{
+public class AttendeeListDTO implements Comparable<AttendeeListDTO> {
 
     private String firstName;
     private String surname;
@@ -27,6 +27,7 @@ public class AttendeeListDTO implements Comparable<AttendeeListDTO>{
     private Level initialLevel;
     private String lastLevel;
     private String profile;
+
     @Override
     public int compareTo(AttendeeListDTO attendee) {
         return this.firstName.compareTo(attendee.firstName);

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -59,7 +58,7 @@ public class Attendee implements Serializable {
     @Column(name = "global_id")
     @Max(value = 99999999, message = "GlobalId must contain 8 numbers")
     private int globalId;
-    
+
     @NotNull(message = "Initial level is required")
     @Column(name = "initial_level")
     @Enumerated(EnumType.STRING)
@@ -70,7 +69,8 @@ public class Attendee implements Serializable {
     private Status status;
 
     // attendee.setLevel(lastLevel) (en el builder: no necesariamente)
-    // loadSampleData: le estoy dando un ejemplo, cómo hacer los request a los endpoint
+    // loadSampleData: le estoy dando un ejemplo, cómo hacer los request a los
+    // endpoint
 
     @Builder.Default
     @Column(name = "last_level")
