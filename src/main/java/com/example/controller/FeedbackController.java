@@ -152,6 +152,7 @@ public class FeedbackController {
     @PutMapping("/attendees/{globalId}/feedback/{id}")
     public ResponseEntity<Map<String, Object>> updateFeedback(
         @PathVariable(name = "id") Integer id,
+        @PathVariable(value = "globalId") Integer globalId,
         @Valid
         @RequestBody Feedback feedbackRequest,
         BindingResult validationResult) {
@@ -165,6 +166,8 @@ public class FeedbackController {
                 throw new ResourceNotFoundException("Not found Feedback with Id = " + id);
             }
 
+            
+
             Integer existFeedbackId = existFeedback.getId();
             if (id != existFeedbackId) {
                 String errorMessage = "The feedback id doesn't match";
@@ -173,6 +176,17 @@ public class FeedbackController {
                 return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
                 
             }
+
+            Attendee attendee = attendeeService.findByGlobalId(globalId);
+            if (attendee == null) {
+                throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
+            }
+
+            existFeedback.setLevel(feedbackRequest.getLevel());
+            existFeedback.setComments(feedbackRequest.getComments());
+            existFeedback.setDate(feedbackRequest.getDate());
+            existFeedback.setAttendee(attendee);
+            
 
             // Comprobar si feedback tiene errores
             if (validationResult.hasErrors()) {
