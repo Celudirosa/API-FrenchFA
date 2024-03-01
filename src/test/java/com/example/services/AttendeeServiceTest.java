@@ -3,7 +3,7 @@ package com.example.services;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.data.domain.Sort;
 
 import com.example.entities.Attendee;
 import com.example.entities.Email;
@@ -74,7 +75,7 @@ public class AttendeeServiceTest {
     }
 
     @Test
-    @DisplayName("Test de servicio para persistir un attendee")
+    @DisplayName("Service test to persist an attendee")
     public void testSaveAttendee() {
 
         // given
@@ -85,6 +86,21 @@ public class AttendeeServiceTest {
 
         // then
         assertThat(attendeeSaved).isNotNull();
+    }
+
+    // ASK: tengo que crear una lista para que se vuelva vacia? Creo que no, pero bueno
+    @DisplayName("Recovers an empty list of attendees")
+    @Test
+    public void testEmptyAttendeeList() {
+
+        // given
+        given(attendeeService.findAll(null)).willReturn(Collections.emptyList());
+
+        // when
+        List<Attendee> attendees = attendeeService.findAll(null);
+
+        // then
+        assertThat(attendees).isEmpty();
     }
 
 }
