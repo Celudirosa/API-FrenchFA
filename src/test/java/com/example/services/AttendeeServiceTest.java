@@ -34,8 +34,6 @@ public class AttendeeServiceTest {
     @Mock
     private ProfileService profileService;
 
-    private Attendee attendeeTest;
-
     @BeforeEach
     void setUp() {
 
@@ -54,14 +52,12 @@ public class AttendeeServiceTest {
                 .profile(profileService.findById(1))
                 .build());
 
-        Feedback feedbackTest = Feedback.builder()
+        Feedback feedbackTest = feedbackService.save(Feedback.builder()
                 .Level(Level.A1)
                 .attendee(attendeeTest)
                 .date(LocalDate.of(2024, 1, 01))
                 .comments("Comment Test")
-                .build();
-
-        feedbackService.save(feedbackTest);                
+                .build());          
 
     }
 
