@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -182,7 +183,7 @@ public class FeedbackController {
                 String errorMessage = "The feedback id doesn't match";
                 responseAsMap.put("errorMessage", errorMessage);
                 
-                return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(responseAsMap, HttpStatus.NOT_FOUND);
                 
             }
 
@@ -232,6 +233,56 @@ public class FeedbackController {
     }
 
     // metodo para elimiar un feedback
+    @DeleteMapping("/attendees/{globalId}/feedback/{id}")
+    public ResponseEntity<Map<String, Object>> deleteFeedbackByGlobalId(
+        @PathVariable(name = "id") Integer id,
+        @PathVariable(value = "globalId") Integer globalId) {
 
+            Map<String, Object> responseAsMap = new HashMap<>();
+            ResponseEntity<Map<String, Object>> responseEntity = null;
+
+            // verificar que existe el attendee con ese globalid y esta ENABLE
+            Attendee attendee = attendeeService.findByGlobalId(globalId);
+            if (attendee == null) {
+                throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
+            } else if (attendee.getStatus() != Status.ENABLE) {
+                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISEABLE");
+            }
+
+            // Verificar que existe el feedback
+            // y verificar si el id del feedback coincide con el que le estamos pasando
+            Feedback existFeedback = feedbackService.findByFeedBackId(id);
+            if (existFeedback == null) {
+                throw new ResourceNotFoundException("Not found Feedback with Id = " + id);
+            } else if (!id.equals(existFeedback.getId())) {
+                String errorMessage = "The feedback id doesn't match";
+                responseAsMap.put("errorMessage", errorMessage);
+                
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                
+            }
+
+            // Verificar si el feedback pertenece al Attendee con el globalId proporcionado
+            if (!existFeedback.getAttendee().equals(attendee)) {
+                String errorMessage = "The feedback does not belong to the specified Attendee";
+                responseAsMap.put("errorMessage", errorMessage);
+                return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+            }
+
+            try {
+                feedbackService.delete(feedbackService.findByFeedBackId(id));
+                String succesMessage = "The feedback has been deleted succesfully";
+                responseAsMap.put("succesMessage", succesMessage);
+                responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.OK);
+            } catch (DataAccessException e) {
+                String error = "Error deleting the feedback: " + e.getMostSpecificCause();
+                responseAsMap.put("Error", error);
+                responseAsMap.put("The feedback has attemped to delete", existFeedback);
+                responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);            
+            }
+
+        return responseEntity;
+
+    }
 
 }

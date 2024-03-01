@@ -85,4 +85,8 @@ public class Attendee implements Serializable {
     @JsonIgnore
     private List<Feedback> feedbacks;
 
+    public void removeFeedback(int feedbackId) {
+        this.feedbacks.removeIf(feedback -> feedback.getId() == feedbackId);
+    }
+
 }

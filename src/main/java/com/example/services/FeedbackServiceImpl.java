@@ -65,4 +65,9 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackDao.findById(id);
     }
 
+    @Override
+    public void delete(Feedback feedback) {
+        feedbackDao.delete(feedback);
+    }
+
 }

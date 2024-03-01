@@ -21,4 +21,6 @@ public interface FeedbackService {
     public List<Feedback> findAll();
     public Page<Feedback> findFeedbacksByGlobalId(Integer globalId, Pageable pageable);
     public List<Feedback> findFeedbacksByGlobalId(Integer globalId, Sort sort);
+
+    public void delete(Feedback feedback);
 }
