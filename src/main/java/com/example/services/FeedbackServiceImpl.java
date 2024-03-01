@@ -60,4 +60,9 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackDao.save(feedback);
     }
 
+    @Override
+    public Feedback findByFeedBackId(int id) {
+        return feedbackDao.findById(id);
+    }
+
 }
