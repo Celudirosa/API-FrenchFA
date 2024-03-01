@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +35,7 @@ public class Email implements Serializable{
     private int id;
 
     @NotBlank(message = "The email cannot be empty")
+    @Pattern(regexp = "[a-zA-Z0-9]*@thefutureyouwant.com$", message = "The email should contain the domain @thefutureyouwant.com")
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)

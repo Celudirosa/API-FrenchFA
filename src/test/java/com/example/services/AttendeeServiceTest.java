@@ -3,6 +3,8 @@ package com.example.services;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
 import com.example.entities.Attendee;
+import com.example.entities.Email;
 import com.example.entities.Feedback;
 import com.example.entities.Level;
 import com.example.entities.Profile;
@@ -26,13 +29,12 @@ import static org.mockito.BDDMockito.given;
 public class AttendeeServiceTest {
 
     @Mock
+    private ProfileService profileService;
+
+    @Mock
     private AttendeeService attendeeService;
 
-    @Mock
-    private FeedbackService feedbackService;
-
-    @Mock
-    private ProfileService profileService;
+    private Attendee attendeeTest;
 
     @BeforeEach
     void setUp() {
@@ -40,24 +42,34 @@ public class AttendeeServiceTest {
         // Creo un Attende con su feedback
 
         profileService.save(Profile.builder()
+                .id(1)
                 .profile("Internal")
                 .build());
 
-        Attendee attendeeTest = attendeeService.save(Attendee.builder()
+        attendeeTest = Attendee.builder()
                 .firstName("NameTest")
                 .surname("SurnameTest")
                 .globalId(00000000)
                 .initialLevel(Level.A0)
                 .status(Status.ENABLE)
                 .profile(profileService.findById(1))
-                .build());
+                .build();
 
-        Feedback feedbackTest = feedbackService.save(Feedback.builder()
+        Email email = Email.builder()
+                .email("test@thefutureyouwant.com")
+                .attendee(attendeeTest)
+                .build();
+
+        Feedback feedback = Feedback.builder()
                 .Level(Level.A1)
                 .attendee(attendeeTest)
                 .date(LocalDate.of(2024, 1, 01))
                 .comments("Comment Test")
-                .build());          
+                .build();
+
+        attendeeTest.setLastLevel(attendeeService.getLastLevel(attendeeTest));
+
+        attendeeService.save(attendeeTest);
 
     }
 
@@ -72,7 +84,7 @@ public class AttendeeServiceTest {
         Attendee attendeeSaved = attendeeService.save(attendeeTest);
 
         // then
-        assertThat(attendeeSaved).isNull(); // Tengo dudas aqui, tiene que ser notNull?
+        assertThat(attendeeSaved).isNotNull();
     }
 
 }
