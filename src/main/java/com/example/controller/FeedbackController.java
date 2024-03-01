@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entities.Attendee;
 import com.example.entities.Feedback;
+import com.example.entities.Status;
 import com.example.exception.ResourceNotFoundException;
 import com.example.services.AttendeeService;
 import com.example.services.FeedbackService;
@@ -160,26 +161,25 @@ public class FeedbackController {
             Map<String, Object> responseAsMap = new HashMap<>();
             ResponseEntity<Map<String, Object>> responseEntity = null;
 
+            // verificar que existe el attendee con ese globalid y esta ENABLE
+            Attendee attendee = attendeeService.findByGlobalId(globalId);
+            if (attendee == null) {
+                throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
+            } else if (attendee.getStatus() != Status.ENABLE) {
+                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISEABLE");
+            }
+
             // Verificar que existe el feedback
+            // y verificar si el id del feedback coincide con el que le estamos pasando
             Feedback existFeedback = feedbackService.findByFeedBackId(id);
             if (existFeedback == null) {
                 throw new ResourceNotFoundException("Not found Feedback with Id = " + id);
-            }
-
-            // verificar si el id del feedback coincide con el que le estamos pasando
-            Integer existFeedbackId = existFeedback.getId();
-            if (!id.equals(existFeedbackId)) {
+            } else if (!id.equals(existFeedback.getId())) {
                 String errorMessage = "The feedback id doesn't match";
                 responseAsMap.put("errorMessage", errorMessage);
                 
                 return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
                 
-            }
-
-            // verificar que existe el attendee con ese globalid
-            Attendee attendee = attendeeService.findByGlobalId(globalId);
-            if (attendee == null) {
-                throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
             }
 
             // Verificar si el feedback pertenece al Attendee con el globalId proporcionado
