@@ -112,11 +112,15 @@ public class FeedbackController {
             Map<String, Object> responseAsMap = new HashMap<>();
             ResponseEntity<Map<String, Object>> responseEntity = null;
 
+            // verificar que existe el attendee con ese globalid y esta ENABLE
             Attendee attendee = attendeeService.findByGlobalId(globalId);
             if (attendee == null) {
                 throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
+            } else if (attendee.getStatus() != Status.ENABLE) {
+                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISEABLE");
             }
 
+            // validar si el feedback tiene errores
             if (validationResult.hasErrors()) {
                 List<String> errors = new ArrayList<>();
                 List<ObjectError> objectErrors = validationResult.getAllErrors();
@@ -222,10 +226,12 @@ public class FeedbackController {
                 responseAsMap.put("The feedback has attemped to uptade", existFeedback);
                 responseEntity = new ResponseEntity<>(responseAsMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
- 
+
             return responseEntity;
- 
+
     }
+
+    // metodo para elimiar un feedback
 
 
 }
