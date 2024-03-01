@@ -156,20 +156,19 @@ public class FeedbackController {
         @Valid
         @RequestBody Feedback feedbackRequest,
         BindingResult validationResult) {
- 
+
             Map<String, Object> responseAsMap = new HashMap<>();
             ResponseEntity<Map<String, Object>> responseEntity = null;
 
+            // Verificar que existe el feedback
             Feedback existFeedback = feedbackService.findByFeedBackId(id);
             if (existFeedback == null) {
-
                 throw new ResourceNotFoundException("Not found Feedback with Id = " + id);
             }
 
-            
-
+            // verificar si el id del feedback coincide con el que le estamos pasando
             Integer existFeedbackId = existFeedback.getId();
-            if (id != existFeedbackId) {
+            if (!id.equals(existFeedbackId)) {
                 String errorMessage = "The feedback id doesn't match";
                 responseAsMap.put("errorMessage", errorMessage);
                 
@@ -177,9 +176,17 @@ public class FeedbackController {
                 
             }
 
+            // verificar que existe el attendee con ese globalid
             Attendee attendee = attendeeService.findByGlobalId(globalId);
             if (attendee == null) {
                 throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
+            }
+
+            // Verificar si el feedback pertenece al Attendee con el globalId proporcionado
+            if (!existFeedback.getAttendee().equals(attendee)) {
+                String errorMessage = "The feedback does not belong to the specified Attendee";
+                responseAsMap.put("errorMessage", errorMessage);
+                return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
             }
 
             existFeedback.setLevel(feedbackRequest.getLevel());
