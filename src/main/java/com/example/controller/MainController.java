@@ -101,21 +101,21 @@ public class MainController {
                     responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
                 } else {
                     // Si no se encuentra el Attendee, devuelve un error 404 Not Found
-                    responseMap.put("error", "No se encontró el Attendee con globalId: " + globalIdAttendee);
+                    responseMap.put("error", "Not found Attendee with GlobalId = " + globalIdAttendee);
                     responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
                 }
 
             } catch (DataAccessException e) {
-                String error = "Error al buscar el producto con id " + globalIdAttendee
-                        + " y la causa mas probable es: "
+                String error = "Error searching for Attendee with id: " + globalIdAttendee
+                        + " and the most likely cause is: "
                         + e.getMostSpecificCause();
                 responseMap.put("error", error);
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
             // Si no es ENABLE, devuelve un error
-            responseMap.put("error", "No puede acceder al Attendee con globalId: " + globalIdAttendee
-                    + " por que el attendee no se encuentra activo");
+            responseMap.put("error", "The attendee with " + globalIdAttendee
+                    + " is DISABLE");
             responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
 
         }
@@ -139,12 +139,12 @@ public class MainController {
                 responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
             } else {
                 // Si no se encuentra el Attendee, devuelve un error 404 Not Found
-                responseMap.put("error", "No se encontró el Attendee con globalId: " + globalIdAttendee);
+                responseMap.put("error", "Not found Attendee with GlobalId = " + globalIdAttendee);
                 responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
             }
 
         } catch (DataAccessException e) {
-            String error = "Error al buscar el producto con id " + globalIdAttendee + " y la causa mas probable es: "
+            String error = "Error searching for Attendee with id: " + globalIdAttendee + " and the most likely cause is: "
                     + e.getMostSpecificCause();
             responseMap.put("error", error);
             responseEntity = new ResponseEntity<Map<String, Object>>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -205,7 +205,7 @@ public class MainController {
         // Verificar que el attendee existe
         Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
         if (existingAttendee == null) {
-            String errorMessage = "Attendee with global Id " + globalIdAttendee + " not found";
+            String errorMessage = "Not found Attendee with GlobalId = " + globalIdAttendee;
             responseAsMap.put("errorMessage", errorMessage);
             return new ResponseEntity<>(responseAsMap, HttpStatus.NOT_FOUND);
         }
@@ -266,7 +266,7 @@ public class MainController {
         // llamar al attendee y ver si existe
         Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
         if (existingAttendee == null) {
-            String errorMessage = "Attendee with global Id " + globalIdAttendee + " not found";
+            String errorMessage = "Not found Attendee with GlobalId = " + globalIdAttendee ;
             responseAsMap.put("errorMessage", errorMessage);
             return new ResponseEntity<>(responseAsMap, HttpStatus.NOT_FOUND);
         } else {
