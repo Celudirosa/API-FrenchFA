@@ -3,20 +3,14 @@ package com.example.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -34,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.dto.AttendeeListDTO;
 import com.example.dto.AttendeeProfileDTO;
 import com.example.entities.Attendee;
-import com.example.entities.Email;
 import com.example.entities.Status;
 import com.example.services.AttendeeService;
 
@@ -48,19 +41,46 @@ public class MainController {
 
     private final AttendeeService attendeeService;
 
-    // Metodo que devuelve los attendees enable
+    // Metodo que devuelve todos los atendees paginados u ordenados
     @GetMapping
-    public ResponseEntity<List<AttendeeListDTO>> findAllEnable() {
+    public ResponseEntity<List<AttendeeListDTO>> findAllEnable(
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "size", required = false) Integer size) {
 
-        List<AttendeeListDTO> attendees = attendeeService.findAllEnable();
-        return new ResponseEntity<>(attendees, HttpStatus.OK);
+        ResponseEntity<List<AttendeeListDTO>> responseEntity = null;
+        List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
+        // Comprobamos si llega page y size
+        if (page != null && size != null) {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<AttendeeListDTO> pageAttendees = attendeeService.findAllEnable(pageable);
+            attendeeListDTOs = pageAttendees.getContent();
+            responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
+        } else { // solo ordenados alfabeticamente
+            attendeeListDTOs = attendeeService.findAllEnable();
+            responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
+        }
+        return responseEntity;
     }
 
-    @GetMapping("/disable")
-    public ResponseEntity<List<AttendeeListDTO>> findAllDisable() {
+    // Metodo que devuelve todos los atendees paginados u ordenados
+    @GetMapping("/admin/disable")
+    public ResponseEntity<List<AttendeeListDTO>> findAllDisable(
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "size", required = false) Integer size) {
 
-        List<AttendeeListDTO> attendees = attendeeService.findAllDisable();
-        return new ResponseEntity<>(attendees, HttpStatus.OK);
+        ResponseEntity<List<AttendeeListDTO>> responseEntity = null;
+        List<AttendeeListDTO> attendeeListDTOs = new ArrayList<>();
+        // Comprobamos si llega page y size
+        if (page != null && size != null) {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<AttendeeListDTO> pageAttendees = attendeeService.findAllDisable(pageable);
+            attendeeListDTOs = pageAttendees.getContent();
+            responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
+        } else { // solo ordenados alfabeticamente
+            attendeeListDTOs = attendeeService.findAllDisable();
+            responseEntity = new ResponseEntity<List<AttendeeListDTO>>(attendeeListDTOs, HttpStatus.OK);
+        }
+        return responseEntity;
     }
 
     // Metodo que devuelve los attendees por su globalId (solo enables)
@@ -81,21 +101,21 @@ public class MainController {
                     responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
                 } else {
                     // Si no se encuentra el Attendee, devuelve un error 404 Not Found
-                    responseMap.put("error", "No se encontró el Attendee con globalId: " + globalIdAttendee);
+                    responseMap.put("error", "Not found Attendee with GlobalId = " + globalIdAttendee);
                     responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
                 }
 
             } catch (DataAccessException e) {
-                String error = "Error al buscar el producto con id " + globalIdAttendee
-                        + " y la causa mas probable es: "
+                String error = "Error searching for Attendee with id: " + globalIdAttendee
+                        + " and the most likely cause is: "
                         + e.getMostSpecificCause();
                 responseMap.put("error", error);
                 responseEntity = new ResponseEntity<Map<String, Object>>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
             // Si no es ENABLE, devuelve un error
-            responseMap.put("error", "No puede acceder al Attendee con globalId: " + globalIdAttendee
-                    + " por que el attendee no se encuentra activo");
+            responseMap.put("error", "The attendee with " + globalIdAttendee
+                    + " is DISABLE");
             responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
 
         }
@@ -119,12 +139,12 @@ public class MainController {
                 responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
             } else {
                 // Si no se encuentra el Attendee, devuelve un error 404 Not Found
-                responseMap.put("error", "No se encontró el Attendee con globalId: " + globalIdAttendee);
+                responseMap.put("error", "Not found Attendee with GlobalId = " + globalIdAttendee);
                 responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
             }
 
         } catch (DataAccessException e) {
-            String error = "Error al buscar el producto con id " + globalIdAttendee + " y la causa mas probable es: "
+            String error = "Error searching for Attendee with id: " + globalIdAttendee + " and the most likely cause is: "
                     + e.getMostSpecificCause();
             responseMap.put("error", error);
             responseEntity = new ResponseEntity<Map<String, Object>>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -174,6 +194,7 @@ public class MainController {
         return responseEntity;
     }
 
+    // Metodo para modificar attendee
     @PutMapping("/{globalId}")
     public ResponseEntity<Map<String, Object>> updateAttendee(@RequestBody Attendee attendee,
             @PathVariable(name = "globalId") Integer globalIdAttendee) {
@@ -184,7 +205,7 @@ public class MainController {
         // Verificar que el attendee existe
         Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
         if (existingAttendee == null) {
-            String errorMessage = "Attendee with global Id " + globalIdAttendee + " not found";
+            String errorMessage = "Not found Attendee with GlobalId = " + globalIdAttendee;
             responseAsMap.put("errorMessage", errorMessage);
             return new ResponseEntity<>(responseAsMap, HttpStatus.NOT_FOUND);
         }
@@ -235,6 +256,7 @@ public class MainController {
         return responseEntity;
     }
 
+    // Metodo delete logico de attendee
     @PatchMapping("status/{globalId}")
     public ResponseEntity<Map<String, Object>> changeStatus(@RequestBody Attendee attendee,
             @PathVariable(name = "globalId") Integer globalIdAttendee) {
@@ -244,7 +266,7 @@ public class MainController {
         // llamar al attendee y ver si existe
         Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
         if (existingAttendee == null) {
-            String errorMessage = "Attendee with global Id " + globalIdAttendee + " not found";
+            String errorMessage = "Not found Attendee with GlobalId = " + globalIdAttendee ;
             responseAsMap.put("errorMessage", errorMessage);
             return new ResponseEntity<>(responseAsMap, HttpStatus.NOT_FOUND);
         } else {
@@ -259,6 +281,5 @@ public class MainController {
             return new ResponseEntity<>(responseAsMap, HttpStatus.OK);
         }
     }
-
 
 }
