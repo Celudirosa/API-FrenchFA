@@ -1,6 +1,8 @@
 package com.example.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -85,10 +87,40 @@ public class AttendeeServiceTest {
         Attendee attendeeSaved = attendeeService.save(attendeeTest);
 
         // then
+
+        // To verify if the stored attendee is equal to the original attendee.
+        assertEquals(attendeeTest, attendeeSaved);
+
+        // To verify if an exception is thrown when attempting to save a null attendee
+        assertThrows(IllegalArgumentException.class, () -> {
+            attendeeService.save(null);
+        });
+
+        // To verify if exceptions are thrown when errors occur during the saving
+        // process
+        given(attendeeService.save(attendeeTest)).willThrow(new RuntimeException("Error while saving the attendee"));
+        assertThrows(RuntimeException.class, () -> {
+            attendeeService.save(attendeeTest);
+        });
+
+        // To verify if different data types are correctly saved into the attendee
+        attendeeTest.setFirstName(""); // Empty string
+        attendeeTest.setSurname(""); // Empty string
+        attendeeTest.setGlobalId(0);; // Empty int
+        attendeeTest.setEmails(null); // Null
+        attendeeTest.setInitialLevel(null);
+        attendeeTest.setStatus(null); // Valor entero 0
+        attendeeTest.setProfile(null);
+        attendeeTest.setFeedbacks(null);
+        attendeeTest.setId(0);
+
+        // To verify if the saved attendee is not null
         assertThat(attendeeSaved).isNotNull();
     }
 
-    // ASK: tengo que crear una lista para que se vuelva vacia? Creo que no, pero bueno
+    // ASK: tengo que crear una lista para que se vuelva vacia? Creo que no, pero
+    // bueno
+
     @DisplayName("Recovers an empty list of attendees")
     @Test
     public void testEmptyAttendeeList() {
