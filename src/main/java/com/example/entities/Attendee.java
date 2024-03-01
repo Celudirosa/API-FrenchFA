@@ -89,4 +89,8 @@ public class Attendee implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "attendee")
     private List<Feedback> feedbacks;
 
+    public void removeFeedback(int feedbackId) {
+        this.feedbacks.removeIf(feedback -> feedback.getId() == feedbackId);
+    }
+
 }
