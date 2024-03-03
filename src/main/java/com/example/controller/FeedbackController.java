@@ -87,7 +87,7 @@ public class FeedbackController {
             if (attendee == null) {
                 throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
             } else if (attendee.getStatus() != Status.ENABLE) {
-                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISEABLE");
+                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISABLE");
             }
 
             ResponseEntity<List<Feedback>> responseEntity = null;
@@ -126,7 +126,7 @@ public class FeedbackController {
             if (attendee == null) {
                 throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
             } else if (attendee.getStatus() != Status.ENABLE) {
-                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISEABLE");
+                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISABLE");
             }
 
             // validar si el feedback tiene errores
@@ -180,7 +180,7 @@ public class FeedbackController {
             if (attendee == null) {
                 throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
             } else if (attendee.getStatus() != Status.ENABLE) {
-                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISEABLE");
+                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISABLE");
             }
 
             // Verificar que existe el feedback
@@ -256,7 +256,7 @@ public class FeedbackController {
             if (attendee == null) {
                 throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
             } else if (attendee.getStatus() != Status.ENABLE) {
-                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISEABLE");
+                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISABLE");
             }
 
             // Verificar que existe el feedback

@@ -22,4 +22,5 @@ public interface FeedbackDao extends JpaRepository<Feedback, Integer> {
     List<Feedback> findFeedbacksByAttendeeGlobalId(Integer globalId, Sort sort);
 
     Feedback findById(int id);
+
 }

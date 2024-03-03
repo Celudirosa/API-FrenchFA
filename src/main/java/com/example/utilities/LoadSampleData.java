@@ -146,7 +146,6 @@ public class LoadSampleData {
         //  Level lastLevelattendee1 = lastFeedback1.getLevel();
         //     attendee1.setLastLevel(lastLevelattendee1);
 
-
             // Add correos
             List<Email> emailsAttendee5 = new ArrayList<>();
 

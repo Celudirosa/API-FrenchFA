@@ -54,7 +54,7 @@ public class Feedback implements Serializable{
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
    // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-   @JsonIgnore
+    @JsonIgnore
     private Attendee attendee;
 
 }
