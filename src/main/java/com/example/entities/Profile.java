@@ -16,16 +16,18 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "profiles")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Profile implements Serializable{
+public class Profile implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,6 +38,7 @@ public class Profile implements Serializable{
     @NotBlank(message = "The profile cannot be empty")
     private String profile;
 
+    // @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "profile")
     @JsonIgnore
     private List<Attendee> attendees;

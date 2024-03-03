@@ -15,8 +15,7 @@ import com.example.entities.Attendee;
 public interface AttendeeDao extends JpaRepository<Attendee, Integer> {
 
     // metodo para recuperar attendee paginados
-    @Query(value = "SELECT p from Attendee p left join fetch p.profile", 
-        countQuery = "select count(p) from Attendee p left join p.profile")
+    @Query(value = "SELECT p from Attendee p left join fetch p.profile", countQuery = "select count(p) from Attendee p left join p.profile")
     public Page<Attendee> findAll(Pageable pageable);
 
     // recuperar attendees ordenados sin paginacion
@@ -29,5 +28,7 @@ public interface AttendeeDao extends JpaRepository<Attendee, Integer> {
 
     @Query(value = "SELECT a from Attendee a left join fetch a.profile where a.globalId = :globalId")
     public Attendee findByGlobalId(int globalId);
+
+    public List<Attendee> findAllByOrderByFirstName();
 
 }

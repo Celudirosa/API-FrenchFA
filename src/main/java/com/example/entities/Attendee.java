@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -46,6 +45,7 @@ public class Attendee implements Serializable {
     private int id;
 
     @NotBlank(message = "The name cannot be empty")
+    @Column(name = "first_name")
     @Size(max = 20, message = "The name should not exceed 20 characters")
     private String firstName;
 
@@ -55,10 +55,12 @@ public class Attendee implements Serializable {
 
     @Setter(value = AccessLevel.PRIVATE)
     @Min(value = 10000000, message = "GlobalId must contain 8 numbers")
+    @Column(name = "global_id")
     @Max(value = 99999999, message = "GlobalId must contain 8 numbers")
     private int globalId;
-    
+
     @NotNull(message = "Initial level is required")
+    @Column(name = "initial_level")
     @Enumerated(EnumType.STRING)
     private Level initialLevel;
 
@@ -67,22 +69,24 @@ public class Attendee implements Serializable {
     private Status status;
 
     // attendee.setLevel(lastLevel) (en el builder: no necesariamente)
-    // loadSampleData: le estoy dando un ejemplo, cómo hacer los request a los endpoint
+    // loadSampleData: le estoy dando un ejemplo, cómo hacer los request a los
+    // endpoint
 
     @Builder.Default
     @Column(name = "last_level")
     private String lastLevel = "No evaluation";
 
+    // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnore
     private Profile profile;
 
+    // @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "attendee")
-    @JsonIgnore
     private List<Email> emails;
 
+    // @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "attendee")
-    @JsonIgnore
     private List<Feedback> feedbacks;
 
     public void removeFeedback(int feedbackId) {
