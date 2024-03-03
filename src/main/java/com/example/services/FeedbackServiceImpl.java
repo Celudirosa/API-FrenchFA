@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class FeedbackServiceImpl implements FeedbackService {
-    
+
     private final FeedbackDao feedbackDao;
     private final AttendeeDao attendeeDao;
     

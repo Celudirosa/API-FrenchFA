@@ -13,7 +13,7 @@ public interface FeedbackService {
     public List<Feedback> findById(int idAttendee);
     public Feedback findByFeedBackId(int id);
 
-   // public void save(Feedback feedback);
+    // public void save(Feedback feedback);
     public Feedback save(Feedback feedback);
 
     public Page<Feedback> findAll(Pageable pageable);
@@ -23,4 +23,5 @@ public interface FeedbackService {
     public List<Feedback> findFeedbacksByGlobalId(Integer globalId, Sort sort);
 
     public void delete(Feedback feedback);
+
 }

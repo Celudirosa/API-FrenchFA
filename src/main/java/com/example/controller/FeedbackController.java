@@ -2,12 +2,9 @@ package com.example.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.naming.Binding;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -15,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -47,33 +43,9 @@ public class FeedbackController {
     private final FeedbackService feedbackService;
     private final AttendeeService attendeeService;
 
-    // Metodo para sacar todos los feedbacks
-    @GetMapping("/all-feedbacks")
-    public ResponseEntity<List<Feedback>> findAllFeedbacks(
-        @RequestParam(name = "page", required = false) Integer page,
-        @RequestParam(name = "size", required = false) Integer size) {
-
-            ResponseEntity<List<Feedback>> responseEntity = null;
-            Sort sortByDate = Sort.by("date").descending();
-            List<Feedback> feedbacks = new ArrayList<>();
-
-            if (page != null && size != null) {
-                
-                Pageable pageable = PageRequest.of(page, size, sortByDate);
-                Page<Feedback> pageFeedbacks = feedbackService.findAll(pageable);
-                feedbacks = pageFeedbacks.getContent();
-                responseEntity = new ResponseEntity<List<Feedback>>(feedbacks, HttpStatus.OK);
-
-            } else {
-                feedbacks = feedbackService.findAll(sortByDate);
-                responseEntity = new ResponseEntity<List<Feedback>>(feedbacks, HttpStatus.OK);
-            }
-
-            return responseEntity;
-    }
-
     // Método para sacar los feedbacks por globalId 
-    @GetMapping("/attendees/{globalId}/feedbacks")
+    // ADMIN
+    @GetMapping("/admin/attendees/{globalId}/feedbacks")
     public ResponseEntity<List<Feedback>> findFeedbacksByGlobalId(
         @RequestParam(name = "page", required = false) Integer page,
         @RequestParam(name = "size", required = false) Integer size,
@@ -103,6 +75,42 @@ public class FeedbackController {
             return responseEntity;
     }
 
+    // Método para sacar los feedbacks por globalId que estén Enables
+    // TRAINER
+    @GetMapping("/attendees/{globalId}/feedbacks")
+    public ResponseEntity<List<Feedback>> findFeedbacksByGlobalIdEnables(
+        @RequestParam(name = "page", required = false) Integer page,
+        @RequestParam(name = "size", required = false) Integer size,
+        @PathVariable(value = "globalId") Integer globalId) throws IOException {
+
+            Attendee attendee = attendeeService.findByGlobalId(globalId);
+            if (attendee == null) {
+                throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
+            } else if (attendee.getStatus() != Status.ENABLE) {
+                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISABLE");
+            }
+
+            ResponseEntity<List<Feedback>> responseEntity = null;
+            Sort sortByDate = Sort.by("date").descending();
+            List<Feedback> feedbacks = new ArrayList<>();
+
+            if (page != null && size != null) {
+                
+                Pageable pageable = PageRequest.of(page, size, sortByDate);
+                Page<Feedback> pageFeedbacks = feedbackService.findFeedbacksByGlobalId(globalId, pageable);
+                feedbacks = pageFeedbacks.getContent();
+                responseEntity = new ResponseEntity<List<Feedback>>(feedbacks, HttpStatus.OK);
+
+            } else {
+                feedbacks = feedbackService.findFeedbacksByGlobalId(globalId, sortByDate);
+                responseEntity = new ResponseEntity<List<Feedback>>(feedbacks, HttpStatus.OK);
+            }
+
+            return responseEntity;
+    }
+
+    // metodo para añadir feedback por globalID
+    // TRAINER
     @PostMapping("/attendees/{globalId}/feedback")
     public ResponseEntity<Map<String, Object>> addFeedbackByGlobalId(
         @PathVariable(value = "globalId") Integer globalId,
@@ -118,7 +126,7 @@ public class FeedbackController {
             if (attendee == null) {
                 throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
             } else if (attendee.getStatus() != Status.ENABLE) {
-                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISEABLE");
+                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISABLE");
             }
 
             // validar si el feedback tiene errores
@@ -154,7 +162,8 @@ public class FeedbackController {
             return responseEntity;
     }
 
-    // Metodo para modificar feedbacks
+    // Metodo para modificar feedbacks por globalId del attendee
+    // TRAINER
     @PutMapping("/attendees/{globalId}/feedback/{id}")
     public ResponseEntity<Map<String, Object>> updateFeedback(
         @PathVariable(name = "id") Integer id,
@@ -171,7 +180,7 @@ public class FeedbackController {
             if (attendee == null) {
                 throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
             } else if (attendee.getStatus() != Status.ENABLE) {
-                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISEABLE");
+                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISABLE");
             }
 
             // Verificar que existe el feedback
@@ -233,6 +242,7 @@ public class FeedbackController {
     }
 
     // metodo para elimiar un feedback
+    // Trainer
     @DeleteMapping("/attendees/{globalId}/feedback/{id}")
     public ResponseEntity<Map<String, Object>> deleteFeedbackByGlobalId(
         @PathVariable(name = "id") Integer id,
@@ -246,7 +256,7 @@ public class FeedbackController {
             if (attendee == null) {
                 throw new ResourceNotFoundException("Not found Attendee with GlobalId = " + globalId);
             } else if (attendee.getStatus() != Status.ENABLE) {
-                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISEABLE");
+                throw new ResourceNotFoundException("The attendee with " + globalId + " is DISABLE");
             }
 
             // Verificar que existe el feedback
