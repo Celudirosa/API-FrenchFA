@@ -1,6 +1,5 @@
-package com.example.security.entities;
+package com.example.user;
 
 public enum Role {
     ADMINISTRATOR, TRAINER
-
 }
