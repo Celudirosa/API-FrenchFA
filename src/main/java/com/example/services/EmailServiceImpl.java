@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
-    
+
     private final EmailDao emailDao;
     private final AttendeeDao attendeeDao;
 

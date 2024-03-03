@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class FeedbackServiceImpl implements FeedbackService {
-    
+
     private final FeedbackDao feedbackDao;
     private final AttendeeDao attendeeDao;
     
@@ -24,11 +24,6 @@ public class FeedbackServiceImpl implements FeedbackService {
     public List<Feedback> findById(int idAttendee) {
         return feedbackDao.findByAttendee(attendeeDao.findById(idAttendee));
     }
-
-    // @Override
-    // public void save(Feedback feedback) {
-    //     feedbackDao.save(feedback);
-    // }
 
     @Override
     public Page<Feedback> findAll(Pageable pageable) {
@@ -58,6 +53,16 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public Feedback save(Feedback feedback) {
         return feedbackDao.save(feedback);
+    }
+
+    @Override
+    public Feedback findByFeedBackId(int id) {
+        return feedbackDao.findById(id);
+    }
+
+    @Override
+    public void delete(Feedback feedback) {
+        feedbackDao.delete(feedback);
     }
 
 }
