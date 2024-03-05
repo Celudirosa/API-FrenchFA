@@ -2,9 +2,9 @@ package com.example.services;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.BDDMockito.given;
 
 import java.util.Optional;
 
@@ -18,53 +18,56 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
-import com.example.exception.ResourceNotFoundException;
-import com.example.security.entities.OurUser;
-import com.example.security.entities.Role;
-import com.example.security.repository.OurUserRepository;
-import com.example.security.services.OurUserDetailsService;
+import com.example.customsExceptions.ResourceNotFoundException;
+import com.example.user.Role;
+import com.example.user.User;
+import com.example.user.UserRepository;
+import com.example.user.UserServiceImpl;
 
+// Mockito simula las depedencias, todas las dependencias van a ser simuladas.
 @ExtendWith(MockitoExtension.class)
-@AutoConfigureTestDatabase(replace = Replace.NONE) // Indicar que no me cambie la base de datos de MySQL
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class UserServiceTests {
 
-    @Mock // Esta anotación me permite simular el repositorio
-    private OurUserRepository ouruserRepository;
+    @Mock
+    private UserRepository userRepository;
 
-    @InjectMocks // Inyectar la implementación de la capa de servicios
-    private OurUserDetailsService OurUserDetailsService;
+    @InjectMocks
+    private UserServiceImpl userService;
 
-    private OurUser ourUser;
+    private User user;
 
     @BeforeEach
     void setUp() {
-        ourUser = OurUser.builder()
+        user = User.builder()
                 .id(1)
-                .email("user0@thefutureyouwant.com")
-                .password("Aaaaaaa1!")
-                .role(Role.ADMINISTRATOR)
+                .firstName("Vict")
+                .lastName("Rafael")
+                .email("vrmachado@gmail.com")
+                .password("Temp2023$$")
+                .role(Role.ADMIN)
                 .build();
     }
 
     // Test para guardar un user y que se genere una exception
-    // Verifica que nunca se sea posible agregar un user: admin/trainer cuyo email ya exista
+    // Verifica que nunca sea posible agregar un empleado cuyo
+    // email ya exista
     @Test
     @DisplayName("Test para guardar un user y genere una exception")
     public void testSaveUserWithThrowException() {
 
         // given
-        given(ouruserRepository.findByEmail(ourUser.getEmail()))
-                .willReturn(Optional.of(ourUser));
+        given(userRepository.findByEmail(user.getEmail()))
+                .willReturn(Optional.of(user));
 
         // when
         assertThrows(ResourceNotFoundException.class, () -> {
-            OurUserDetailsService.add(ourUser);
+            userService.add(user);
         });
 
         // Then
-        verify(ouruserRepository, never()).save(any(OurUser.class));
+        verify(userRepository, never()).save(any(User.class));
 
     }
 
 }
-
