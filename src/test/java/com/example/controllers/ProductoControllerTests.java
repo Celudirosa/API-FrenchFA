@@ -8,7 +8,7 @@ import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+// import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
@@ -81,11 +81,11 @@ public class ProductoControllerTests {
         @Autowired
         private ObjectMapper objectMapper;
 
-        @MockBean
-        private FileUploadUtil fileUploadUtil;
+        // @MockBean
+        // private FileUploadUtil fileUploadUtil;
 
-        @MockBean
-        private FileDownloadUtil fileDownloadUtil;
+        // @MockBean
+        // private FileDownloadUtil fileDownloadUtil;
 
         @Autowired
         private WebApplicationContext context;

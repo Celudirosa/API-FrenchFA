@@ -30,8 +30,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String firstName;
+    private String lastName;
+
     @Column(unique = true) // No se repite, pero no forma parte de la PK
-    @Pattern(regexp = "[a-zA-Z0-9]*@thefutureyouwant.com$", message = "The email should contain the domain @thefutureyouwant.com")
+    @Pattern(regexp = "[a-zA-Z0-9]*@blue.com$", message = "The email should contain the domain @blue.com")
     private String email;
 
     @Size(min = 8, max = 10, message = "The password must contain between eight and 10 characters")
