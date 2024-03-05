@@ -76,8 +76,8 @@ public class UserRepositoryTests {
     @BeforeEach
     void setUp() {
         user0 = User.builder()
-                .firstName("AdminTest")
-                .lastName("AdminTest1")
+                .firstName("AdminName")
+                .lastName("AdminLastName")
                 .password("Aaaaaa1!")
                 .email("admin@blue.com")
                 .role(Role.ADMINISTRATOR)
@@ -90,27 +90,28 @@ public class UserRepositoryTests {
     public void testAddUser() {
 
         // given
-        User user = user0;
+        userRepository.save(user0);
 
         // when
 
-        User userAdded = userRepository.save(user);
+        User userAdded = userRepository.save(user0);
 
         // then
 
-        assertThat(userAdded).isNotNull();
-        assertThat(userAdded.getId()).isGreaterThan(0L);
+        assertThat(userAdded).isNotNull(); // Ensure that the added user is not null
+        assertThat(userAdded.getId()).isGreaterThan(0L); // Ensure valid user ID and database save
+        assertThat(userAdded).isEqualTo(user0); // Verify object integrity post-save
 
     }
 
-    @DisplayName("Test para listar usuarios")
+    @DisplayName("User listing test")
     @Test
     public void testFindAllUsers() {
 
         // given
         User user1 = User.builder()
-                .firstName("TrainerTest")
-                .lastName("TrainerTest1")
+                .firstName("TrainerName")
+                .lastName("TrainerLastName")
                 .password("Bbbbbb1!")
                 .email("trainer@blue.com")
                 .role(Role.TRAINER)
@@ -119,13 +120,15 @@ public class UserRepositoryTests {
         userRepository.save(user0);
         userRepository.save(user1);
 
-        // Dado los empleados guardados
         // when
-        List<User> usuarios = userRepository.findAll();
+        List<User> foundUsers = userRepository.findAll();
 
         // then
-        assertThat(usuarios).isNotNull();
-        assertThat(usuarios.size()).isEqualTo(2);
+        assertThat(foundUsers)
+                .isNotNull() // Check if foundUsers list is not null
+                .hasSize(2) // Check if the list has size 2
+                .contains(user0, user1); // Check if a collection contains specific elements 
+
     }
 
     @Test
