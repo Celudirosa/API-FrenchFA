@@ -132,7 +132,7 @@ public class UserRepositoryTests {
     }
 
     @Test
-    @DisplayName("Test para recuperar un user por su ID")
+    @DisplayName("Retrieve a user by ID")
     public void findUserById() {
 
         // given
