@@ -24,8 +24,7 @@ import com.example.user.User;
 import com.example.user.UserRepository;
 import com.example.user.UserServiceImpl;
 
-// Mockito simula las depedencias, todas las dependencias van a ser simuladas.
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(MockitoExtension.class) // Mockito simulates dependencies
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class UserServiceTests {
 
@@ -40,20 +39,16 @@ public class UserServiceTests {
     @BeforeEach
     void setUp() {
         user = User.builder()
-                .id(1)
-                .firstName("Vict")
-                .lastName("Rafael")
-                .email("vrmachado@gmail.com")
-                .password("Temp2023$$")
-                .role(Role.ADMIN)
+                .firstName("AdminName")
+                .lastName("AdminLastName")
+                .password("Aaaaaa1!")
+                .email("admin@blue.com")
+                .role(Role.ADMINISTRATOR)
                 .build();
     }
-
-    // Test para guardar un user y que se genere una exception
-    // Verifica que nunca sea posible agregar un empleado cuyo
-    // email ya exista
+    // Ensure it's never possible to add a user with an existing email
     @Test
-    @DisplayName("Test para guardar un user y genere una exception")
+    @DisplayName("Test for saving a user and generating an exception")
     public void testSaveUserWithThrowException() {
 
         // given
