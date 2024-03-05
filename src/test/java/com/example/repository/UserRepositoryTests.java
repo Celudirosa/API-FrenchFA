@@ -76,11 +76,11 @@ public class UserRepositoryTests {
     @BeforeEach
     void setUp() {
         user0 = User.builder()
-                .firstName("Test User 0")
-                .lastName("Machado")
-                .password("123456")
-                .email("user0@gmail.com")
-                .role(Role.USER)
+                .firstName("AdminTest")
+                .lastName("AdminTest1")
+                .password("Aaaaaa1!")
+                .email("admin@blue.com")
+                .role(Role.ADMINISTRATOR)
                 .build();
     }
 
@@ -90,14 +90,7 @@ public class UserRepositoryTests {
     public void testAddUser() {
 
         // given
-
-        User user = User.builder()
-                .firstName("Test User 1")
-                .lastName("Machado")
-                .password("123456")
-                .email("v@gmail.com")
-                .role(Role.USER)
-                .build();
+        User user = user0;
 
         // when
 
