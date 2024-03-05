@@ -109,11 +109,11 @@ public class UserRepositoryTests {
 
         // given
         User user1 = User.builder()
-                .firstName("Test User 1")
-                .lastName("Machado")
-                .password("123456")
-                .email("v@gmail.com")
-                .role(Role.USER)
+                .firstName("TrainerTest")
+                .lastName("TrainerTest1")
+                .password("Bbbbbb1!")
+                .email("trainer@blue.com")
+                .role(Role.TRAINER)
                 .build();
 
         userRepository.save(user0);
