@@ -158,16 +158,17 @@ public class UserRepositoryTests {
 
         User userGuardado = userRepository.findByEmail(user0.getEmail()).get();
 
-        userGuardado.setLastName("Perico");
-        userGuardado.setFirstName("Juan");
-        userGuardado.setEmail("jp@gg.com");
+        userGuardado.setFirstName("AdminTest1");
+        userGuardado.setLastName("AdminTestUpdate");
+        userGuardado.setEmail("admin@blue.com");
 
         User userUpdated = userRepository.save(userGuardado);
 
         // then
 
-        assertThat(userUpdated.getEmail()).isEqualTo("jp@gg.com");
-        assertThat(userUpdated.getFirstName()).isEqualTo("Juan");
+        assertThat(userUpdated.getEmail()).isEqualTo("admin@blue.com");
+        assertThat(userUpdated.getFirstName()).isEqualTo("AdminTest1");
+        assertThat(userUpdated.getLastName()).isEqualTo("AdminTestUpdate");
 
     }
 
