@@ -150,7 +150,7 @@ public class UserRepositoryTests {
     }
 
     @Test
-    @DisplayName("Test para actualizar un user")
+    @DisplayName("User update test")
     public void testUpdateUser() {
 
         // given
@@ -159,19 +159,20 @@ public class UserRepositoryTests {
 
         // when
 
-        User userGuardado = userRepository.findByEmail(user0.getEmail()).get();
+        User userSaved = userRepository.findByEmail(user0.getEmail()).get();
 
-        userGuardado.setFirstName("AdminTest1");
-        userGuardado.setLastName("AdminTestUpdate");
-        userGuardado.setEmail("admin@blue.com");
+        userSaved.setFirstName("AdminNameUp");
+        userSaved.setLastName("AdminLastNameUp");
+        userSaved.setEmail("adminup@blue.com");
 
-        User userUpdated = userRepository.save(userGuardado);
+        User userUpdated = userRepository.save(userSaved);
 
         // then
-
-        assertThat(userUpdated.getEmail()).isEqualTo("admin@blue.com");
-        assertThat(userUpdated.getFirstName()).isEqualTo("AdminTest1");
-        assertThat(userUpdated.getLastName()).isEqualTo("AdminTestUpdate");
+        assertThat(userUpdated).isNotNull(); // Check updated user is not null
+        assertThat(userUpdated.getId()).isEqualTo(userSaved.getId()); // Check userUpdated has the same ID than userSaved
+        assertThat(userUpdated.getEmail()).isEqualTo("adminup@blue.com"); //Check that the email has been updated correctly
+        assertThat(userUpdated.getFirstName()).isEqualTo("AdminNameUp"); //Check that the firstName has been updated correctly
+        assertThat(userUpdated.getLastName()).isEqualTo("AdminLastNameUp"); //Check that the lastName has been updated correctly
 
     }
 
