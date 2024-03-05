@@ -176,7 +176,7 @@ public class UserRepositoryTests {
 
     }
 
-    @DisplayName("Test para eliminar un user")
+    @DisplayName("Test to delete an user")
     @Test
     public void testDeleteUser() {
 
@@ -185,9 +185,9 @@ public class UserRepositoryTests {
 
         // when
         userRepository.delete(user0);
-        Optional<User> optionalUser = userRepository.findByEmail(user0.getEmail());
+        Optional<User> userDeleted = userRepository.findByEmail(user0.getEmail());
 
         // then
-        assertThat(optionalUser).isEmpty();
+        assertThat(userDeleted).isEmpty();
     }
 }
