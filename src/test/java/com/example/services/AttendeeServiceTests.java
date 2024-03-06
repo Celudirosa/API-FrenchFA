@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
 import com.example.dao.AttendeeDao;
+import com.example.dao.EmailDao;
 import com.example.dao.FeedbackDao;
 import com.example.dao.ProfileDao;
 import com.example.entities.Attendee;
@@ -26,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,6 +44,9 @@ public class AttendeeServiceTests {
     @Mock
     private FeedbackDao feedbackDao;
 
+    @Mock
+    private EmailDao emailDao;
+
     @InjectMocks
     private AttendeeServiceImpl attendeeService;
 
@@ -51,12 +56,11 @@ public class AttendeeServiceTests {
     void setUp() {
 
         Profile profile = Profile.builder()
-                .id(1)
+
                 .profile("Internal")
                 .build();
 
         attendee = Attendee.builder()
-                .id(20)
                 .firstName("NameTest")
                 .surname("SurnameTest")
                 .globalId(00000000)
@@ -65,10 +69,17 @@ public class AttendeeServiceTests {
                 .profile(profile)
                 .build();
 
+        List<Email> emails = new ArrayList<>();
+
         Email email = Email.builder()
-                .email("test@thefutureyouwant.com")
+                .email("test@blue.com")
                 .attendee(attendee)
                 .build();
+
+        emailDao.save(email);
+        emails.add(email);
+
+        List<Feedback> feedbacks = new ArrayList<>();
 
         Feedback feedback = Feedback.builder()
                 .Level(Level.A1)
@@ -77,7 +88,12 @@ public class AttendeeServiceTests {
                 .comments("Comment Test")
                 .build();
 
-        attendee.setLastLevel(attendeeService.getLastLevel(attendee));
+        feedbackDao.save(feedback);
+        feedbacks.add(feedback);
+
+        attendee.setEmails(emails);
+        attendee.setFeedbacks(feedbacks);
+        // attendee.setLastLevel(attendeeService.getLastLevel(attendee));
         attendeeService.save(attendee);
 
     }
@@ -95,10 +111,11 @@ public class AttendeeServiceTests {
         // then
         assertThat(attendeeSaved).isNotNull(); // To verify if the saved attendee is not null
         assertEquals(attendee, attendeeSaved); // Check if the saved attendee is equal to the original attendee
-        
+
         // assertThrows(IllegalArgumentException.class, () -> {
-        //     attendeeService.save(null);
-        // }); // Check if an exception is thrown when attempting to save a null attendee
+        // attendeeService.save(null);
+        // }); // Check if an exception is thrown when attempting to save a null
+        // attendee
 
         // To verify if different data types are correctly saved into the attendee
         // attendeeSaved.setFirstName(""); // Empty string
