@@ -218,12 +218,23 @@ public class MainController {
 
         // Verificar que el globalId del cuerpo coincida con el globalId del attendee
         // existente
-        Integer existingAttendeeGlobalId = existingAttendee.getGlobalId();
-        if (!globalIdAttendee.equals(existingAttendeeGlobalId)) {
+        if (attendee.getGlobalId() != 0 && attendee.getGlobalId() != existingAttendee.getGlobalId()) {
             String errorMessage = "Modification of globalId is not allowed";
             responseAsMap.put("errorMessage", errorMessage);
             return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
         }
+
+        // if (attendee.getGlobalId() != existingAttendee.getGlobalId()) {
+        //     String errorMessage = "Modification of globalId is not allowed";
+        //     responseAsMap.put("errorMessage", errorMessage);
+        //     return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+
+        // Integer existingAttendeeGlobalId = existingAttendee.getGlobalId();
+        // if (!globalIdAttendee.equals(existingAttendeeGlobalId)) {
+        //     String errorMessage = "Modification of globalId is not allowed";
+        //     responseAsMap.put("errorMessage", errorMessage);
+        //     return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+        // }
 
         // Actualizar el Attendee
         try {
@@ -245,6 +256,10 @@ public class MainController {
             }
             if (attendee.getStatus() != null) {
                 existingAttendee.setStatus(attendee.getStatus());
+            if (attendee.getGlobalId() == 0) {
+                existingAttendee.setGlobalId(attendee.getGlobalId());
+            }
+           
             }
 
             Attendee attendeeUpdate = attendeeService.save(existingAttendee);
