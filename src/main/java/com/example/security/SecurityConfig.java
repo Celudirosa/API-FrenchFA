@@ -28,26 +28,22 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(HttpMethod.GET, "/productos/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/attendees").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/attendees/{globalId}").permitAll();
                     auth.requestMatchers("/users/**").permitAll();
-                    auth.requestMatchers(HttpMethod.POST, "/productos/**").hasAuthority("ADMIN");
-                    auth.requestMatchers(HttpMethod.PUT, "/productos/**").hasAuthority("ADMIN");
-                    auth.requestMatchers(HttpMethod.DELETE, "/productos/**").hasAuthority("ADMIN");
+                    auth.requestMatchers(HttpMethod.GET, "/attendees/admin/**").hasAuthority("ADMINISTRATOR");
+                    auth.requestMatchers(HttpMethod.POST, "/attendees").hasAuthority("ADMINISTRATOR");
+                    auth.requestMatchers(HttpMethod.PUT, "/attendees/{globalId}").hasAuthority("ADMINISTRATOR");
+                    auth.requestMatchers(HttpMethod.PATCH, "/attendees/status/**").hasAuthority("ADMINISTRATOR");
+                    auth.requestMatchers(HttpMethod.GET, "/attendees/{globalId}/feedbacks/**").hasAuthority("TRAINER");
+                    auth.requestMatchers(HttpMethod.POST, "/attendees/{globalId}/feedbacks/**").hasAuthority("TRAINER");
+                    auth.requestMatchers(HttpMethod.PUT, "/attendees/{globalId}/feedbacks/**").hasAuthority("TRAINER");
+                    auth.requestMatchers(HttpMethod.DELETE, "/attendees/{globalId}/feedbacks/**").hasAuthority("TRAINER");
+
                     auth.anyRequest().authenticated();
                 }).httpBasic(Customizer.withDefaults()).build();
 
-        // return http.csrf().disable()
-        //     .authorizeHttpRequests()
-        //     .requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
-        //     .and().authorizeHttpRequests()
-        //     .requestMatchers("/users/**").permitAll()
-        //     .and().authorizeHttpRequests()
-        //     .requestMatchers(HttpMethod.POST, "/productos/**").hasAuthority("ADMIN")
-        //     .and().authorizeHttpRequests()
-        //     .requestMatchers(HttpMethod.PUT, "/productos/**").hasAuthority("ADMIN")
-        //     .and().authorizeHttpRequests()
-        //     .requestMatchers(HttpMethod.DELETE, "/productos/**").hasAuthority("ADMIN")
-        //    .anyRequest().authenticated().and().httpBasic(withDefaults()).build();
+        
      } 
 
 }

@@ -37,9 +37,9 @@ public class User {
     @Pattern(regexp = "[a-zA-Z0-9]*@blue.com$", message = "The email should contain the domain @blue.com")
     private String email;
 
-    @Size(min = 8, max = 10, message = "The password must contain between eight and 10 characters")
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()])(?!.*\\s).*$",
-            message = "The password must contain at least one uppercase letter, exactly one number, and one special character")
+    // @Size(min = 8, max = 10, message = "The password must contain between eight and 10 characters")
+    // @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()])(?!.*\\s).*$",
+    //         message = "The password must contain at least one uppercase letter, exactly one number, and one special character")
     private String password;
 
     @Enumerated(EnumType.STRING)
