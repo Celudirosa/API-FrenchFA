@@ -93,7 +93,7 @@ public class AttendeeServiceTests {
 
         attendee.setEmails(emails);
         attendee.setFeedbacks(feedbacks);
-        // attendee.setLastLevel(attendeeService.getLastLevel(attendee));
+        attendee.setLastLevel(attendeeService.getLastLevel(attendee));
         attendeeService.save(attendee);
 
     }
