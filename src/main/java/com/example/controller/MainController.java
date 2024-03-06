@@ -42,6 +42,7 @@ public class MainController {
     private final AttendeeService attendeeService;
 
     // Metodo que devuelve todos los atendees paginados u ordenados
+    // ALL
     @GetMapping
     public ResponseEntity<List<AttendeeListDTO>> findAllEnable(
             @RequestParam(name = "page", required = false) Integer page,
@@ -63,6 +64,7 @@ public class MainController {
     }
 
     // Metodo que devuelve todos los atendees paginados u ordenados
+    // ADMIN
     @GetMapping("/admin/disable")
     public ResponseEntity<List<AttendeeListDTO>> findAllDisable(
             @RequestParam(name = "page", required = false) Integer page,
@@ -84,6 +86,7 @@ public class MainController {
     }
 
     // Metodo que devuelve los attendees por su globalId (solo enables)
+    // ALL
     @GetMapping("/{globalId}")
     public ResponseEntity<Map<String, Object>> findAttendeeByGlobalIdEnables(
             @PathVariable(name = "globalId", required = true) Integer globalIdAttendee) throws IOException {
@@ -124,6 +127,7 @@ public class MainController {
     }
 
     // Metodo que devuelve los attendees por su globalId (Enables y desables)
+    // ADMIN
     @GetMapping("/admin/{globalId}")
     public ResponseEntity<Map<String, Object>> findAttendeeByGlobalId(
             @PathVariable(name = "globalId", required = true) Integer globalIdAttendee) throws IOException {
@@ -154,6 +158,7 @@ public class MainController {
     }
 
     // Metodo que persiste un attendee, y valida que esten bien formados los campos
+    //ADMIN
     @PostMapping
     public ResponseEntity<Map<String, Object>> saveAttendee(@Valid @RequestBody Attendee attendee,
             BindingResult validationResult) {
@@ -195,6 +200,7 @@ public class MainController {
     }
 
     // Metodo para modificar attendee
+    // ADMIN
     @PutMapping("/{globalId}")
     public ResponseEntity<Map<String, Object>> updateAttendee(@RequestBody Attendee attendee,
             @PathVariable(name = "globalId") Integer globalIdAttendee) {
@@ -257,6 +263,7 @@ public class MainController {
     }
 
     // Metodo delete logico de attendee
+    //ADMIN
     @PatchMapping("status/{globalId}")
     public ResponseEntity<Map<String, Object>> changeStatus(@RequestBody Attendee attendee,
             @PathVariable(name = "globalId") Integer globalIdAttendee) {
