@@ -93,18 +93,16 @@
          userRepository.save(user0);
  
          // when
- 
          User userAdded = userRepository.save(user0);
  
          // then
- 
          assertThat(userAdded).isNotNull(); // Ensure that the added user is not null
          assertThat(userAdded.getId()).isGreaterThan(0L); // Ensure valid user ID and database save
          assertThat(userAdded).isEqualTo(user0); // Verify object integrity post-save
  
      }
  
-     @DisplayName("User listing test")
+     @DisplayName("User listing test.")
      @Test
      public void testFindAllUsers() {
  
