@@ -87,14 +87,14 @@ public class LoadSampleData {
             List<Feedback> feedbacksAttendee1 = new ArrayList<>();
 
             Feedback feedback1Attendee1 = Feedback.builder()
-                .Level(Level.C1)
+                .level(Level.C1)
                 .attendee(attendee1)
                 .date(LocalDate.of(2024, 1, 01))
                 .comments("She speaks very well")
                 .build();
 
             Feedback feedback2Attendee1 = Feedback.builder()
-                .Level(Level.C2)
+                .level(Level.C2)
                 .attendee(attendee1)
                 .date(LocalDate.of(2024, 2, 01))
                 .comments("She has improved")
@@ -110,21 +110,21 @@ public class LoadSampleData {
             List<Feedback> feedbacksAttendee5 = new ArrayList<>();
 
             Feedback feedback1Attendee5 = Feedback.builder()
-                .Level(Level.A2)
+                .level(Level.A2)
                 .attendee(attendee5)
                 .date(LocalDate.of(2024, 1, 01))
                 .comments("She shows an initial level")
                 .build();
 
             Feedback feedback2Attendee5 = Feedback.builder()
-                .Level(Level.A2)
+                .level(Level.A2)
                 .attendee(attendee5)
                 .date(LocalDate.of(2024, 2, 01))
                 .comments("She does not shows an improvement")
                 .build();
 
             Feedback feedback3Attendee5 = Feedback.builder()
-                .Level(Level.B1)
+                .level(Level.B1)
                 .attendee(attendee5)
                 .date(LocalDate.of(2024, 3, 01))
                 .comments("She has improved")

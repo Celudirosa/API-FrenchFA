@@ -23,14 +23,19 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "feedbacks")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class Feedback implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,7 +46,7 @@ public class Feedback implements Serializable {
 
     @NotNull(message = "Level is required")
     @Enumerated(EnumType.STRING)
-    private Level Level;
+    private Level level;
 
     @NotBlank(message = "Comments cannot be empty")
     @Size(max = 1000, message = "Comments should not exceed 1000 characters")
