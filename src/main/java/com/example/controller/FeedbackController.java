@@ -128,6 +128,7 @@ public class FeedbackController {
             throw new ResourceNotFoundException("The attendee with " + globalId + " is DISABLE");
         }
 
+        // TODO : comprobar si los campos estan vacios
         // validar si el feedback tiene errores
         if (validationResult.hasErrors()) {
             List<String> errors = new ArrayList<>();
@@ -206,6 +207,7 @@ public class FeedbackController {
         existFeedback.setDate(feedbackRequest.getDate());
         existFeedback.setAttendee(attendee);
 
+        // TODO : comprobar si los campos estan vacios
         // Comprobar si feedback tiene errores
         if (validationResult.hasErrors()) {
             List<String> errors = new ArrayList<>();
