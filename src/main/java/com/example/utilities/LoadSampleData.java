@@ -12,6 +12,7 @@ import com.example.entities.Attendee;
 import com.example.entities.Email;
 import com.example.entities.Feedback;
 import com.example.entities.Level;
+import com.example.entities.Perfil;
 import com.example.entities.Profile;
 import com.example.entities.Status;
 import com.example.services.AttendeeService;
@@ -30,11 +31,11 @@ public class LoadSampleData {
 
             // Profiles
             profileService.save(Profile.builder()
-                .profile("Bootcamp")
+                .profile(Perfil.BOOTCAMP)
                 .build());
 
             profileService.save(Profile.builder()
-                .profile("Internal")
+                .profile(Perfil.INTERNAL)
                 .build());
 
             // Attendees
@@ -142,11 +143,6 @@ public class LoadSampleData {
             attendee5.setLastLevel(attendeeService.getLastLevel(attendee5));
             attendee1.setLastLevel(attendeeService.getLastLevel(attendee1));
 
-            // Feedback lastFeedback1 = Collections.max(feedbacksAttendee1, Comparator.comparing(Feedback::getDate));
-            // Level lastLevelattendee1 = lastFeedback1.getLevel();
-            // attendee1.setLastLevel(lastLevelattendee1);
-
-            // Add correos
 
             // Add email
 

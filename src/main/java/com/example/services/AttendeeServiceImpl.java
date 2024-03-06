@@ -82,7 +82,7 @@ public class AttendeeServiceImpl implements AttendeeService {
                 attendee.getGlobalId(),
                 emailsAsString, // Pasar el String de correos electrónicos aquí
                 attendee.getInitialLevel(),
-                attendee.getProfile().getProfile(),
+                attendee.getProfile().getProfile().toString(),
                 feedbackDTOs
 
         );
@@ -118,7 +118,7 @@ public class AttendeeServiceImpl implements AttendeeService {
                     emailsAsString, // Pasar el String de correos electrónicos aquí
                     a.getInitialLevel(),
                     a.getLastLevel(),
-                    a.getProfile().getProfile());
+                    a.getProfile().getProfile().toString());
 
             attendeeListDTOs.add(attendeeDTO);
 
@@ -148,7 +148,7 @@ public class AttendeeServiceImpl implements AttendeeService {
                     emailsAsString, // Pasar el String de correos electrónicos aquí
                     a.getInitialLevel(),
                     a.getLastLevel(),
-                    a.getProfile().getProfile());
+                    a.getProfile().getProfile().toString());
 
             attendeeListDTOs.add(attendeeDTO);
         }
@@ -190,7 +190,7 @@ public class AttendeeServiceImpl implements AttendeeService {
                     emailsAsString, // Pasar el String de correos electrónicos aquí
                     a.getInitialLevel(),
                     a.getLastLevel(),
-                    a.getProfile().getProfile());
+                    a.getProfile().getProfile().toString());
 
             attendeeListDTOs.add(attendeeDTO);
 
@@ -220,7 +220,7 @@ public class AttendeeServiceImpl implements AttendeeService {
                     emailsAsString, // Pasar el String de correos electrónicos aquí
                     a.getInitialLevel(),
                     a.getLastLevel(),
-                    a.getProfile().getProfile());
+                    a.getProfile().getProfile().toString());
 
             attendeeListDTOs.add(attendeeDTO);
         }
