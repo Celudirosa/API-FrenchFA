@@ -130,7 +130,7 @@
      }
  
      @Test
-     @DisplayName("Retrieve a user by ID")
+     @DisplayName("Retrieve a user by ID.")
      public void findUserById() {
  
          // given
