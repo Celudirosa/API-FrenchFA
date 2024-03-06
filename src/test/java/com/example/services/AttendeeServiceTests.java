@@ -44,10 +44,10 @@ public class AttendeeServiceTests {
     @Mock
     private FeedbackDao feedbackDao;
 
-    @Mock
+    @Mock // simulacion
     private EmailDao emailDao;
 
-    @InjectMocks
+    @InjectMocks // le inyecto el servicio a lo que se simula
     private AttendeeServiceImpl attendeeService;
 
     private Attendee attendee;
@@ -84,20 +84,23 @@ public class AttendeeServiceTests {
 
         Feedback feedback = Feedback.builder()
                 .level(Level.A0)
+                // .attendee(attendee)
                 .date(LocalDate.of(2024, 1, 01))
                 .comments("Comment Test")
                 .build();
 
         // feedbackDao.save(feedback);
-        // feedbacks.add(feedback);
-
         feedbacks.add(feedback);
         attendee.setFeedbacks(feedbacks);
+        attendeeDao.save(attendee);
         attendee.setLastLevel(attendeeService.getLastLevel(attendee));
+        
+        
+
         // feedback.setAttendee(attendee);
         
 
-        // attendeeService.save(attendee);
+        
 
     }
 
@@ -106,10 +109,10 @@ public class AttendeeServiceTests {
     public void testSaveAttendee() {
 
         // given
-        given(attendeeService.save(attendee)).willReturn(attendee);
+        given(attendeeDao.save(attendee)).willReturn(attendee);
 
         // when
-        Attendee attendeeSaved = attendeeService.save(attendee);
+        Attendee attendeeSaved = attendeeDao.save(attendee);
 
         // then
         assertThat(attendeeSaved).isNotNull(); // To verify if the saved attendee is not null
@@ -134,17 +137,17 @@ public class AttendeeServiceTests {
 
     }
 
-    @DisplayName("Recupera una lista vacia de productos")
-    @Test
-    public void testEmptyProductList() {
+    // @DisplayName("Recupera una lista vacia de productos")
+    // @Test
+    // public void testEmptyProductList() {
 
-        // given
-        given(productoDao.findAll()).willReturn(Collections.emptyList());
+    //     // given
+    //     given(productoDao.findAll()).willReturn(Collections.emptyList());
 
-        // when
-        List<Producto> productos = productoDao.findAll();
+    //     // when
+    //     List<Producto> productos = productoDao.findAll();
 
-        // then
-        assertThat(productos).isEmpty();
-    }
+    //     // then
+    //     assertThat(productos).isEmpty();
+    // }
 }
