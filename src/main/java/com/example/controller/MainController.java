@@ -35,7 +35,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/fuf") // FollowUpFrench
+@RequestMapping("/attendees")
 @RequiredArgsConstructor
 public class MainController {
 

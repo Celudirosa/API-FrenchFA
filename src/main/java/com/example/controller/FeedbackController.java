@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.customsExceptions.ResourceNotFoundException;
 import com.example.entities.Attendee;
 import com.example.entities.Feedback;
 import com.example.entities.Status;
+import com.example.exception.ResourceNotFoundException;
 import com.example.services.AttendeeService;
 import com.example.services.FeedbackService;
 

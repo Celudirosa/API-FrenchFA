@@ -20,7 +20,6 @@ import com.example.dto.FeedbackDTO;
 import com.example.entities.Attendee;
 import com.example.entities.Email;
 import com.example.entities.Feedback;
-import com.example.entities.Level;
 import com.example.entities.Status;
 
 import lombok.RequiredArgsConstructor;
@@ -57,11 +56,7 @@ public class AttendeeServiceImpl implements AttendeeService {
     @Override
     public String getLastLevel(Attendee attendee) {
         List<Feedback> feedbacks = feedbackDao.findFeedbacksByAttendeeOrderByDateDesc(attendee);
-        System.out.println(feedbacks);
-        Feedback feedbackTemporal = feedbacks.stream().findFirst().get();
-        Level levelTemporal = feedbackTemporal.getLevel();
-        String lastLevel = levelTemporal.toString();
-        // String lastLevel = feedbacks.get(0).getLevel().toString();
+        String lastLevel = feedbacks.get(0).getLevel().toString();
         attendee.setLastLevel(lastLevel); // Actualizar el campo lastLevel del Attendee
         attendeeDao.save(attendee); // Guardar el Attendee actualizado en la base de datos
         return lastLevel;
