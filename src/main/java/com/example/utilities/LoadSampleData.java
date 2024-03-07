@@ -149,7 +149,7 @@ public class LoadSampleData {
             List<Email> emailsAttendee5 = new ArrayList<>();
 
             Email email1Attendee5 = Email.builder()
-                .email("andrea@serge.com")
+                .email("andrea@blue.com")
                 .attendee(attendee5)
                 .build();
 

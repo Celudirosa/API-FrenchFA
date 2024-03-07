@@ -187,7 +187,7 @@ public class FeedbackController {
         Feedback existFeedback = feedbackService.findByFeedBackId(id);
         if (existFeedback == null) {
             throw new ResourceNotFoundException("Not found Feedback with Id = " + id);
-        } else if (!id.equals(existFeedback.getId())) {
+        } else if (((feedbackRequest.getId()) != existFeedback.getId())) {
             String errorMessage = "The feedback id doesn't match";
             responseAsMap.put("errorMessage", errorMessage);
 
@@ -263,13 +263,10 @@ public class FeedbackController {
         Feedback existFeedback = feedbackService.findByFeedBackId(id);
         if (existFeedback == null) {
             throw new ResourceNotFoundException("Not found Feedback with Id = " + id);
-        } else if (!id.equals(existFeedback.getId())) {
-            String errorMessage = "The feedback id doesn't match";
-            responseAsMap.put("errorMessage", errorMessage);
+        } 
 
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        }
+        
 
         // Verificar si el feedback pertenece al Attendee con el globalId proporcionado
         if (!existFeedback.getAttendee().equals(attendee)) {
