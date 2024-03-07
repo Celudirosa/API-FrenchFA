@@ -53,7 +53,7 @@ public class Attendee implements Serializable {
     @Size(max = 30, message = "The surname should not exceed 30 characters")
     private String surname;
 
-    @Setter(value = AccessLevel.PRIVATE)
+    // @Setter(value = AccessLevel.PRIVATE)
     @Min(value = 10000000, message = "GlobalId must contain 8 numbers")
     @Column(name = "global_id")
     @Max(value = 99999999, message = "GlobalId must contain 8 numbers")

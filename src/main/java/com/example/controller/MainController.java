@@ -94,33 +94,31 @@ public class MainController {
         Map<String, Object> responseMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
         Attendee attendeeEnable = attendeeService.findByGlobalId(globalIdAttendee);
-        if (attendeeEnable.getStatus() == Status.ENABLE) {
-            try {
-                AttendeeProfileDTO attendee = attendeeService.findByGlobalIdDTO(globalIdAttendee);
 
-                // Verifica si el Attendee fue encontrado
-                if (attendee != null) {
+        // Verificar si el Attendee se encontró
+        if (attendeeEnable != null) {
+            if (attendeeEnable.getStatus() == Status.ENABLE) {
+                try {
+                    AttendeeProfileDTO attendee = attendeeService.findByGlobalIdDTO(globalIdAttendee);
                     responseMap.put("attendee", attendee);
                     responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
-                } else {
-                    // Si no se encuentra el Attendee, devuelve un error 404 Not Found
-                    responseMap.put("error", "Not found Attendee with GlobalId = " + globalIdAttendee);
-                    responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
-                }
 
-            } catch (DataAccessException e) {
-                String error = "Error searching for Attendee with id: " + globalIdAttendee
-                        + " and the most likely cause is: "
-                        + e.getMostSpecificCause();
-                responseMap.put("error", error);
-                responseEntity = new ResponseEntity<Map<String, Object>>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
+                } catch (DataAccessException e) {
+                    String error = "Error searching for Attendee with id: " + globalIdAttendee
+                            + " and the most likely cause is: "
+                            + e.getMostSpecificCause();
+                    responseMap.put("error", error);
+                    responseEntity = new ResponseEntity<>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            } else {
+                // Si el Attendee no está habilitado, devuelve un error
+                responseMap.put("error", "The attendee with " + globalIdAttendee + " is DISABLE");
+                responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
             }
         } else {
-            // Si no es ENABLE, devuelve un error
-            responseMap.put("error", "The attendee with " + globalIdAttendee
-                    + " is DISABLE");
+            // Si el Attendee no se encuentra, devuelve un error 404 Not Found
+            responseMap.put("error", "Not found Attendee with GlobalId = " + globalIdAttendee);
             responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
-
         }
 
         return responseEntity;
@@ -134,31 +132,33 @@ public class MainController {
 
         Map<String, Object> responseMap = new HashMap<>();
         ResponseEntity<Map<String, Object>> responseEntity = null;
-        try {
-            AttendeeProfileDTO attendee = attendeeService.findByGlobalIdDTO(globalIdAttendee);
+        Attendee attendee = attendeeService.findByGlobalId(globalIdAttendee);
 
-            // Verifica si el Attendee fue encontrado
-            if (attendee != null) {
-                responseMap.put("attendee", attendee);
+        // Verificar si el Attendee se encontró
+        if (attendee != null) {
+            try {
+                AttendeeProfileDTO attendeeDto = attendeeService.findByGlobalIdDTO(globalIdAttendee);
+                responseMap.put("attendee", attendeeDto);
                 responseEntity = new ResponseEntity<>(responseMap, HttpStatus.OK);
-            } else {
-                // Si no se encuentra el Attendee, devuelve un error 404 Not Found
-                responseMap.put("error", "Not found Attendee with GlobalId = " + globalIdAttendee);
-                responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
-            }
 
-        } catch (DataAccessException e) {
-            String error = "Error searching for Attendee with id: " + globalIdAttendee + " and the most likely cause is: "
-                    + e.getMostSpecificCause();
-            responseMap.put("error", error);
-            responseEntity = new ResponseEntity<Map<String, Object>>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            } catch (DataAccessException e) {
+                String error = "Error searching for Attendee with id: " + globalIdAttendee
+                        + " and the most likely cause is: "
+                        + e.getMostSpecificCause();
+                responseMap.put("error", error);
+                responseEntity = new ResponseEntity<>(responseMap, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            // Si el Attendee no se encuentra, devuelve un error 404 Not Found
+            responseMap.put("error", "Not found Attendee with GlobalId = " + globalIdAttendee);
+            responseEntity = new ResponseEntity<>(responseMap, HttpStatus.NOT_FOUND);
         }
 
         return responseEntity;
     }
 
     // Metodo que persiste un attendee, y valida que esten bien formados los campos
-    //ADMIN
+    // ADMIN
     @PostMapping
     public ResponseEntity<Map<String, Object>> saveAttendee(@Valid @RequestBody Attendee attendee,
             BindingResult validationResult) {
@@ -218,12 +218,23 @@ public class MainController {
 
         // Verificar que el globalId del cuerpo coincida con el globalId del attendee
         // existente
-        Integer existingAttendeeGlobalId = existingAttendee.getGlobalId();
-        if (!globalIdAttendee.equals(existingAttendeeGlobalId)) {
+        if (attendee.getGlobalId() != 0 && attendee.getGlobalId() != existingAttendee.getGlobalId()) {
             String errorMessage = "Modification of globalId is not allowed";
             responseAsMap.put("errorMessage", errorMessage);
             return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
         }
+
+        // if (attendee.getGlobalId() != existingAttendee.getGlobalId()) {
+        // String errorMessage = "Modification of globalId is not allowed";
+        // responseAsMap.put("errorMessage", errorMessage);
+        // return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+
+        // Integer existingAttendeeGlobalId = existingAttendee.getGlobalId();
+        // if (!globalIdAttendee.equals(existingAttendeeGlobalId)) {
+        // String errorMessage = "Modification of globalId is not allowed";
+        // responseAsMap.put("errorMessage", errorMessage);
+        // return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
+        // }
 
         // Actualizar el Attendee
         try {
@@ -245,6 +256,10 @@ public class MainController {
             }
             if (attendee.getStatus() != null) {
                 existingAttendee.setStatus(attendee.getStatus());
+                if (attendee.getGlobalId() == 0) {
+                    existingAttendee.setGlobalId(attendee.getGlobalId());
+                }
+
             }
 
             Attendee attendeeUpdate = attendeeService.save(existingAttendee);
@@ -263,7 +278,7 @@ public class MainController {
     }
 
     // Metodo delete logico de attendee
-    //ADMIN
+    // ADMIN
     @PatchMapping("status/{globalId}")
     public ResponseEntity<Map<String, Object>> changeStatus(@RequestBody Attendee attendee,
             @PathVariable(name = "globalId") Integer globalIdAttendee) {
@@ -273,7 +288,7 @@ public class MainController {
         // llamar al attendee y ver si existe
         Attendee existingAttendee = attendeeService.findByGlobalId(globalIdAttendee);
         if (existingAttendee == null) {
-            String errorMessage = "Not found Attendee with GlobalId = " + globalIdAttendee ;
+            String errorMessage = "Not found Attendee with GlobalId = " + globalIdAttendee;
             responseAsMap.put("errorMessage", errorMessage);
             return new ResponseEntity<>(responseAsMap, HttpStatus.NOT_FOUND);
         } else {
