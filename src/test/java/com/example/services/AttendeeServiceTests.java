@@ -112,6 +112,21 @@ public class AttendeeServiceTests {
 
     }
 
-    
+    @DisplayName("Retrieve an empty list of products")
+    @Test
+    public void testEmptyAttendeeList() {
+
+        // given
+        given(attendeeDao.findAll()).willReturn(Collections.emptyList());
+
+        // when
+        List<Attendee> attendes = attendeeDao.findAll();
+
+        // then
+        assertThat(attendes).isEmpty();
+    }
+
+
+
 
 }
