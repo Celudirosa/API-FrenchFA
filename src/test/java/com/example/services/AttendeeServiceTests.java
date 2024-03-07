@@ -1,4 +1,5 @@
 package com.example.services;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import com.example.entities.Level;
 import com.example.entities.Perfil;
 import com.example.entities.Profile;
 import com.example.entities.Status;
+import com.example.user.User;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,11 +58,12 @@ public class AttendeeServiceTests {
     void setUp() {
 
         Profile profile = Profile.builder()
+                .id(20)
                 .profile(Perfil.BOOTCAMP)
                 .build();
 
         attendee = Attendee.builder()
-                .id(1)
+                .id(20)
                 .firstName("NameTest")
                 .surname("SurnameTest")
                 .globalId(00000000)
@@ -126,7 +129,19 @@ public class AttendeeServiceTests {
         assertThat(attendes).isEmpty();
     }
 
+/*     @Test
+    @DisplayName("Retrieve a user by ID.")
+    public void findUserById() {
 
+        // given
+        attendeeDao.save(attendee);
 
+        // when
+        Attendee attendeeFound = attendeeService.findByGlobalId(11122233);
+
+        // then
+        assertThat(attendeeFound.getGlobalId()).isNotEqualTo(0);
+
+    } */
 
 }
