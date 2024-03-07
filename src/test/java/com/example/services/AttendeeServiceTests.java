@@ -84,12 +84,10 @@ public class AttendeeServiceTests {
 
         Feedback feedback = Feedback.builder()
                 .Level(Level.A0)
-                // .attendee(attendee)
                 .date(LocalDate.of(2024, 1, 01))
                 .comments("Comment Test")
                 .build();
 
-        // feedbackDao.save(feedback);
         feedbacks.add(feedback);
         attendee.setFeedbacks(feedbacks);
         attendeeDao.save(attendee);
@@ -110,25 +108,10 @@ public class AttendeeServiceTests {
 
         // then
         assertThat(attendeeSaved).isNotNull(); // To verify if the saved attendee is not null
-        // assertEquals(attendee, attendeeSaved); // Check if the saved attendee is
-        // equal to the original attendee
-
-        // assertThrows(IllegalArgumentException.class, () -> {
-        // attendeeService.save(null);
-        // }); // Check if an exception is thrown when attempting to save a null
-        // attendee
-
-        // To verify if different data types are correctly saved into the attendee
-        // attendeeSaved.setFirstName(""); // Empty string
-        // attendeeSaved.setSurname(""); // Empty string
-        // attendeeSaved.setGlobalId(0);; // Empty int
-        // attendeeSaved.setEmails(null); // Null
-        // attendeeSaved.setInitialLevel(null);
-        // attendeeSaved.setStatus(null); // Valor entero 0
-        // attendeeSaved.setProfile(null);
-        // attendeeSaved.setFeedbacks(null);
-        // attendeeSaved.setId(0);
+        assertEquals(attendee, attendeeSaved); // Check if the saved attendee is equal to the original attendee
 
     }
+
+    
 
 }
