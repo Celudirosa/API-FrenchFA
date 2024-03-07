@@ -172,7 +172,7 @@
  
      }
  
-     @DisplayName("Test to delete an user")
+     @DisplayName("Test to delete an user ")
      @Test
      public void testDeleteUser() {
  
