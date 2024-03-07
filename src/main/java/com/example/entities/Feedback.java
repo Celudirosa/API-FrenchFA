@@ -41,7 +41,7 @@ public class Feedback implements Serializable {
 
     @NotNull(message = "Level is required")
     @Enumerated(EnumType.STRING)
-    private Level Level;
+    private Level level;
 
     @NotBlank(message = "Comments cannot be empty")
     @Size(max = 1000, message = "Comments should not exceed 1000 characters")
