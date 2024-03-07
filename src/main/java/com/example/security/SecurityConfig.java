@@ -36,8 +36,8 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.PUT, "/attendees/{globalId}").hasAuthority("ADMINISTRATOR");
                     auth.requestMatchers(HttpMethod.PATCH, "/attendees/status/**").hasAuthority("ADMINISTRATOR");
                     auth.requestMatchers(HttpMethod.GET, "/attendees/{globalId}/feedbacks/**").hasAuthority("TRAINER");
-                    auth.requestMatchers(HttpMethod.POST, "/attendees/{globalId}/feedbacks/**").hasAuthority("TRAINER");
-                    auth.requestMatchers(HttpMethod.PUT, "/attendees/{globalId}/feedbacks/**").hasAuthority("TRAINER");
+                    auth.requestMatchers(HttpMethod.POST, "/attendees/{globalId}/feedback/**").hasAuthority("TRAINER");
+                    auth.requestMatchers(HttpMethod.PUT, "/attendees/{globalId}/feedback/**").hasAuthority("TRAINER");
                     auth.requestMatchers(HttpMethod.DELETE, "/attendees/{globalId}/feedbacks/**").hasAuthority("TRAINER");
 
                     auth.anyRequest().authenticated();
