@@ -14,6 +14,8 @@ import com.example.dao.AttendeeDao;
 import com.example.dao.EmailDao;
 import com.example.dao.FeedbackDao;
 import com.example.dao.ProfileDao;
+import com.example.dto.AttendeeListDTO;
+import com.example.dto.AttendeeProfileDTO;
 import com.example.entities.Attendee;
 import com.example.entities.Email;
 import com.example.entities.Feedback;
@@ -54,6 +56,8 @@ public class AttendeeServiceTests {
 
     private Attendee attendee;
 
+    private AttendeeProfileDTO attendeeDTO;
+
     @BeforeEach
     void setUp() {
 
@@ -72,27 +76,27 @@ public class AttendeeServiceTests {
                 .profile(profile)
                 .build();
 
-        List<Email> emails = new ArrayList<>();
+        // List<Email> emails = new ArrayList<>();
 
-        Email email = Email.builder()
-                .email("test@blue.com")
-                .attendee(attendee)
-                .build();
+        // Email email = Email.builder()
+        // .email("test@blue.com")
+        // .attendee(attendee)
+        // .build();
 
-        emailDao.save(email);
-        emails.add(email);
-        attendee.setEmails(emails);
+        // emailDao.save(email);
+        // emails.add(email);
+        // attendee.setEmails(emails);
 
-        List<Feedback> feedbacks = new ArrayList<>();
+        // List<Feedback> feedbacks = new ArrayList<>();
 
-        Feedback feedback = Feedback.builder()
-                .Level(Level.A0)
-                .date(LocalDate.of(2024, 1, 01))
-                .comments("Comment Test")
-                .build();
+        // Feedback feedback = Feedback.builder()
+        // .Level(Level.A0)
+        // .date(LocalDate.of(2024, 1, 01))
+        // .comments("Comment Test")
+        // .build();
 
-        feedbacks.add(feedback);
-        attendee.setFeedbacks(feedbacks);
+        // feedbacks.add(feedback);
+        // attendee.setFeedbacks(feedbacks);
         attendeeDao.save(attendee);
         // attendee.setLastLevel(attendeeService.getLastLevel(attendee));
 
@@ -128,20 +132,37 @@ public class AttendeeServiceTests {
         // then
         assertThat(attendes).isEmpty();
     }
+     
+/*      @DisplayName("Retrieve a user by ID.")
+     @Test
+     public void findUserById() {
+     
+     // given
+     attendeeDao.save(attendee);
+     
+     // when
+     Attendee attendeeFound = attendeeService.findByGlobalId(11122233);
+     
+     // then
+     assertThat(attendeeFound.getGlobalId()).isNotEqualTo(0);
+     } */
 
-/*     @Test
-    @DisplayName("Retrieve a user by ID.")
-    public void findUserById() {
+ /*    @DisplayName("Retrieve an a userDTO by globalId")
+    @Test
+    public void testFindUserByGlobalIdDto() {
 
         // given
-        attendeeDao.save(attendee);
-
+        // AttendeeProfileDTO attendeeDto = attendee;
+        
         // when
-        Attendee attendeeFound = attendeeService.findByGlobalId(11122233);
+        AttendeeProfileDTO attendeeFound = attendeeService.findByGlobalIdDTO(attendeeDto.getGlobalId());
+
+
+        AttendeeProfileDTO attendee = attendeeService.findByGlobalIdDTO(globalIdAttendee)
 
         // then
         assertThat(attendeeFound.getGlobalId()).isNotEqualTo(0);
 
-    } */
-
+    }
+ */
 }
