@@ -48,7 +48,7 @@ public class UserServiceTests {
     }
     // Ensure it's never possible to add a user with an existing email
     @Test
-    @DisplayName("Test for saving a user and generating an exception")
+    @DisplayName("Test for saving a user and generating an exception ")
     public void testSaveUserWithThrowException() {
 
         // given
