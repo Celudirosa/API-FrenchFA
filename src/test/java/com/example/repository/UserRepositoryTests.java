@@ -142,7 +142,6 @@
          User user = userRepository.findById(user0.getId()).get();
  
          // then
- 
          assertThat(user.getId()).isNotEqualTo(0L);
  
      }
@@ -156,7 +155,6 @@
          userRepository.save(user0);
  
          // when
- 
          User userSaved = userRepository.findByEmail(user0.getEmail()).get();
  
          userSaved.setFirstName("AdminNameUp");
