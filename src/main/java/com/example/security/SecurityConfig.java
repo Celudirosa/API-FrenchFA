@@ -28,9 +28,9 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(HttpMethod.POST,"/users/add/admin").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/attendees").hasAnyAuthority("TRAINER", "ADMINISTRATOR");
                     auth.requestMatchers(HttpMethod.GET, "/attendees/{globalId}").hasAnyAuthority("TRAINER", "ADMINISTRATOR");
-                    auth.requestMatchers(HttpMethod.POST,"/users/add/admin").permitAll();
                     auth.requestMatchers(HttpMethod.POST,"/users/add/trainer").hasAuthority("ADMINISTRATOR");
                     auth.requestMatchers(HttpMethod.GET,"/users/*.*").hasAuthority("ADMINISTRATOR");
                     auth.requestMatchers(HttpMethod.PUT,"/users/*.*").hasAuthority("ADMINISTRATOR");
@@ -41,10 +41,10 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.POST, "/attendees").hasAuthority("ADMINISTRATOR");
                     auth.requestMatchers(HttpMethod.PUT, "/attendees/{globalId}").hasAuthority("ADMINISTRATOR");
                     auth.requestMatchers(HttpMethod.PATCH, "/attendees/status/**").hasAuthority("ADMINISTRATOR");
-                    auth.requestMatchers(HttpMethod.GET, "/attendees/{globalId}/feedbacks/**").hasAuthority("TRAINER");
+                    auth.requestMatchers(HttpMethod.GET, "/attendees/{globalId}/feedback/**").hasAuthority("TRAINER");
                     auth.requestMatchers(HttpMethod.POST, "/attendees/{globalId}/feedback/**").hasAuthority("TRAINER");
                     auth.requestMatchers(HttpMethod.PUT, "/attendees/{globalId}/feedback/**").hasAuthority("TRAINER");
-                    auth.requestMatchers(HttpMethod.DELETE, "/attendees/{globalId}/feedbacks/**").hasAuthority("TRAINER");
+                    auth.requestMatchers(HttpMethod.DELETE, "/attendees/{globalId}/feedback/**").hasAuthority("TRAINER");
 
                     auth.anyRequest().authenticated();
                 }).httpBasic(Customizer.withDefaults()).build();
