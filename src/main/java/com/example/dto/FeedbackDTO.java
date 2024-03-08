@@ -19,4 +19,6 @@ public class FeedbackDTO {
     private Level level;
     private LocalDate date;
     private String comments;
+
+    
 }

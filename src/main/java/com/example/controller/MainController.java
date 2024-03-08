@@ -124,7 +124,7 @@ public class MainController {
         return responseEntity;
     }
 
-    // Metodo que devuelve los attendees por su globalId (Enables y desables)
+    // Metodo que devuelve los attendees por su globalId (Enables y disables)
     // ADMIN
     @GetMapping("/admin/{globalId}")
     public ResponseEntity<Map<String, Object>> findAttendeeByGlobalId(
