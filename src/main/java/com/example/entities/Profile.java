@@ -38,9 +38,8 @@ public class Profile implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-     @NotNull(message = "Profile is required")
-    @Enumerated(EnumType.STRING)
-    private Perfil profile;
+     @NotBlank(message = "Profile is required")
+    private String profile;
 
     // @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "profile")
