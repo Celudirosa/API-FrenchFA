@@ -28,8 +28,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(HttpMethod.GET, "/attendees").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/attendees/{globalId}").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/attendees").hasAnyAuthority("TRAINER", "ADMINISTRATOR");
+                    auth.requestMatchers(HttpMethod.GET, "/attendees/{globalId}").hasAnyAuthority("TRAINER", "ADMINISTRATOR");
                     auth.requestMatchers("/users/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/attendees/admin/**").hasAuthority("ADMINISTRATOR");
                     auth.requestMatchers(HttpMethod.POST, "/attendees").hasAuthority("ADMINISTRATOR");
