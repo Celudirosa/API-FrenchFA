@@ -30,7 +30,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(HttpMethod.GET, "/attendees").hasAnyAuthority("TRAINER", "ADMINISTRATOR");
                     auth.requestMatchers(HttpMethod.GET, "/attendees/{globalId}").hasAnyAuthority("TRAINER", "ADMINISTRATOR");
-                    auth.requestMatchers("/users/**").permitAll();
+                    auth.requestMatchers(HttpMethod.POST,"/users/add/admin").permitAll();
+                    auth.requestMatchers(HttpMethod.POST,"/users/add/trainer").hasAuthority("ADMINISTRATOR");
+                    auth.requestMatchers(HttpMethod.GET,"/users/*.*").hasAuthority("ADMINISTRATOR");
+                    auth.requestMatchers(HttpMethod.PUT,"/users/*.*").hasAuthority("ADMINISTRATOR");
+                    auth.requestMatchers(HttpMethod.DELETE,"/users/*.*").hasAuthority("ADMINISTRATOR");
+
+
                     auth.requestMatchers(HttpMethod.GET, "/attendees/admin/**").hasAuthority("ADMINISTRATOR");
                     auth.requestMatchers(HttpMethod.POST, "/attendees").hasAuthority("ADMINISTRATOR");
                     auth.requestMatchers(HttpMethod.PUT, "/attendees/{globalId}").hasAuthority("ADMINISTRATOR");
