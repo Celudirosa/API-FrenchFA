@@ -28,8 +28,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.dto.AttendeeListDTO;
 import com.example.dto.AttendeeProfileDTO;
 import com.example.entities.Attendee;
+import com.example.entities.Email;
 import com.example.entities.Status;
 import com.example.services.AttendeeService;
+import com.example.services.EmailService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +42,7 @@ import lombok.RequiredArgsConstructor;
 public class MainController {
 
     private final AttendeeService attendeeService;
+    private final EmailService emailService;
 
     // Metodo que devuelve todos los atendees paginados u ordenados
     // ALL
@@ -185,6 +188,18 @@ public class MainController {
 
         try {
             Attendee attendeePersist = attendeeService.save(attendee);
+            Email emailPersist = Email.builder()
+                    .email(attendee.getEmails().get(0).getEmail())
+                    .attendee(attendeePersist)
+                    .build();
+            emailService.save(emailPersist);
+
+            // Agregar el Email al AttendeePersist y guardar nuevamente el Attendee
+            List<Email> emails = new ArrayList<>();
+            emails.add(emailPersist);
+            attendeePersist.setEmails(emails);
+            attendeeService.save(attendeePersist);
+            
             String succesMessage = "The attendee has been saved succesfully";
             responseAsMap.put("Succes Message", succesMessage);
             responseAsMap.put("Attendee Persist", attendeePersist);

@@ -31,11 +31,11 @@ public class LoadSampleData {
 
             // Profiles
             profileService.save(Profile.builder()
-                .profile(Perfil.BOOTCAMP)
+                .profile("BOOTCAMP")
                 .build());
 
             profileService.save(Profile.builder()
-                .profile(Perfil.INTERNAL)
+                .profile("INTERNAL")
                 .build());
 
             // Attendees
