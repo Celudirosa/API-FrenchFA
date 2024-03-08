@@ -76,27 +76,27 @@ public class AttendeeServiceTests {
                 .profile(profile)
                 .build();
 
-        // List<Email> emails = new ArrayList<>();
+        List<Email> emails = new ArrayList<>();
 
-        // Email email = Email.builder()
-        // .email("test@blue.com")
-        // .attendee(attendee)
-        // .build();
+        Email email = Email.builder()
+        .email("test@blue.com")
+        .attendee(attendee)
+        .build();
 
-        // emailDao.save(email);
-        // emails.add(email);
-        // attendee.setEmails(emails);
+        emailDao.save(email);
+        emails.add(email);
+        attendee.setEmails(emails);
 
-        // List<Feedback> feedbacks = new ArrayList<>();
+        List<Feedback> feedbacks = new ArrayList<>();
 
-        // Feedback feedback = Feedback.builder()
-        // .Level(Level.A0)
-        // .date(LocalDate.of(2024, 1, 01))
-        // .comments("Comment Test")
-        // .build();
+        Feedback feedback = Feedback.builder()
+        .Level(Level.A0)
+        .date(LocalDate.of(2024, 1, 01))
+        .comments("Comment Test")
+        .build();
 
-        // feedbacks.add(feedback);
-        // attendee.setFeedbacks(feedbacks);
+        feedbacks.add(feedback);
+        attendee.setFeedbacks(feedbacks);
         attendeeDao.save(attendee);
         // attendee.setLastLevel(attendeeService.getLastLevel(attendee));
 
@@ -153,7 +153,7 @@ public class AttendeeServiceTests {
 
         // given
         // AttendeeProfileDTO attendeeDto = attendee;
-        
+
         // when
         AttendeeProfileDTO attendeeFound = attendeeService.findByGlobalIdDTO(attendeeDto.getGlobalId());
 
