@@ -188,18 +188,41 @@ public class MainController {
 
         try {
             Attendee attendeePersist = attendeeService.save(attendee);
-            Email emailPersist = Email.builder()
-                    .email(attendee.getEmails().get(0).getEmail())
-                    .attendee(attendeePersist)
-                    .build();
-            emailService.save(emailPersist);
-
-            // Agregar el Email al AttendeePersist y guardar nuevamente el Attendee
             List<Email> emails = new ArrayList<>();
-            emails.add(emailPersist);
+            // Guardar el primer correo electrónico si existe
+            if (!attendee.getEmails().isEmpty()) {
+                Email emailPersist1 = Email.builder()
+                        .email(attendee.getEmails().get(0).getEmail())
+                        .attendee(attendeePersist)
+                        .build();
+                emailService.save(emailPersist1);
+                emails.add(emailPersist1);
+            }
+
+            // Guardar el segundo correo electrónico si existe
+            if (attendee.getEmails().size() >= 2) {
+                Email emailPersist2 = Email.builder()
+                        .email(attendee.getEmails().get(1).getEmail())
+                        .attendee(attendeePersist)
+                        .build();
+                emailService.save(emailPersist2);
+                emails.add(emailPersist2);
+            }
+
+            // Guardar el tercer correo electrónico si existe
+            if (attendee.getEmails().size() >= 3) {
+                Email emailPersist3 = Email.builder()
+                        .email(attendee.getEmails().get(2).getEmail())
+                        .attendee(attendeePersist)
+                        .build();
+                emailService.save(emailPersist3);
+                emails.add(emailPersist3);
+            }
+            // Agregar el Email al AttendeePersist y guardar nuevamente el Attendee
+
             attendeePersist.setEmails(emails);
             attendeeService.save(attendeePersist);
-            
+
             String succesMessage = "The attendee has been saved succesfully";
             responseAsMap.put("Succes Message", succesMessage);
             responseAsMap.put("Attendee Persist", attendeePersist);
